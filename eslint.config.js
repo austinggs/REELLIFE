@@ -16,10 +16,29 @@ import tseslint from "typescript-eslint";
  */
 export default tseslint.config(
   {
-    ignores: ["dist/**", "node_modules/**", "coverage/**", "REEL LIFE FULL PLAN SOURCE/**"],
+    // External tool worktrees (e.g. .kilo/worktrees/*) contain full project
+    // copies; they are never linted from here.
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      "coverage/**",
+      "REEL LIFE FULL PLAN SOURCE/**",
+      ".kilo/**",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    // Pin the tsconfig root so the typescript parser never has to guess.
+    // Without this, a stray tsconfig.json anywhere in the workspace (an
+    // external tool's worktree copy, for instance) makes every file fail
+    // with "multiple candidate TSConfigRootDirs are present".
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   {
     files: ["src/**/*.{ts,tsx}", "tests/**/*.ts"],
     languageOptions: {

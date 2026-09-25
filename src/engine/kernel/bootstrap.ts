@@ -19,6 +19,11 @@ import {
   TIME_CONSEQUENCE_TYPES,
   TIME_COMMAND_TYPES,
 } from "../commands/builtin/timeCommands.ts";
+import {
+  WORLD_COMMANDS,
+  WORLD_CONSEQUENCE_TYPES,
+  WORLD_COMMAND_TYPES,
+} from "../commands/builtin/worldCommands.ts";
 import { bootstrapDomain } from "../commands/domain/index.ts";
 import { createCalendarHeartbeatSystem } from "./heartbeatSystem.ts";
 
@@ -32,6 +37,9 @@ export function bootstrapKernel(sim: Simulation): Simulation {
   for (const command of TIME_COMMANDS) {
     sim.registry.register(command);
   }
+  for (const command of WORLD_COMMANDS) {
+    sim.registry.register(command);
+  }
 
   sim.registerConsequenceApplier(TIME_CONSEQUENCE_TYPES.setSpeed, (payload) => {
     const speed = payload.speed;
@@ -42,6 +50,16 @@ export function bootstrapKernel(sim: Simulation): Simulation {
   sim.registerConsequenceApplier(TIME_CONSEQUENCE_TYPES.setPaused, (payload) => {
     if (payload.paused === true) sim.clock.pause();
     else sim.clock.resume();
+  });
+
+  // world.save: the snapshot itself is taken synchronously (so its content is
+  // deterministic for the dispatching command sequence); the store write runs
+  // out-of-band on sim.pendingSaves.
+  sim.registerConsequenceApplier(WORLD_CONSEQUENCE_TYPES.requestSave, (payload, event) => {
+    const slotName = payload.slotName;
+    if (typeof slotName !== "string" || slotName.length === 0) return;
+    const label = typeof payload.savedAtLabel === "string" ? payload.savedAtLabel : undefined;
+    sim.queueSave(slotName, label ?? `world.save @ ${String(event.at)}`);
   });
 
   return sim;
@@ -89,4 +107,4 @@ export function bootstrapLoadedSimulation(
   return sim;
 }
 
-export { TIME_COMMAND_TYPES };
+export { TIME_COMMAND_TYPES, WORLD_COMMAND_TYPES, WORLD_CONSEQUENCE_TYPES };

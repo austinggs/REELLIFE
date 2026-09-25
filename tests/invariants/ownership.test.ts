@@ -147,9 +147,17 @@ describe("ownership guard (System 01, architectural law 1)", () => {
       checkInvariants: false,
     });
     const owners = simulation.registry.byOwner();
-    expect(Object.keys(owners).sort()).toEqual(
-      ["employment", "finance", "housing", "inventory", "needs", "time"],
-    );
+    expect(Object.keys(owners).sort()).toEqual([
+      "activities",
+      "employment",
+      "finance",
+      "housing",
+      "inventory",
+      "needs",
+      "persistence",
+      "relationships",
+      "time",
+    ]);
     expect(owners.time).toContain(TIME_COMMAND_TYPES.setSpeed);
     // Every declared owner must be an approved system id.
     for (const owner of Object.keys(owners)) {

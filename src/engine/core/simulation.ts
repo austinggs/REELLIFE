@@ -137,6 +137,14 @@ export class Simulation {
   readonly authority: AuthorityEvaluator;
   readonly checkInvariants: boolean;
   readonly saveStore: SaveStore;
+  /**
+   * In-flight asynchronous save writes queued by consequence appliers
+   * (e.g. `world.save`). Saving is intentionally out-of-band: it must never
+   * block or influence the synchronous dispatch pipeline, and its store
+   * writes are promises. Tests and hosts await `awaitPendingSaves()` before
+   * asserting storage contents.
+   */
+  readonly pendingSaves: Promise<void>[] = [];
 
   private readonly systems = new Map<SystemId, RegisteredSystem>();
   private readonly eventHandlers = new Map<string, EventHandler>();
@@ -647,6 +655,20 @@ export class Simulation {
     const info = await this.saveStore.write(slotName, file);
     this.metrics.increment("saves.written");
     return info;
+  }
+
+  /**
+   * Queues a save write for the world.save command pipeline. The snapshot is
+   * taken synchronously at dispatch time (deterministic content); only the
+   * store I/O is deferred onto `pendingSaves`.
+   */
+  queueSave(slotName: string, savedAtLabel?: string): void {
+    this.pendingSaves.push(this.saveTo(slotName, savedAtLabel).then(() => undefined));
+  }
+
+  /** Awaits every save write queued so far, surfacing store failures. */
+  async awaitPendingSaves(): Promise<void> {
+    await Promise.all([...this.pendingSaves]);
   }
 
   /** Stable hash of the whole authoritative state, used for determinism checks. */

@@ -1,5 +1,5 @@
 import type { CommandDefinition } from "../types.ts";
-import { errorIssue } from "../types.ts";
+import { causeKindOf, errorIssue } from "../types.ts";
 
 export const NEEDS_COMMAND_TYPES = {
   personEat: "person.eat",
@@ -22,7 +22,7 @@ export const NEEDS_COMMANDS: readonly CommandDefinition<never>[] = [
     resolve: (cmd) => ({
       event: {
         type: "person.ate",
-        cause: { kind: "player", description: "Person ate meal" },
+        cause: { kind: causeKindOf(cmd.origin), description: "Person ate meal" },
         visibleFacts: ["Person ate a meal"],
         tags: ["needs", "food"],
         consequences: [
@@ -43,7 +43,7 @@ export const NEEDS_COMMANDS: readonly CommandDefinition<never>[] = [
     resolve: (cmd) => ({
       event: {
         type: "person.slept",
-        cause: { kind: "player", description: "Person slept" },
+        cause: { kind: causeKindOf(cmd.origin), description: "Person slept" },
         visibleFacts: ["Person slept"],
         tags: ["needs", "sleep"],
         consequences: [
@@ -64,7 +64,7 @@ export const NEEDS_COMMANDS: readonly CommandDefinition<never>[] = [
     resolve: (cmd) => ({
       event: {
         type: "person.rested",
-        cause: { kind: "player", description: "Person rested" },
+        cause: { kind: causeKindOf(cmd.origin), description: "Person rested" },
         visibleFacts: ["Person rested"],
         tags: ["needs", "rest"],
         consequences: [
@@ -85,7 +85,7 @@ export const NEEDS_COMMANDS: readonly CommandDefinition<never>[] = [
     resolve: (cmd) => ({
       event: {
         type: "person.cleaned",
-        cause: { kind: "player", description: "Person attended to hygiene" },
+        cause: { kind: causeKindOf(cmd.origin), description: "Person attended to hygiene" },
         visibleFacts: ["Person showered/cleaned"],
         tags: ["needs", "hygiene"],
         consequences: [
@@ -106,7 +106,7 @@ export const NEEDS_COMMANDS: readonly CommandDefinition<never>[] = [
     resolve: (cmd) => ({
       event: {
         type: "person.socialized",
-        cause: { kind: "player", description: "Person socialized" },
+        cause: { kind: causeKindOf(cmd.origin), description: "Person socialized" },
         visibleFacts: ["Person socialized with others"],
         tags: ["needs", "social"],
         consequences: [

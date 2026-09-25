@@ -2,12 +2,14 @@ import type { EntityId } from "../../primitives/ids.ts";
 import type { Money } from "../../primitives/money.ts";
 import type { TenancyType } from "../../housing/types.ts";
 import type { CommandDefinition } from "../types.ts";
-import { errorIssue } from "../types.ts";
+import { causeKindOf, errorIssue } from "../types.ts";
 
 export const ASSET_COMMAND_TYPES = {
   housingSignLease: "housing.sign_lease",
   housingMoveIn: "housing.move_in",
+  housingPayRent: "housing.pay_rent",
   financeTransfer: "finance.transfer",
+  financePayBill: "finance.pay_bill",
   inventoryTransfer: "inventory.transfer",
 } as const;
 
@@ -43,6 +45,27 @@ export interface TransferInventoryParams {
   readonly toHolderId: EntityId<"person">;
 }
 
+/**
+ * Rent and bills are not a separate money mechanic: they are the *same*
+ * balanced ledger transfer with a meaningful classification. Declaring them as
+ * their own intents keeps the event log readable ("why did money move?") while
+ * finance remains the only writer of balances.
+ */
+export interface PayRentParams {
+  readonly fromAccountId: string;
+  readonly toAccountId: string;
+  readonly amount: Money;
+  readonly leaseId?: string;
+  readonly propertyId?: string;
+}
+
+export interface PayBillParams {
+  readonly fromAccountId: string;
+  readonly toAccountId: string;
+  readonly amount: Money;
+  readonly billType?: string;
+}
+
 export const ASSET_COMMANDS: readonly CommandDefinition<never>[] = [
   {
     type: ASSET_COMMAND_TYPES.housingSignLease,
@@ -60,7 +83,7 @@ export const ASSET_COMMANDS: readonly CommandDefinition<never>[] = [
       return {
         event: {
           type: "housing.lease_signed",
-          cause: { kind: "player", description: "Signed housing lease" },
+          cause: { kind: causeKindOf(cmd.origin), description: "Signed housing lease" },
           visibleFacts: [`Lease signed for property ${p.propertyId}`],
           tags: ["housing"],
           consequences: [
@@ -93,7 +116,7 @@ export const ASSET_COMMANDS: readonly CommandDefinition<never>[] = [
       return {
         event: {
           type: "housing.moved_in",
-          cause: { kind: "player", description: "Moved into property" },
+          cause: { kind: causeKindOf(cmd.origin), description: "Moved into property" },
           visibleFacts: [`Person ${cmd.actor} moved into property ${p.propertyId}`],
           tags: ["housing"],
           consequences: [
@@ -127,7 +150,7 @@ export const ASSET_COMMANDS: readonly CommandDefinition<never>[] = [
       return {
         event: {
           type: "finance.transfer_executed",
-          cause: { kind: "player", description: "Money transfer initiated" },
+          cause: { kind: causeKindOf(cmd.origin), description: "Money transfer initiated" },
           visibleFacts: [`Transfer from ${p.fromAccountId} to ${p.toAccountId}`],
           tags: ["finance"],
           consequences: [
@@ -140,6 +163,88 @@ export const ASSET_COMMANDS: readonly CommandDefinition<never>[] = [
                 amount: p.amount,
                 category: p.category ?? "transfer",
                 description: p.description,
+              },
+            },
+          ],
+        },
+      };
+    },
+  } as CommandDefinition<never>,
+  {
+    type: ASSET_COMMAND_TYPES.housingPayRent,
+    owner: "housing",
+    description:
+      "Pays rent for an occupied property: a balanced ledger transfer classified as rent.",
+    validate: (cmd) => {
+      const p = cmd.params as Partial<PayRentParams>;
+      if (!p.fromAccountId || !p.toAccountId || !p.amount) {
+        return [errorIssue("invalid_params", "Missing rent payment parameters", "params")];
+      }
+      return [];
+    },
+    resolve: (cmd) => {
+      const p = cmd.params as PayRentParams;
+      const reference = p.leaseId ?? p.propertyId ?? "current residence";
+      return {
+        event: {
+          type: "housing.rent_paid",
+          cause: { kind: causeKindOf(cmd.origin), description: "Rent paid" },
+          actors: [{ kind: "person", id: cmd.actor }],
+          visibleFacts: [`Rent paid for ${reference}`],
+          tags: ["housing", "finance"],
+          metadata: {
+            ...(p.leaseId === undefined ? {} : { leaseId: p.leaseId }),
+            ...(p.propertyId === undefined ? {} : { propertyId: p.propertyId }),
+          },
+          consequences: [
+            {
+              type: ASSET_CONSEQUENCE_TYPES.postLedgerTransfer,
+              owner: "finance",
+              payload: {
+                fromAccountId: p.fromAccountId,
+                toAccountId: p.toAccountId,
+                amount: p.amount,
+                category: "rent",
+                description: `rent ${reference}`,
+              },
+            },
+          ],
+        },
+      };
+    },
+  } as CommandDefinition<never>,
+  {
+    type: ASSET_COMMAND_TYPES.financePayBill,
+    owner: "finance",
+    description: "Pays a bill: a balanced ledger transfer classified as a bill.",
+    validate: (cmd) => {
+      const p = cmd.params as Partial<PayBillParams>;
+      if (!p.fromAccountId || !p.toAccountId || !p.amount) {
+        return [errorIssue("invalid_params", "Missing bill payment parameters", "params")];
+      }
+      return [];
+    },
+    resolve: (cmd) => {
+      const p = cmd.params as PayBillParams;
+      const billType = p.billType ?? "utility";
+      return {
+        event: {
+          type: "finance.bill_paid",
+          cause: { kind: causeKindOf(cmd.origin), description: "Bill paid" },
+          actors: [{ kind: "person", id: cmd.actor }],
+          visibleFacts: [`Paid ${billType} bill`],
+          tags: ["finance"],
+          metadata: { billType },
+          consequences: [
+            {
+              type: ASSET_CONSEQUENCE_TYPES.postLedgerTransfer,
+              owner: "finance",
+              payload: {
+                fromAccountId: p.fromAccountId,
+                toAccountId: p.toAccountId,
+                amount: p.amount,
+                category: "bill",
+                description: `${billType} bill`,
               },
             },
           ],
@@ -163,7 +268,7 @@ export const ASSET_COMMANDS: readonly CommandDefinition<never>[] = [
       return {
         event: {
           type: "inventory.possession_transferred",
-          cause: { kind: "player", description: "Item possession transferred" },
+          cause: { kind: causeKindOf(cmd.origin), description: "Item possession transferred" },
           visibleFacts: [`Item ${p.itemId} transferred to ${p.toHolderId}`],
           tags: ["inventory"],
           consequences: [

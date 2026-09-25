@@ -19,7 +19,7 @@ import type { WorldTime } from "../primitives/time.ts";
 import type { ResolutionObject } from "../primitives/resolution.ts";
 import type { AuthorityOutcome, AuthorityReason, PermissionRequirement } from "../primitives/authority.ts";
 import type { SystemId } from "../core/ownership.ts";
-import type { EventDraft, WorldEvent } from "../events/types.ts";
+import type { EventCause, EventDraft, WorldEvent } from "../events/types.ts";
 
 export const COMMAND_ORIGINS = ["player", "npc", "system", "console", "test"] as const;
 export type CommandOrigin = (typeof COMMAND_ORIGINS)[number];
@@ -127,4 +127,24 @@ export function warningIssue(code: string, message: string, path?: string): Vali
   return path === undefined
     ? { code, message, severity: "warning" }
     : { code, message, severity: "warning", path };
+}
+
+/**
+ * Maps a command origin to the matching event cause kind.
+ *
+ * Exists so an event never attributes itself to a different author than the
+ * command that produced it, and so no domain command has to guess at the
+ * EventCause union. `console` and `test` are tooling, not world actors, so they
+ * attribute to the system.
+ */
+export function causeKindOf(origin: CommandOrigin): EventCause["kind"] {
+  if (origin === "player") return "player";
+  if (origin === "npc") return "npc";
+  return "system";
+}
+
+/** The `Activity.createdBy` value implied by a command origin. */
+export function createdByOf(origin: CommandOrigin): "player" | "npc" | "system" | "console" {
+  if (origin === "player" || origin === "npc" || origin === "console") return origin;
+  return "system";
 }
