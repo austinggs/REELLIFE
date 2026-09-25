@@ -1,0 +1,17 @@
+WORLD 05 — CITIES & SETTLEMENTS
+
+Defines settlements as physical, social, economic, and institutional environments.
+
+Core:
+- People live, work, travel, study, socialize, and build families in settlements.
+- Hierarchy: Planet → Country → Administrative Region → District → Settlement → District/Neighborhood → Property → Building → Unit.
+- Types: metropolis, major city, city, town, small town, village, hamlet, rural community, specialized settlement.
+- SettlementId, names/history/type/jurisdiction/geography/population/economy/infrastructure.
+- Population changes through births, deaths, migration, opportunity, housing, disasters, war, environment, policy.
+- Growth/decline are emergent; founding reasons and geography matter.
+- Transport, urban form, local economy, employment/housing geography, institutions, local government, neighborhoods.
+- Tourism, education hubs, industrial and port settlements.
+- Settlement networks, migration, historical layers, disaster exposure, environmental conditions.
+- Major settlements authored; procedural support for minor settlements; validation and personal player knowledge.
+
+Core principle: Settlements bridge large-scale world conditions and individual daily life.

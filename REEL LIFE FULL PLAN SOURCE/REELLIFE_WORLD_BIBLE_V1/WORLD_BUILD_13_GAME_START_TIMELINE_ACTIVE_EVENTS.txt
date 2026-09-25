@@ -1,0 +1,148 @@
+WORLD BUILD 13 — GAME-START TIMELINE & ACTIVE EVENTS
+AURELIA WORLD BIBLE V1
+============================================================
+
+Game-start window
+-----------------
+The canonical date is 1 January 2042. The relevant pre-start historical window begins at 1 January 2041 so characters can possess memories and knowledge of developments that occurred shortly before the player enters the world.
+
+Event categories
+----------------
+Historical Events: already happened.
+Active Events: currently unresolved or ongoing.
+Pending Events: scheduled or probabilistically approaching.
+
+Additional states include recurring, hidden, public, restricted, private, secret and unknown information.
+
+Major active world developments
+-------------------------------
+1. Global Energy Transition
+   Renewable generation, grid investment, nuclear development and continued fossil-fuel dependence are interacting.
+
+2. Ardan Energy and Infrastructure Corridor
+   Major electricity, rail, renewable and industrial infrastructure expansion is underway along the Ardan Corridor. It produces employment, land disputes, supply-chain pressure, housing demand and environmental debates.
+
+3. Veyran Technology Boom
+   Veyr and surrounding technology networks are experiencing rapid growth in computing, AI, robotics, telecommunications and advanced manufacturing.
+
+4. AI Regulatory Debate
+   Governments are debating privacy, liability, employment, intellectual property, medical AI, autonomous systems and public-sector AI rules.
+
+5. Sahraen Water Pressure
+   Parts of Sahraen face drought, groundwater depletion, agricultural demand and growing pressure for water infrastructure.
+
+6. Saren Basin Flood Recovery
+   Severe late-2041 flooding damaged homes, agriculture, transportation and utilities in parts of the Saren Basin. The acute emergency has passed, but reconstruction and insurance processes continue.
+
+7. Kharic Mining Expansion
+   Investment is increasing around the Kharic Range due to demand for minerals used in construction, electronics and energy infrastructure.
+
+8. Westhaven Port Expansion
+   Westhaven is expanding container, rail, warehouse, customs and automated logistics capacity.
+
+9. Ilyran Maritime Competition
+   Selin, Ilyra City, Westhaven and Eastport are competing through port fees, automation, customs performance, rail connectivity and logistics capacity.
+
+10. Global Supply-Chain Pressure
+    Some sectors face shortages caused by shipping disruptions, resource demand, geopolitical tension and semiconductor demand.
+
+11. Migration Wave
+    Economic opportunity, environmental pressure, family reunification, education and political instability are driving significant movement toward cities and higher-income countries.
+
+12. Corporate Restructuring
+    Major firms are restructuring around AI, automation, energy costs and supply-chain diversification, producing layoffs, new hiring, facility relocation and retraining.
+
+13. Corporate Financial Stress
+    At least one large industrial organization is under severe financial pressure due to debt, supply disruptions and aging facilities. Its outcome is deliberately unresolved; it may recover, restructure, merge, sell assets or enter insolvency.
+
+14. Global Health Monitoring
+    There is no global pandemic at game start. Seasonal disease, surveillance, vaccination and medical research continue.
+
+15. Diplomatic Negotiation
+    Multilateral negotiations are active around maritime trade, shipping security, environmental standards and port access.
+
+16. International Disputes
+    Unresolved territorial, maritime, resource and trade disputes exist. None is scripted to become war.
+
+17. Political Transitions
+    Some countries have elections, leadership contests, coalition negotiations, constitutional debates or local elections approaching. Outcomes are simulated rather than predetermined.
+
+Information environment
+-----------------------
+Different actors know different things. Governments may possess classified information, corporations hold private data, journalists may possess confidential sources, criminals may know facts unknown to authorities, and individuals possess memories and experiences unavailable to institutions.
+
+Rumors
+------
+Rumors may concern:
+- corporate failures
+- military movements
+- secret negotiations
+- technology breakthroughs
+- political scandals
+- shortages
+
+A rumor may be true, partly true, false or unresolved.
+
+Ordinary-person information model
+---------------------------------
+A person does not perceive Aurelia as a database. Most people primarily experience family, work, school, neighbors, local services, entertainment, shopping, transportation and nearby events. Global events matter when they intersect with their local circumstances or information networks.
+
+Local and personal events
+-------------------------
+On 1 January 2042 the world already contains thousands of local and personal events, including births, deaths, weddings, funerals, job interviews, school exams, construction work, disputes, illnesses, birthdays, business openings, housing moves and relationship changes.
+
+Event visibility
+----------------
+Public: widely known.
+Restricted: known to selected organizations or groups.
+Private: known to specific individuals.
+Secret: known to very few actors.
+Unknown: event happened but is not currently known by relevant observers.
+
+First day, first week, first month
+----------------------------------
+First day: ordinary people, organizations, markets and infrastructure continue operating through normal local schedules and events.
+
+First week: markets move, people make decisions, jobs are filled, relationships change, organizations react and scheduled activities occur.
+
+First month: wages and bills move, businesses open or close, students begin terms, political developments evolve, weather creates consequences and supply chains adapt.
+
+No destiny script
+-----------------
+Starting conditions are not future outcomes.
+
+Canonical emergent model:
+Starting Conditions + Agent Decisions + Randomness + Institutions + Environment + Information = Emergent History
+
+ActiveEvent data model
+----------------------
+EventId
+EventType
+StartTime
+ExpectedEndTime
+Location
+Actors
+Organizations
+Causes
+CurrentState
+Severity
+Visibility
+KnownBy
+PublicInformation
+PrivateInformation
+RelatedEvents
+PossibleConsequences
+PendingActions
+ResolutionConditions
+
+WorldTimeline model
+-------------------
+HistoricalEvents
+ActiveEvents
+PendingEvents
+ScheduledEvents
+RecurringEvents
+HiddenEvents
+Rumors
+InstitutionalProcesses
+PersonalEvents

@@ -1,0 +1,75 @@
+REELLIFE — SYSTEM 47: POPULATION & DEMOGRAPHICS
+=================================================
+Status: Approved architecture
+
+ROLE
+----
+Provides aggregate population dynamics for births, deaths, households, migration, labor, education, density, and broad health/economic structure.
+
+OWNS
+-----
+- population groups
+- age distributions
+- household distributions
+- employment/education participation
+- migration aggregates
+- birth/death rates and flows
+- density
+- broad health/economic distributions
+- population history
+
+DOES NOT OWN
+------------
+- individual identity
+- individual decisions
+- detailed household relationships
+- individual health/skill state
+
+MODEL / STATE
+-------------
+- PopulationGroup can include location, age, sex, household, employment, education, migration, health, economic, and cultural distributions
+- Abstract population dynamics support births, deaths, migration, household change, employment, education participation, and housing pressure
+
+RULES / BEHAVIOR
+-----------------
+- Aggregate simulation may operate at low resolution
+- When relevance increases, individuals materialize with preserved demographic context, geography, economic conditions, relevant relationships, and causal history
+- Aggregate transitions must not create arbitrary individual destinies
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Simulation Scale, Geography, Housing, Employment, Education, Government Services, Health, Markets, and Life Continuity
+
+TESTING / QUALITY
+-----------------
+- Test aggregate-to-individual continuity, migration shocks, demographic aging, fertility/mortality changes, housing pressure, and historical eras
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Population provides mass; individuals provide stories.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

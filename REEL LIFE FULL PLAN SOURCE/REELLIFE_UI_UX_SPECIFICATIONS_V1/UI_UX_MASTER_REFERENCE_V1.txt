@@ -1,0 +1,105 @@
+REELLIFE — UI/UX MASTER SPECIFICATION V1
+============================================
+
+Status: Packaged specification baseline
+
+Purpose
+-------
+This master reference consolidates the approved UI/UX specification branch that preceded and motivated the construction of the Aurelia World Bible.
+
+The guiding UX loop is:
+
+    Life → Situation → Decision → Consequence → Understanding
+
+The UI is presentation and control. It reads simulation state and issues commands. It does not own simulation truth.
+
+PRIMARY UX LAYERS
+-----------------
+1. Life View — what is happening now.
+2. Person View — character/person details, with known vs hidden information.
+3. World View — spatial interface.
+4. Social View — relationship network.
+5. History / Journal — life record and causal chains.
+
+DECISION SURFACE
+----------------
+Events can present situations, choices, known information, uncertainty, constraints, and consequences. The decision surface turns player intent into Commands while keeping validation and resolution authoritative.
+
+CORE ARCHITECTURE BOUNDARY
+---------------------------
+UI reads state → player intent → Command → Validation → Action Resolution → Event → Consequences → New State → UI refresh.
+
+THE WORLD-BIBLE BRANCH
+----------------------
+The World View / World Map requirements revealed that a fictional map could not function as a generic decorative layer. It needed authoritative:
+- planet identity;
+- continents and regions;
+- countries and boundaries;
+- cities and settlements;
+- geography;
+- infrastructure;
+- spatial hierarchy;
+- history;
+- world-start state;
+- names and canonical terminology;
+- dynamic spatial state.
+
+That dependency led to the World Design and World Build work and ultimately to the Aurelia World Bible.
+
+24 SPECIFICATION DOCUMENTS
+---------------------------
+01 Design Philosophy & UX Principles
+02 Information Architecture
+03 Navigation
+04 Main Life Screen
+05 Person/Character Interface
+06 Relationships & Social UI
+07 Decision & Action UI
+08 Events & Notifications
+09 World & Map UI
+10 Work & Education
+11 Finance & Economy
+12 Housing & Property
+13 Inventory & Assets
+14 Health & Needs
+15 Organizations & Institutions
+16 Information / News / Media
+17 Timeline / Journal / History
+18 Search & Discovery
+19 World Map & Spatial UI
+20 Settings / Configuration
+21 Accessibility
+22 Advanced / Debug UI
+23 Responsive / Mobile / Desktop
+24 UI State Management & Simulation Boundary
+
+SYSTEM DEPENDENCIES
+-------------------
+Player UI corresponds primarily to System 55.
+World Map & Spatial Presentation corresponds primarily to System 56.
+World Geography and Spatial Truth belong to System 37.
+Command architecture follows the shared Intent → Command → Validation → Action Resolution → Event → Consequences → New State pipeline.
+Timeline, Journal, and Statistics are a presentation layer over history and derived aggregates; they do not become authoritative simulation state.
+Configuration belongs to System 58. Debugging and observability belong to System 59.
+
+KEY UI RULES
+------------
+- UI is not the simulation.
+- Map is not geography; it is a presentation of geography.
+- A belief is not automatically a fact.
+- A rumor is not automatically truth.
+- A notification is not an event resolution.
+- A preview is not a guarantee.
+- A credential is not identical to competence.
+- Ownership is not identical to possession.
+- Current state is not the same as history.
+- Hidden state remains hidden unless access is legitimately obtained.
+- The UI should expose meaningful depth without turning every view into a spreadsheet.
+
+WORLD-BIBLE RELATIONSHIP
+------------------------
+The UI/UX branch remains valid after World Bible completion. The World Bible supplies canonical world content consumed by spatial, search, history, travel, organization, information, and other presentation surfaces.
+
+This package therefore sits conceptually between the core simulation architecture and the authored world-content layer.
+
+End of master reference.

@@ -1,0 +1,54 @@
+REELLIFE UI COMPONENTS V1
+=========================
+PURPOSE
+Curated UI component resources for ReelLife implementation. This package augments the approved
+UI/UX specifications; it does not replace them and it does not define simulation behavior.
+
+SOURCE POLICY
+- SHADCN_MIT/: source components bundled for reference/use under MIT.
+- REACT_BITS_REFERENCE.txt: reference-only catalog. React Bits is licensed MIT + Commons Clause;
+  its current license restricts redistribution of the components themselves. Do NOT copy React Bits
+  source into the ReelLife bundle. Use the official component pages/registries linked there when
+  needed.
+
+ARCHITECTURAL RULE
+UI components are presentation/control surfaces. They must dispatch ReelLife commands and render
+simulation state; they must never directly mutate authoritative simulation state.
+
+BUNDLED SHADCN CURATION
+- Button
+- Card
+- Badge
+- Input
+- Progress
+- Avatar
+- Tabs
+- Dialog
+- Sheet
+- Tooltip
+- ScrollArea
+- Command
+- Table
+
+INTENDED REELLIFE SURFACES
+- Main Life Screen: Card, Badge, Progress, Button
+- Person / Social UI: Avatar, Card, Badge, Tabs
+- Decisions / Events: Dialog, Sheet, Button
+- Search / Discovery: Command, Input
+- Timeline / dense interfaces: ScrollArea, Tabs, Table
+- Contextual explanation: Tooltip
+
+REACT BITS CANDIDATES (REFERENCE ONLY)
+- BlurText
+- CountUp
+- CardNav
+- SpotlightCard
+- TiltedCard
+- Dock
+- AnimatedContent
+
+INTEGRATION STATUS
+These resources are a curated starting library/reference set, not a claim that ReelLife has
+already adopted React or a specific styling framework. The implementation stack remains the
+JavaScript/TypeScript web stack established by ReelLife. Integrate any component only when its
+runtime/framework/styling requirements match the actual frontend configuration.

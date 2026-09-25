@@ -1,0 +1,80 @@
+REELLIFE — SYSTEM 37: GEOGRAPHY / CITIES / NEIGHBORHOODS / INFRASTRUCTURE
+===========================================================================
+Status: Approved architecture
+
+ROLE
+----
+Provides the spatial foundation that makes distance, density, location, access, environment, and local conditions causal.
+
+OWNS
+-----
+- world spatial hierarchy
+- coordinates/regions
+- terrain/climate context
+- borders
+- waterways
+- roads/network references
+- urban density
+- land use
+- city structure
+- district/neighborhood definitions
+- location references
+
+DOES NOT OWN
+------------
+- transport performance
+- weather incidents
+- housing ownership
+- infrastructure operations
+- population counts as authoritative aggregates
+
+MODEL / STATE
+-------------
+- Hierarchy can be world -> country -> region -> city -> district -> neighborhood -> property -> building -> unit -> room
+- Not every layer must be instantiated everywhere
+- Cities contain population, neighborhoods, businesses, institutions, housing, infrastructure, transport, services, culture, and economic activity
+
+RULES / BEHAVIOR
+-----------------
+- Neighborhoods can vary in housing, income, density, services, safety, reputation, and environmental conditions without hard-coded stereotypes
+- Space creates distance, access, congestion, locality, and exposure
+- Stable LocationRefs must survive save/load
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Housing, Transport, Organizations, Infrastructure, Environment, Population, Travel, Government Services, and Markets
+- Map UI reads this system but does not write geography truth
+
+TESTING / QUALITY
+-----------------
+- Test geocoding uniqueness, spatial hierarchy, local variation, path references, neighborhood transitions, and persistence of location refs
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Space is causal: location changes what is accessible, costly, risky, visible, and connected.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

@@ -1,0 +1,75 @@
+REELLIFE — SYSTEM 56: MAP & SPATIAL PRESENTATION
+==================================================
+Status: Approved architecture
+
+ROLE
+----
+Visual/spatial presentation layer over authoritative Geography and Transportation data.
+
+OWNS
+-----
+- map camera/view state
+- visual spatial filters
+- marker presentation
+- spatial LOD presentation
+- route visualization
+- location inspection UI
+
+DOES NOT OWN
+------------
+- geographic truth
+- travel time
+- route validity
+- population truth
+- property truth
+- infrastructure state
+
+MODEL / STATE
+-------------
+- Supports world, country, region, city, neighborhood, property, building, and other relevant spatial views
+- Dynamic markers must respect player knowledge and relevance
+- Spatial indexes/LOD support large worlds
+
+RULES / BEHAVIOR
+-----------------
+- Routes come from Transportation and Geography; Map never invents travel duration
+- Map is allowed to hide or simplify content based on scale/relevance
+- Player-visible locations can be filtered by information access
+
+SYSTEM INTERACTIONS
+-------------------
+- Reads Geography, Transportation, Infrastructure, Housing, Organizations, Population, Weather, and Player Knowledge
+
+TESTING / QUALITY
+-----------------
+- Test zoom/LOD, stale positions, hidden locations, route rendering, spatial filtering, and large-map performance
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+The map is a spatial lens over world truth, not a second geography database.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

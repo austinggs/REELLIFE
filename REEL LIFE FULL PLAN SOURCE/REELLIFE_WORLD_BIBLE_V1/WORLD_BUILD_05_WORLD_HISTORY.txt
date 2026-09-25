@@ -1,0 +1,103 @@
+WORLD BUILD 05 — WORLD HISTORY
+AURELIA WORLD BIBLE V1
+============================================================
+
+Historical eras
+---------------
+1. Deep Settlement
+2. First Civilizations
+3. Age of Kingdoms
+4. Age of Networks
+5. Age of States
+6. Industrial Transformation
+7. Modern Transformation
+8. Contemporary Age
+
+Historical causality
+--------------------
+Aurelia's history should be understood as a multi-level causal process:
+Geography -> Settlement -> Population growth -> Technology -> Institutions -> Trade -> Conflict / Cooperation -> Political transformation -> Cultural change -> Modern world
+
+Deep Settlement
+---------------
+Human settlement develops through multiple migration corridors rather than a single migration narrative. Population expands according to geography, climate, food availability, technology and social organization.
+
+First Civilizations
+-------------------
+Agriculture emerges regionally based on climate, soils, water, suitable plants and animals, population pressure and accumulated knowledge.
+Permanent villages become towns and cities. Early states develop from city alliances, hereditary leadership, religious authority, military organization, councils and confederations.
+
+Major river civilizations form around the Ardan, Saren, Veyr and Orin systems.
+
+Age of Kingdoms
+---------------
+Kingdoms and empires emerge across diverse regions. Political structures differ by geography and historical circumstance. Long-distance trade expands across deserts, mountains, steppe, coasts and inland seas.
+
+Age of Networks
+---------------
+Maritime expansion grows through shipbuilding, navigation, astronomy and cartography. Trade, migration, religious exchange and cultural diffusion connect distant populations.
+
+Empires integrate territories and later fragment. Migration periods occur because of climate, war, agriculture, political collapse, religion, famine, environmental pressure and opportunity.
+
+Age of States
+-------------
+Bureaucratic state systems expand. Taxation, legal systems, identity records, passports, centralized administration and standing institutions become increasingly important.
+
+Religion influences institutions, law, education, art, architecture, family organization and political legitimacy without mechanically determining behavior.
+
+Cities become centers of markets, courts, universities, religious institutions and merchant organizations.
+
+Modern intellectual developments include advances in mathematics, medicine, astronomy, engineering, agriculture, navigation, philosophy and political theory.
+
+Printing and mass communication
+-------------------------------
+Printing accelerates literacy, education, political communication, religious debate, scientific exchange and public discourse.
+
+Industrial Transformation
+-------------------------
+Steam power, manufacturing, railways, metallurgy, industrial agriculture and telegraphy transform production and transport. Cities expand rapidly and labor systems change.
+
+Electricity and mass communications expand industrial capacity and social connectivity.
+
+Global conflicts
+----------------
+Aurelia experiences major wars with distinct causes and consequences. Their historical effects include civilian losses, displacement, reconstruction, international-law developments and institutional change. Exact named wars remain future detailed content rather than a fully hand-authored chronology in this first-pass Bible.
+
+Modern Transformation
+---------------------
+Decolonization reshapes political geography. International institutions expand. Computing, telecommunications, internet systems, mobile technology, cloud computing, automation and AI transform economic and social structures.
+
+Globalization produces complex supply chains, international capital flows, migration networks and interdependence.
+
+Historical inequality
+---------------------
+Unequal outcomes emerge from combinations of geography, colonial history, institutions, wars, industrialization, resources, education, political stability, trade and demography.
+
+Historical memory
+-----------------
+Historical memory is preserved through:
+- monuments
+- archives
+- school curricula
+- family stories
+- political narratives
+- holidays
+- museums
+- place names
+- historical grievances
+
+Historical truth and narrative are distinct. Characters can know family stories that differ from archival evidence. The simulation knows the underlying historical state even when individuals do not.
+
+History at multiple levels
+--------------------------
+- deep world history
+- continental history
+- regional history
+- national history
+- local history
+- family history
+- personal history
+
+Resolution
+----------
+The World Bible does not attempt to hand-author every event across ten thousand years. Historical detail is multi-resolution. Broad eras and causal developments are canonical; exact named events can be added later using the same event architecture as the live simulation.

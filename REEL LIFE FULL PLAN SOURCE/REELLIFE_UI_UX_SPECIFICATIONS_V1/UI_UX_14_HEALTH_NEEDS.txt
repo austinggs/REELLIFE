@@ -1,0 +1,35 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 14 — Health & Needs
+==============================================================================
+
+Purpose
+Defines presentation of physical health, mental/emotional state, and daily needs without reducing the person to a collection of bars.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Needs
+--------
+Hunger, thirst, sleep/rest, temperature, hygiene, toilet, social/personal-space/recreation needs where enabled should be represented through meaningful status and context.
+
+2. Health
+---------
+Conditions, injuries, symptoms, severity, treatment state, functional impact, and uncertainty should be distinguishable.
+
+3. Diagnosis
+------------
+A diagnosis is an interpretation based on evidence, not automatically objective truth. UI should communicate diagnostic confidence or uncertainty where relevant.
+
+4. Mental / Emotional
+---------------------
+Emotion, mood, stress, grief, coping, and appraisal should be presented in a way that communicates state without implying direct access to another person’s hidden mind unless authorized.
+
+5. Care Actions
+---------------
+Appointments, medication, rest, food, exercise, treatment, emergency care, and other actions should be contextual commands with validation.
+
+6. Privacy
+----------
+Sensitive health information must follow access rules. NPCs should not expose hidden medical details simply because the simulation knows them.
+
+End of specification.

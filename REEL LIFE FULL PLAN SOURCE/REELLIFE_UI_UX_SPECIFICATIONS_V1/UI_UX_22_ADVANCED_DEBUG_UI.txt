@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 22 — Advanced / Debug UI
+==============================================================================
+
+Purpose
+Defines authorized developer and power-user interfaces for inspecting the simulation without turning them into a second source of truth.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Purpose
+----------
+Expose diagnostics, event traces, entity state, commands, queues, causal chains, performance information, and simulation probes.
+
+2. Read vs Mutation
+-------------------
+Inspection commands are distinct from mutation commands. Any mutation still uses the authoritative Command/Validation/Resolution pipeline.
+
+3. Hidden State
+---------------
+Authorized debug modes may inspect hidden state, but the production player UI should not leak it.
+
+4. Event Trace
+--------------
+Support tracing command → validation → action resolution → event → consequences → new state.
+
+5. Spatial Debug
+----------------
+Allow inspection of geographic entities, spatial indexes, route calculations, LOD/materialization state, and marker provenance.
+
+6. Deterministic Testing
+------------------------
+Expose seed/RNG context, replay identifiers, snapshots, and comparison data required by System 59.
+
+7. Safety
+---------
+Debug actions should be clearly separated from normal play and visibly labeled to reduce accidental state corruption.
+
+End of specification.

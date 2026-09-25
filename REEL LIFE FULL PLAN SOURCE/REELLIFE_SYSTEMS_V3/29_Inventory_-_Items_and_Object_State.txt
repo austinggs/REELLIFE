@@ -1,0 +1,79 @@
+REELLIFE — SYSTEM 29: INVENTORY / ITEMS & OBJECT STATE
+========================================================
+Status: Approved architecture
+
+ROLE
+----
+Provides persistent physical-object representation for possessions, equipment, supplies, documents, furniture, electronics, vehicles, and stock.
+
+OWNS
+-----
+- ItemDefinition
+- ItemInstance
+- ownership reference
+- possession/location
+- condition/durability
+- quantity/state
+- provenance/value context
+- item history
+- container relationships
+
+DOES NOT OWN
+------------
+- money ledger
+- legal ownership rules
+- housing structure
+- food nutrition semantics
+- vehicle routing
+
+MODEL / STATE
+-------------
+- ItemDefinition describes a type; ItemInstance is the persistent physical object/quantity
+- Owner and possessor are distinct
+- Containers can nest but must avoid unbounded recursive complexity
+- Items can be consumed, transformed, repaired, dismantled, sold, transferred, lost, stolen, or destroyed
+
+RULES / BEHAVIOR
+-----------------
+- Item state remains persistent when relevant to future consequences
+- Quantity and units must be explicit where stock is fungible
+- Provenance may matter for evidence, ownership, value, reputation, or history
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Food, Vehicles, Housing, Businesses, Finance, Ownership, Security/Legal, and Communication documents
+- Transactions use Commands/Events and Ownership rights as appropriate
+
+TESTING / QUALITY
+-----------------
+- Test duplication, transfer, loss/theft, destruction, container nesting, fungible quantities, persistence, and ownership/possession divergence
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+An item is a persistent physical entity with state and history, not just a UI icon.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

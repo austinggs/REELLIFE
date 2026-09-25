@@ -1,0 +1,35 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 21 — Accessibility
+==============================================================================
+
+Purpose
+Defines accessibility requirements for a complex simulation UI across visual, motor, auditory, cognitive, and device contexts.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Visual
+---------
+Readable typography, adjustable text size, strong hierarchy, adequate contrast, scalable panels, and no color-only dependency for critical information.
+
+2. Cognitive
+------------
+Consistent terminology, progressive disclosure, clear action labels, understandable error messages, and manageable notification volume.
+
+3. Motor
+--------
+Configurable inputs, sensible focus order, keyboard/controller alternatives where applicable, generous interaction targets, and avoidance of unnecessary timing pressure.
+
+4. Auditory
+-----------
+Important information should not depend exclusively on sound. Text/visual alternatives should exist for critical alerts.
+
+5. Information Density
+----------------------
+Provide compact and comfortable-density modes so expert players can inspect more information while other players receive a calmer presentation.
+
+6. Localization Readiness
+-------------------------
+UI strings, dates, times, currencies, measurements, names, and pluralization should be localization-aware even though the fictional world has its own canonical language systems.
+
+End of specification.

@@ -1,0 +1,20 @@
+WORLD 10 — ECONOMY & RESOURCES
+
+Defines the physical and economic resource foundations of the fictional world.
+
+Core:
+- Physical world creates economic possibilities; geography creates constraints; people/institutions turn possibilities into activity.
+- Resources: natural, renewable, non-renewable, flow, land; minerals/metals/fossil fuels/forests/freshwater/fertile soil/fish/wildlife/agriculture/energy/biological/construction materials.
+- Deposits include location, type, quantity, concentration, quality, accessibility, depth, extraction difficulty, environmental sensitivity, ownership, legal restrictions, infrastructure, discovery history.
+- Existence ≠ discovery ≠ economically exploitable ≠ currently exploited.
+- Accessibility depends on terrain, depth, distance, roads, rail, ports, energy, labor, technology, security, law, capital.
+- Quality, extraction, ownership/common resources, contextual scarcity, regeneration/depletion.
+- Discovery and consequences; agriculture, seasons, food security, fisheries, forestry, water, energy, minerals.
+- Processing, manufacturing, services, specialization, comparative advantage, trade.
+- Infrastructure dependencies, resource regions, dependency, booms/busts.
+- Innovation, substitution, environmental constraints/externalities, conflict/governance/revenue/inequality.
+- Economic information/knowledge, history, shocks.
+- Data models: ResourceDefinition, ResourceDeposit, ResourceRegion, ProductionRegion, AgriculturalRegion, EnergyRegion, IndustrialRegion, EconomicSpecialization, ResourceHistory.
+- Definition/state/activity distinct; resolution, discovery, validation.
+
+Core principle: Resources create economic possibilities, not predetermined outcomes; existence, discovery, accessibility, ownership, extraction, and value are separate states.

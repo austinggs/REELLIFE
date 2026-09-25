@@ -1,0 +1,89 @@
+REELLIFE — SYSTEM 15: COGNITION & KNOWLEDGE
+=============================================
+Status: Approved architecture
+
+ROLE
+----
+Models what a person notices, knows, remembers, believes, infers, misunderstands, and treats as credible.
+
+OWNS
+-----
+- knowledge
+- memories
+- beliefs
+- perceptions
+- assumptions
+- interpretations
+- uncertainty/confidence
+- familiarity/recognition
+- source attribution
+- attention
+- forgetting
+- belief revision
+- awareness
+- internal models
+
+DOES NOT OWN
+------------
+- world truth itself
+- raw communication transport
+- objective reputation
+- final decisions
+- personality
+- relationship structure
+
+MODEL / STATE
+-------------
+- Core chain: World Truth -> Information -> Perception -> Interpretation -> Memory/Knowledge/Belief -> Decision
+- InformationClaim distinguishes subject/predicate/object/source/time/confidence/provenance/visibility/audience/context
+- Direct observation, hearsay, rumor, records, and inference remain distinct sources
+
+RULES / BEHAVIOR
+-----------------
+- People are not omniscient
+- Attention is limited
+- Memory is reconstructive but can be configured with false/confused memory effects
+- Beliefs update from evidence, source trust, prior belief, confidence, and context
+- Contradictory beliefs and outdated knowledge are allowed
+- Verification is an action, not an automatic global truth update
+- Secrets are information access constraints
+
+SYSTEM INTERACTIONS
+-------------------
+- Consumes System 49/50 communication and information; feeds NPC Decision, Relationships, Reputation, Goals, and Mental State
+- Relevance affects which information is actually attended to
+- Compression must preserve important beliefs, memories, and knowledge states
+
+TESTING / QUALITY
+-----------------
+- Test rumor, source reliability, conflicting evidence, forgetting, stale knowledge, hidden information, self-knowledge limits, and deterministic inference
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Cognition is the filter between reality and belief.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

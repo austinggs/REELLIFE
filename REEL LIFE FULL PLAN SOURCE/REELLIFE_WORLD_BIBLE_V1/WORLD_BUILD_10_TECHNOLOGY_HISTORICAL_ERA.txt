@@ -1,0 +1,170 @@
+WORLD BUILD 10 — TECHNOLOGY & HISTORICAL ERA
+AURELIA WORLD BIBLE V1
+============================================================
+
+Current historical era
+-----------------------
+Contemporary Age
+
+Technological baseline
+----------------------
+Aurelia at game start is technologically comparable to a highly developed early-to-mid 21st-century civilization, while remaining fictional and not a copy of Earth.
+
+The world contains:
+- advanced computing
+- smartphones
+- high-speed telecommunications
+- internet
+- cloud infrastructure
+- advanced medicine
+- commercial aviation
+- modern automobiles
+- satellites
+- sophisticated manufacturing
+- renewable energy
+- nuclear power
+- robotics
+- artificial intelligence
+- biotechnology
+
+Technology is unevenly distributed across:
+- countries
+- cities
+- organizations
+- households
+- individuals
+
+Technology dimensions
+---------------------
+- scientific knowledge
+- engineering
+- manufacturing
+- energy
+- telecommunications
+- computing
+- transportation
+- medicine
+- agriculture
+- military technology
+- automation
+- biotechnology
+- materials
+
+Technology development stages
+-----------------------------
+0 Unknown
+1 Theoretical
+2 Experimental
+3 Early Adoption
+4 Commercial
+5 Established
+6 Mature
+7 Obsolescent
+8 Legacy
+
+Critical distinction
+--------------------
+Technology existence != availability != affordability != adoption.
+
+A technology can exist globally but be inaccessible because of:
+- cost
+- infrastructure
+- law
+- skills
+- supply constraints
+- organizational capacity
+- geography
+
+Historical technology eras
+--------------------------
+- Deep Technological Foundations
+- Agricultural Technologies
+- Urban Technologies
+- Classical Technologies
+- Medieval / Network Technologies
+- Early Modern Technologies
+- Industrial Technologies
+- Electrical Age
+- Mass Industrial Age
+- Digital Age
+- Contemporary Age
+
+Technology prerequisites and diffusion
+---------------------------------------
+Technologies depend on prerequisite knowledge, infrastructure, manufacturing capability, capital and skilled workers.
+
+Diffusion occurs through:
+- trade
+- migration
+- education
+- espionage
+- licensing
+- foreign investment
+- universities
+- international cooperation
+- imitation
+- government programs
+
+Technology and society
+----------------------
+Technology influences:
+- employment
+- education
+- economy
+- culture
+- government
+- warfare
+- regulation
+- ownership
+- environment
+
+Failure and obsolescence
+------------------------
+Technologies can fail, become incompatible, become obsolete, remain as legacy systems or reappear through niche use.
+
+Innovation
+----------
+Research, experimentation, breakthroughs and adoption can produce economic and social cascades.
+
+Data model
+----------
+TechnologyId
+Name
+Category
+HistoricalOrigin
+Prerequisites
+DevelopmentStage
+ScientificBasis
+ManufacturingRequirements
+InfrastructureRequirements
+SkillsRequired
+CapitalRequirements
+Organizations
+Countries
+ProductionCapacity
+Cost
+Availability
+AdoptionRate
+RegulatoryStatus
+Ownership
+Compatibility
+EnvironmentalImpact
+HistoricalChanges
+CurrentState
+
+Country / organizational capability dimensions
+----------------------------------------------
+ScientificCapability
+EngineeringCapability
+ManufacturingCapability
+EnergyCapability
+ComputingCapability
+TelecommunicationsCapability
+MedicalCapability
+AgriculturalCapability
+TransportationCapability
+DefenseCapability
+ResearchCapability
+AutomationCapability
+
+Exact country-by-country levels, research universities, technology companies, major inventions, patents, R&D budgets and penetration statistics remain later content.

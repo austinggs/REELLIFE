@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 07 — Decision & Action UI
+==============================================================================
+
+Purpose
+Defines how the interface turns player intent into authoritative commands while exposing uncertainty and consequences.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Pipeline
+-----------
+Intent → Command → Validation → Action Resolution → Event → Consequences → New State.
+
+2. Decision Surface
+-------------------
+A decision surface should explain the situation, known facts, relevant constraints, available choices, meaningful uncertainty, and likely or possible consequences when the simulation can legitimately provide them.
+
+3. Validation Feedback
+----------------------
+When an action is denied or conditional, the UI should state the blocking reason in understandable terms without bypassing the authority model.
+
+4. Action Preview
+-----------------
+Previews are estimates, not guarantees. The UI should distinguish known deterministic outcomes from probabilistic or contingent consequences.
+
+5. Commit Step
+--------------
+High-impact actions should have a clear commit moment. The player should not accidentally trigger a major state mutation by merely inspecting an option.
+
+6. Result Presentation
+----------------------
+After resolution, show the resulting event(s), immediate consequence(s), and changed state. Deep causal inspection can be available separately.
+
+7. Batch / Repeated Actions
+---------------------------
+Repeated low-risk actions may support batching where consistent with simulation design, but each authoritative mutation remains traceable.
+
+End of specification.

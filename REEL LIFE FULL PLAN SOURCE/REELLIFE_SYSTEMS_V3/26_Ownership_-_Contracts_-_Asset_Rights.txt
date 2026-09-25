@@ -1,0 +1,79 @@
+REELLIFE — SYSTEM 26: OWNERSHIP / CONTRACTS / ASSET RIGHTS
+============================================================
+Status: Approved architecture
+
+ROLE
+----
+Shared primitive answering who owns, possesses, controls, accesses, uses, or owes rights over an asset or agreement.
+
+OWNS
+-----
+- ownership rights
+- possession/custody/access/control/use rights
+- beneficial interests
+- ownership shares
+- contract parties
+- contract terms
+- obligations/rights
+- contract dates/status/history
+- rights restrictions
+
+DOES NOT OWN
+------------
+- asset physical condition
+- market price discovery
+- legal adjudication
+- negotiation behavior
+- inventory handling
+
+MODEL / STATE
+-------------
+- Ownership separates legal title, beneficial interest, possession, custody, access, control, and use
+- Ownership model includes asset, owner, type, share, start/end, rights, restrictions, source
+- Contract includes parties, subject, obligations, rights, terms, dates, conditions, payment, breach, status, history
+
+RULES / BEHAVIOR
+-----------------
+- Contract lifecycle can be proposed -> negotiating -> signed -> active -> completed, with breach, terminate, expire, cancel, and dispute states
+- System 21 handles informal negotiation; formal contract state lives here
+- Law defines enforceability rules; System 48 handles formal enforcement
+- Ownership can be partial/shared/contextual
+
+SYSTEM INTERACTIONS
+-------------------
+- Used by Finance, Housing, Vehicles, Inventory, Businesses, Insurance, Life Continuity, Government, and Legal systems
+- AuthorityCheck can validate whether an actor may exercise a right
+
+TESTING / QUALITY
+-----------------
+- Test transfers, shared ownership, possession without ownership, expiring rights, breaches, contract changes, inheritance, and jurisdictional restrictions
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Ownership defines rights; possession defines custody; contracts define agreed obligations.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

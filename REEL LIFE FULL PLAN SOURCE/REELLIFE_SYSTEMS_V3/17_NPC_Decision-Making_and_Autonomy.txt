@@ -1,0 +1,84 @@
+REELLIFE — SYSTEM 17: NPC DECISION-MAKING & AUTONOMY
+======================================================
+Status: Approved architecture
+
+ROLE
+----
+Selects NPC actions from their perceived world, internal state, goals, constraints, habits, and opportunities.
+
+OWNS
+-----
+- candidate action generation
+- eligibility checks
+- action evaluation
+- intention formation
+- replanning
+- bounded rationality
+- autonomy mode
+- decision history where significant
+- choice heuristics/utility/rule/goal/habit models
+
+DOES NOT OWN
+------------
+- world truth
+- domain consequences
+- relationship state itself
+- laws themselves
+- activity execution
+- UI intent
+
+MODEL / STATE
+-------------
+- Flow: world conditions -> internal state -> options -> evaluation -> intention -> Command/Activity -> Event -> Consequences -> new conditions
+- Candidate actions arise from needs, goals, schedules, relationships, opportunities, environment, habits, and emergencies
+- Evaluation can consider relevance, satisfaction, reward, cost, effort, risk, time, social consequences, values, skills, opportunity, uncertainty, and habit
+
+RULES / BEHAVIOR
+-----------------
+- Eligibility and Authority are checked before preference scoring
+- Perceived world comes from Cognition, not omniscient truth
+- Mistakes and imperfect choices are allowed
+- Risk is both actual and perceived
+- Supports reactive, utility, rule-based, goal-directed, habit, social, risk-sensitive, emergency, and long-term choice modes
+- Hysteresis/replanning prevent rapid thrashing
+- Player and NPC action architecture remain shared; autonomy determines who supplies intent
+
+SYSTEM INTERACTIONS
+-------------------
+- Creates Commands and Activities for the Event Engine/Scheduler
+- Consumes Goals, Needs, Cognition, Mental State, Personality, Skills, Relationships, Economy, Law, Geography, and Information
+- Group decisions can be mediated through Organization and relationship authority
+
+TESTING / QUALITY
+-----------------
+- Prevent infinite loops, impossible commands, omniscience, goal lock, routine lock, utility explosion, paralysis, deadlocks, and deterministic divergence
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+NPC autonomy selects the best available action from the NPC’s limited perspective—not a hindsight-optimal action.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

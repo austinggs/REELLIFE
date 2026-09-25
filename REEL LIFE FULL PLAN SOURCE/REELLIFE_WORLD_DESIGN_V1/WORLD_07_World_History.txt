@@ -1,0 +1,20 @@
+WORLD 07 — WORLD HISTORY
+
+Defines history as accumulated causality explaining why the world currently looks as it does.
+
+Core:
+- Deep, early human, civilizational, modern, and recent history.
+- Canonical history = what happened; historical belief/narrative is distinct.
+- Reality → information → interpretation → memory → belief.
+- Events use Event Engine; gradual changes use processes.
+- Multiple causes/consequences and turning points.
+- Lost/uncertain history; archives, records, monuments, oral traditions.
+- Historical figures are ordinary Persons with historical importance.
+- Organizations can form, grow, split, merge, disappear, and leave successors.
+- Histories of cities, borders, migration, diasporas, culture, religion, economy, technology, science, politics, social movements.
+- War is a process with aftermath/reconstruction.
+- Historical memory, revision, secrets, artifacts, property, institutional and economic inheritance, generational consequences.
+- Historical inequality, alternate histories, authored/emergent/sandbox/scenario modes.
+- Historical compression by relevance/resolution; discovery through education, media, museums, conversations, archives, artifacts.
+
+Core principle: The world remembers what happened even if people do not; history is accumulated causality.

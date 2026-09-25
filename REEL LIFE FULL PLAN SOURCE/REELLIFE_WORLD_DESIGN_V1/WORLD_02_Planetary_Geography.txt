@@ -1,0 +1,18 @@
+WORLD 02 — PLANETARY GEOGRAPHY
+
+Defines the physical planet underlying ReelLife.
+
+Core:
+- Physical planet is the foundation.
+- Hemispheres, latitude/longitude, elevation, terrain, water, climate, ecology, geology.
+- Planet size follows travel/simulation/player scale rather than an Earth requirement.
+- Coordinates, distance, direction, containment, adjacency, accessibility.
+- Physical hierarchy distinct from human geography.
+- Continents, oceans/seas, coastlines, mountains, rivers/lakes, terrain, climate, ecological regions, resources, geological regions, natural hazards.
+- Hazard ≠ disaster.
+- Accessibility, constraints, geographic history, persistence and spatial queries.
+- Procedural generation may be rule-based and reproducible; authored and generated geography may coexist.
+- Map is presentation over authoritative geography; player knowledge can be incomplete.
+- Levels of spatial detail support performance.
+
+Core principle: Geography is causal infrastructure.

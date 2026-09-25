@@ -1,0 +1,77 @@
+REELLIFE — SYSTEM 07: SIMULATION SCALE, RELEVANCE & MATERIALIZATION
+=====================================================================
+Status: Approved architecture
+
+ROLE
+----
+Makes a large persistent world computationally practical without breaking causal continuity.
+
+OWNS
+-----
+- resolution selection
+- relevance scoring/graph logic
+- materialization/dematerialization
+- abstract population simulation hooks
+- simulation budgets
+- resolution transition metadata
+- geographic LOD/streaming coordination
+
+DOES NOT OWN
+------------
+- arbitrary deletion or invention of NPC lives
+- player UI presentation
+- domain truth that belongs to individual systems
+
+MODEL / STATE
+-------------
+- Resolution levels: Abstract, Light, Active, High Detail
+- Relevance is based on relationships, current interactions, geography, schedules, institutions, legal/financial relevance, recent activity, objectives, information importance, and causal dependency
+- Population groups represent aggregate state at low resolution
+
+RULES / BEHAVIOR
+-----------------
+- Resolution is not the same as importance
+- Materialization reveals an already-established life rather than inventing a convenient NPC
+- Compression preserves demographic context, causal history, major relationships, geography, and economic conditions
+- Critical events can override normal compression
+- Relevance rises and decays dynamically
+
+SYSTEM INTERACTIONS
+-------------------
+- Coordinates Geography, Population, Events, NPC Decision, Organizations, Social Systems, and Persistence
+- Pre-materialization may occur when relevance is predictable
+- Simulation budgets consider step time, throughput, active entities, memory, event queue load, and resolution distribution
+
+TESTING / QUALITY
+-----------------
+- Test abstract-to-individual continuity, deterministic materialization, relevance stability, causal preservation, resolution divergence, and performance under large populations
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Simulate the cheapest resolution that preserves the consequences that matter.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

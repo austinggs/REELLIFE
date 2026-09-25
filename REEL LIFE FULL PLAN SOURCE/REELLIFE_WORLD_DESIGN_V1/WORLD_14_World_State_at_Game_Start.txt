@@ -1,0 +1,47 @@
+WORLD 14 — WORLD STATE AT GAME START
+
+Defines the specific world state that exists when a new ReelLife simulation begins.
+
+Core distinction:
+World Definition = what the world is built from.
+World State = what is actually true when simulation starts.
+
+Starting state includes:
+- Exact date/time, timezone, calendar, historical/technological era.
+- World/simulation seed and scenario configuration.
+- Current political geography, countries, governments.
+- Population, households, settlements, neighborhoods.
+- Institutions, organizations, economy, markets, infrastructure.
+- Technology adoption.
+- Cultures, languages, religions.
+- International relations, legal conditions, environmental conditions.
+- Information environment, current events, unresolved situations.
+- Player starting conditions and hidden state.
+
+Core principles:
+- Canonical world state in standard mode.
+- Historical, alternate, sandbox, scenario, custom modes.
+- Historical events already have consequences.
+- Countries, governments, businesses, institutions, households, relationships already exist.
+- Player is inserted into the world, not used to generate it.
+- Player origin and starting household/relationships have histories.
+- Player knowledge is limited and personal.
+- News, rumors, records, private information, secrets, and unknown facts exist.
+- Ongoing processes and unresolved situations can already be underway.
+- Economy, markets, businesses, employment, infrastructure, technology, culture, religion, law, environment, and international relations are active at start.
+- Hidden state remains hidden until valid discovery.
+- Reality, records, beliefs, and player knowledge remain distinct.
+- Initial conditions have causal explanations.
+- Initial snapshot = World Definition + Historical Record + Current State + Hidden State + Initial Events + Simulation Seed.
+- Pending event queue provides appointments, deadlines, projects, cases, negotiations, and other processes.
+- Initialization follows dependencies and is validated before gameplay.
+- Generation creates initial conditions; simulation then takes ownership.
+- World continues independently of player attention.
+- Player absence does not freeze the world.
+- Starting configurations can reuse the same engine.
+- World state is versioned for save compatibility.
+- First day contains schedules, obligations, people, relationships, needs, pressures, information, environment, opportunities, and risks.
+
+Core principle: The player does not start the world. The player starts living in it.
+
+Broader ReelLife rule: A new game begins at a moment in an already-existing world, carrying forward geography, history, institutions, populations, relationships, economies, cultures, technology, and unresolved events.

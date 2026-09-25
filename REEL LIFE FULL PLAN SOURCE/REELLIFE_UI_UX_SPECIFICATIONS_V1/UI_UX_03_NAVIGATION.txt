@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 03 — Navigation
+==============================================================================
+
+Purpose
+Defines the navigation model for moving among major life, social, world, history, and utility views without losing context.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Primary Navigation
+---------------------
+The default shell should expose a small set of stable anchors: Life, People/Social, World, History, Search, and Settings. The exact visual form may vary by device.
+
+2. Contextual Navigation
+------------------------
+Within a screen, show actions and related entities relevant to the current object. Avoid replacing the entire navigation model for each system.
+
+3. Breadcrumb / Return Context
+------------------------------
+Deep navigation should retain enough context to return to the previous view without reconstructing the user path.
+
+4. Time Context
+---------------
+The current simulation date/time should remain visible or readily accessible. Historical views must clearly identify the time being viewed.
+
+5. Modal Decisions
+------------------
+Short, high-impact decisions may use a modal decision surface, but major multi-step activities should become normal activity/state flows rather than long modal stacks.
+
+6. Search as a Universal Escape Hatch
+-------------------------------------
+Search should provide a fast route to people, places, organizations, events, items, jobs, and other discoverable entities according to player knowledge and access.
+
+7. Navigation State
+-------------------
+Open panels, filters, selected entities, scroll positions, and temporary UI context are presentation state and must not become simulation truth.
+
+End of specification.

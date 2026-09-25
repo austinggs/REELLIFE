@@ -1,0 +1,75 @@
+REELLIFE — SYSTEM 57: CONSOLE / COMMAND INTERFACE
+===================================================
+Status: Approved architecture
+
+ROLE
+----
+Provides a powerful development and advanced-control interface for inspecting, testing, and intentionally mutating the simulation.
+
+OWNS
+-----
+- console command parser
+- inspection queries
+- simulation control commands
+- scenario triggers
+- save/load controls
+- diagnostic views
+- debug/test authority context
+
+DOES NOT OWN
+------------
+- alternate simulation rules
+- bypass paths around Commands/Events
+- unlogged hidden mutations
+
+MODEL / STATE
+-------------
+- Distinguish read commands from mutation commands
+- Support inspection of entities, state, events, causal chains, and diagnostics
+- Support advancing time, triggering scenarios, saving/loading, and targeted tests
+
+RULES / BEHAVIOR
+-----------------
+- Console mutations must use authoritative simulation mechanisms
+- Player, developer, test, and debug authority are distinct
+- Hidden state may be inspected in debug mode while remaining unavailable to normal UI
+- Scenario helpers can trigger bankruptcy, disaster, conflict, migration, inheritance, technology, and other test cases
+
+SYSTEM INTERACTIONS
+-------------------
+- Calls the same Command/Event/Simulation APIs as normal gameplay where possible
+- Feeds Debugging/Observability with traces and scenario IDs
+
+TESTING / QUALITY
+-----------------
+- Test command validation, authority separation, auditability, deterministic scenario execution, and zero architecture-bypass mutation paths
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+The console is a controlled window into the simulation, not an architecture-bypassing backdoor.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

@@ -1,0 +1,78 @@
+REELLIFE — SYSTEM 39: COUNTRIES & WORLD RULES
+===============================================
+Status: Approved architecture
+
+ROLE
+----
+Models broad jurisdictional and national environments that configure legal, economic, civic, border, and institutional conditions.
+
+OWNS
+-----
+- country/territory identity
+- sovereignty references
+- jurisdiction hierarchy
+- currency references
+- national institutions
+- border configuration
+- citizenship framework
+- immigration framework
+- broad economic/cultural configuration
+- country history
+
+DOES NOT OWN
+------------
+- specific legal rules
+- individual legal identity
+- foreign relations details
+- city geography
+- individual culture beliefs
+
+MODEL / STATE
+-------------
+- Country includes territory, government, legal system, currency, jurisdictions, citizenship, immigration, economy, culture, institutions, infrastructure, and history
+- Jurisdictions can overlap or nest
+- Rules can vary across time
+
+RULES / BEHAVIOR
+-----------------
+- Borders affect movement, trade, legal status, security, migration, and information
+- Historical configurations support era-specific world rules
+- Country-level settings should be data-driven rather than scattered magic constants
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Legal Identity, Laws, Government, Travel/Immigration, International Relations, Finance/Currency, Culture, Population, and Geography
+
+TESTING / QUALITY
+-----------------
+- Test historical rule changes, multiple jurisdictions, cross-border interactions, currency differences, territories, and citizenship edge cases
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Countries are rule-and-institution environments, not just polygons on a map.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

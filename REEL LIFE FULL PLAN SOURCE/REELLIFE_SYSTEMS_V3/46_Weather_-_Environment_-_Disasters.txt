@@ -1,0 +1,76 @@
+REELLIFE — SYSTEM 46: WEATHER / ENVIRONMENT / DISASTERS
+=========================================================
+Status: Approved architecture
+
+ROLE
+----
+Models environmental conditions, hazards, exposure, vulnerability, disasters, response, and recovery.
+
+OWNS
+-----
+- weather/environment state
+- temperature/precipitation/storm patterns
+- pollution/degradation
+- hazard conditions
+- disaster incidents
+- exposure/vulnerability calculations
+- environmental event history
+- response/recovery state
+
+DOES NOT OWN
+------------
+- infrastructure maintenance
+- transport routing
+- medical treatment
+- government emergency policy
+- individual decisions
+
+MODEL / STATE
+-------------
+- Disaster pipeline: hazard -> exposure -> vulnerability -> impact -> response -> recovery
+- Exposure depends on location, infrastructure, housing, transport, density, and timing
+- Vulnerability depends on building quality, health, dependency, resources, preparedness, infrastructure, and access
+
+RULES / BEHAVIOR
+-----------------
+- Disasters can cascade through infrastructure, transport, supply, business, income, migration, housing, and health
+- Weather is location/time dependent and should not be globally uniform
+- Environmental degradation can be slow-moving and cumulative
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Geography, Infrastructure, Transport, Supply Chains, Businesses, Government, Population, Housing, Health, and International Events
+
+TESTING / QUALITY
+-----------------
+- Test hazard probability, exposure shifts, cascading outages, recovery resources, repeated events, and regional differences
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Disasters emerge from hazard, exposure, and vulnerability—not from a single “disaster chance” number.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

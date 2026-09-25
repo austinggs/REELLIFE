@@ -1,0 +1,19 @@
+WORLD 01 — WORLD DESIGN PHILOSOPHY
+
+Defines the philosophy and governing principles for ReelLife's completely fictional, persistent world.
+
+Core principles:
+- Fictional, internally consistent, persistent, fully simulated world.
+- Player is a participant, not the center.
+- Fictional does not mean arbitrary.
+- Physical geography → climate/environment → resources/ecology → settlement → population → infrastructure → institutions → economy → culture/society → organizations → households → individuals → decisions.
+- Feedback loops, multiple causes, multiple consequences, uneven development, diversity without stereotypes.
+- Institutions are real actors; the world is imperfectly known.
+- Reality → information → perception → cognition → belief → decision.
+- World does not bend around player; emergence is preferred over scripts.
+- Uncertainty exists without randomness replacing causality.
+- Layered world scale/resolution, validation, canon/state/history/belief separation, multiple modes, discoverability.
+
+World Design Law: conditions → decisions → events → consequences → new conditions.
+
+Core principle: The world should feel as though it existed before the player and continues after the player.

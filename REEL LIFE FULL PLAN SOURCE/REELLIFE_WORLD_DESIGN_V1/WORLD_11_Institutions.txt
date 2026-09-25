@@ -1,0 +1,21 @@
+WORLD 11 — INSTITUTIONS
+
+Defines persistent social structures performing functions through people, rules, resources, procedures, records, and history.
+
+Core:
+- Institution ≠ current employees.
+- Organization vs institution distinction.
+- Institutional identity, types, functions, authority, procedures, rules, workload, performance.
+- Institutions can act through authorized representatives.
+- Legal authority ≠ operational capacity.
+- Memory through records/databases/archives/procedures/precedents/traditions/training/buildings/artifacts.
+- Memory can be lost through war, disaster, corruption, leadership, budget, technology failure.
+- Records can be accurate, incomplete, outdated, corrupted, missing, disputed, forged.
+- Precedent, culture, reputation, trust, legitimacy.
+- Creation/change/merger/split/failure/succession.
+- Public/private/hybrid institutions; hierarchy, dependency, competition, cooperation, conflict.
+- Educational, healthcare, financial, legal, media, research, cultural, religious, professional institutions.
+- Institutional networks, infrastructure dependencies, corruption, reform, resilience, accessibility, geography, knowledge, secrecy, transparency.
+- History/legacy, data model, resolution, lived player interactions, validation.
+
+Core principle: Institutions let society remember, coordinate, and act beyond individual lifespans; people operate institutions, but institutions can outlive operators.

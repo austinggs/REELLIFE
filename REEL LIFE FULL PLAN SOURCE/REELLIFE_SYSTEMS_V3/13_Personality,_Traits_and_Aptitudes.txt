@@ -1,0 +1,83 @@
+REELLIFE — SYSTEM 13: PERSONALITY, TRAITS & APTITUDES
+=======================================================
+Status: Approved architecture
+
+ROLE
+----
+Models relatively persistent tendencies, preferences, temperamental patterns, and domain aptitudes.
+
+OWNS
+-----
+- personality dimensions
+- traits and tendencies
+- preferences when derived from personality
+- aptitudes
+- temperament
+- gradual personality change
+- trait history/expression modifiers
+
+DOES NOT OWN
+------------
+- temporary emotions
+- knowledge/beliefs
+- goals
+- skills
+- education
+- relationships
+- reputation
+- decisions
+- clinical diagnosis
+
+MODEL / STATE
+-------------
+- Dimensions can include sociability, assertiveness, conscientiousness, openness, emotional reactivity, patience, risk tolerance, adaptability, independence, competitiveness, empathy, trust, persistence, and similar data-driven traits
+- Traits can be contextual and conflicting
+- Aptitude is domain-specific and not a mandatory universal IQ-like stat
+
+RULES / BEHAVIOR
+-----------------
+- Personality changes gradually through meaningful experiences rather than abrupt random jumps
+- Aptitude influences learning but does not replace practice, education, health, motivation, or opportunity
+- Traits influence decisions but do not dictate them
+- Culture and roles can change expression without changing underlying trait state
+- Generation uses parental contribution + variation + development + environment
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds NPC Decision, skill learning/performance, mental responses, relationships, goals, and social behavior
+- Must remain deterministic across materialization
+- Self-perception can differ from observed behavior
+
+TESTING / QUALITY
+-----------------
+- Test contextual traits, conflicting tendencies, inheritance variation, gradual change, hidden-state protection, and decision diversity
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Personality and aptitude are tendencies and potential—not destiny and not guaranteed behavior.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

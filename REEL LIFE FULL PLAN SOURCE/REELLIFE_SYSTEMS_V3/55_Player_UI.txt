@@ -1,0 +1,76 @@
+REELLIFE — SYSTEM 55: PLAYER UI
+=================================
+Status: Approved architecture
+
+ROLE
+----
+Presentation and control layer that displays the simulation and turns player intent into authoritative Commands.
+
+OWNS
+-----
+- screen/view state
+- UI navigation
+- display formatting
+- player input state
+- notification presentation
+- known-information presentation
+- accessibility presentation
+
+DOES NOT OWN
+------------
+- simulation truth
+- domain state
+- event consequences
+- authoritative balances
+- hidden NPC state
+
+MODEL / STATE
+-------------
+- UI reads authoritative state and presents known facts, estimates, uncertainty, rumors, inferences, and hidden/not-visible states distinctly
+- Core views include life, person, household, relationships, work, school, money, inventory, housing, travel, world, timeline, journal, and organizations
+- Notifications are relevance filtered
+
+RULES / BEHAVIOR
+-----------------
+- Player actions become Commands; UI does not mutate simulation state
+- UI must not expose hidden information merely because it exists in memory
+- Presentation can be simplified without changing underlying state
+- Accessibility and comprehensibility are first-class concerns
+
+SYSTEM INTERACTIONS
+-------------------
+- Calls Command interfaces; reads Events/results; uses Player History, Map, and Console presentation layers where appropriate
+
+TESTING / QUALITY
+-----------------
+- Test no direct mutation paths, hidden-state protection, input validation, stale-view handling, deterministic display, accessibility, and notification relevance
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+The UI is a lens and control surface, never the simulation itself.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

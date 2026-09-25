@@ -1,0 +1,80 @@
+REELLIFE — SYSTEM 09: AGING, DEVELOPMENT & LIFE STAGES
+========================================================
+Status: Approved architecture
+
+ROLE
+----
+Tracks how long a person has lived and how development changes across life.
+
+OWNS
+-----
+- chronological age
+- biological/developmental state where modeled
+- life-stage state
+- development milestones
+- growth state
+- dependency state
+- stage history
+
+DOES NOT OWN
+------------
+- medical diagnoses
+- skill progression
+- personality
+- education outcomes
+- legal age rules
+- employment
+- parenting behavior
+
+MODEL / STATE
+-------------
+- DevelopmentState includes birthTimestamp, chronologicalAge, currentLifeStage, developmentalState, milestone history, growth state, threshold history, biological-development state, dependency state, and stageStart
+- Life stages are data-driven and may include infancy, childhood, adolescence, adulthood, later life, etc.
+- Development dimensions can include physical, cognitive, emotional, social, and independence
+
+RULES / BEHAVIOR
+-----------------
+- Chronological age is derived from Time rather than independently ticked
+- Milestones can be age-associated or condition-dependent
+- Development is influenced by baseline, biology, health, nutrition, caregiving, education, stress, social interaction, opportunity, traits, and environment
+- Legal age and developmental age are separate
+- Dependency and independence are multidimensional
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Time and interacts with Needs, Health, Family, Education, Skills, environment, and Life Continuity
+- Threshold events can be AgeThreshold, LifeStageChanged, DevelopmentalMilestone, Transition, or DependencyChanged
+
+TESTING / QUALITY
+-----------------
+- Test age boundaries, skipped-time updates, milestone conditions, historical variation, dependency transitions, and resolution-tier consistency
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Aging says how long someone has lived and how development progressed; it does not define who they become.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

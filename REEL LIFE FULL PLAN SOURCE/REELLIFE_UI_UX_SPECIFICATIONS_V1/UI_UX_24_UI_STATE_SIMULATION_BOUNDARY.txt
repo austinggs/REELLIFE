@@ -1,0 +1,47 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 24 — UI State Management & Simulation Boundary
+==============================================================================
+
+Purpose
+Defines the boundary between transient presentation state and authoritative simulation state.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Authoritative State
+----------------------
+Simulation systems own world, character, organization, economic, spatial, legal, event, and other domain truth.
+
+2. UI State
+-----------
+UI owns selection, open panels, filters, scroll positions, temporary drafts, collapsed sections, local navigation context, animation state, and other presentation-only information.
+
+3. Query Direction
+------------------
+UI reads through presentation-facing queries or state selectors. It should not mutate simulation state by directly editing domain objects.
+
+4. Command Direction
+--------------------
+User actions become commands. Commands are validated and resolved by simulation systems.
+
+5. Event Direction
+------------------
+Resolved events update authoritative state; presentation observes resulting state and relevant event streams.
+
+6. Optimistic UI
+----------------
+Optimistic interaction is permitted only where the authoritative result can be reconciled safely. The final displayed state must reflect authoritative resolution.
+
+7. Save/Load
+------------
+UI state may be optionally persisted separately from simulation state. Simulation continuity must never depend on a particular screen layout.
+
+8. Error Handling
+-----------------
+Validation failure, execution failure, stale data, interrupted activities, and unavailable entities should produce explicit UI states rather than silent mutation.
+
+9. Architectural Rule
+---------------------
+The UI must never become a hidden rules engine. If a rule matters to the world, it belongs in the simulation architecture, not in a screen component.
+
+End of specification.

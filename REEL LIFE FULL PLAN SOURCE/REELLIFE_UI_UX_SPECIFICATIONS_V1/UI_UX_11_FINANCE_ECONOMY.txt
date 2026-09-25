@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 11 — Finance & Economy
+==============================================================================
+
+Purpose
+Defines understandable financial presentation while preserving precise underlying monetary state.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Financial Overview
+---------------------
+Show cash/liquid balances, accounts, income, expenses, debt, recurring obligations, assets, and significant upcoming financial events.
+
+2. Precision
+------------
+Money is authoritative in integer minor units. UI formatting may round for readability only when the authoritative value remains accessible.
+
+3. Transactions
+---------------
+Every monetary change should be traceable to a transaction/event with enough context to understand source, destination, purpose, and time.
+
+4. Budget Context
+-----------------
+Budgeting is a presentation/decision aid. It should not replace the actual ledger or invent balances.
+
+5. Markets
+----------
+Market information may include prices, trends, scarcity, competition, and availability. Estimates and forecasts must be labeled as such.
+
+6. Contracts & Obligations
+--------------------------
+Leases, loans, subscriptions, insurance, employment compensation, and other obligations should present their terms and next consequences clearly.
+
+7. Economic Scale
+-----------------
+Country and world economic views are aggregates and should not imply that the player can control macro outcomes directly.
+
+End of specification.

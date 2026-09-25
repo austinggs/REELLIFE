@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 23 — Responsive / Mobile / Desktop
+==============================================================================
+
+Purpose
+Defines how the same simulation presentation concepts adapt across device sizes and input models.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Shared Information Model
+---------------------------
+Desktop and mobile should expose the same underlying concepts and authoritative state even when layouts differ.
+
+2. Desktop
+----------
+Can support persistent side panels, multi-pane entity inspection, richer maps, and simultaneous context views.
+
+3. Mobile
+---------
+Should prioritize one dominant context at a time, compact navigation, progressive disclosure, touch-friendly controls, and concise notifications.
+
+4. Tablet / Hybrid
+------------------
+Support intermediate layouts where map, person, and event panels can coexist when space allows.
+
+5. Input Modes
+--------------
+Mouse, keyboard, touch, and controller interactions should map to the same conceptual commands where supported.
+
+6. Information Priority
+-----------------------
+When space is constrained, preserve: current situation, time, important consequences, primary actions, and navigation. Defer lower-priority detail to drill-down.
+
+7. Performance
+--------------
+Avoid unnecessary visual materialization of simulation entities. UI rendering should remain separate from simulation resolution.
+
+End of specification.

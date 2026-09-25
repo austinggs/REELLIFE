@@ -1,0 +1,35 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 16 — Information / News / Media
+==============================================================================
+
+Purpose
+Defines presentation of the information environment, including news, social feeds, rumors, messages, source provenance, and audience-specific knowledge.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Information Chain
+--------------------
+Reality → Observation → Information → Transmission → Interpretation → Belief → Behavior.
+
+2. Claim Presentation
+---------------------
+An InformationClaim should retain source/provenance, confidence, visibility, and propagation state. The UI should not silently turn a claim into objective truth.
+
+3. News Feed
+------------
+Allow filtering by relevance, location, topic, source, time, and personal interests while preserving source identity and timestamp.
+
+4. Rumor Presentation
+---------------------
+Rumors should be visibly differentiated from verified reports when the system has such knowledge. The player may still believe a rumor or pass it onward.
+
+5. Media Diversity
+------------------
+Different organizations can publish different selections, framing, and levels of reliability. The interface should support comparing sources rather than collapsing them into one universal feed.
+
+6. Knowledge Boundary
+---------------------
+The player feed is a view of accessible information, not a direct dump of the world state.
+
+End of specification.

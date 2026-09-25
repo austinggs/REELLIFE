@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 05 — Person/Character Interface
+==============================================================================
+
+Purpose
+Defines the player-facing interface for a person, including identity, life state, capabilities, relationships, history, and knowledge boundaries.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Identity
+-----------
+Show stable identity fields such as name, age, origin, current location, legal identity where appropriate, and relevant household context.
+
+2. Current State
+----------------
+Surface meaningful current needs, health, emotional state, goals, education, employment, finances, relationships, and activities at an appropriate abstraction level.
+
+3. Known vs Hidden
+------------------
+The player should not automatically see private NPC thoughts, hidden relationships, secret beliefs, undiscovered crimes, or other hidden state unless the player has gained access through the simulation.
+
+4. Capabilities
+---------------
+Skills, knowledge, certifications, aptitudes, and other competence signals should be distinguishable. Certification is not identical to actual skill.
+
+5. Life History
+---------------
+Provide access to meaningful timeline and journal information, including major life events, relationships, education, employment, moves, and other causal milestones.
+
+6. Contextual Commands
+----------------------
+Person actions are commands: message, call, invite, negotiate, apply, accept, move, buy, sell, work, study, etc., according to authority, availability, relationships, location, and current state.
+
+7. Multi-Person View
+--------------------
+The same component model should support player characters and NPCs; differences arise from control, access, and hidden-state permissions, not incompatible data models.
+
+End of specification.

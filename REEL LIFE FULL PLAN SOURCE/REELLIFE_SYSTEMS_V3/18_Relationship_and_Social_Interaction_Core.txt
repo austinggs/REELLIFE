@@ -1,0 +1,88 @@
+REELLIFE — SYSTEM 18: RELATIONSHIP & SOCIAL INTERACTION CORE
+==============================================================
+Status: Approved architecture
+
+ROLE
+----
+Provides the universal persistent model for interpersonal and role-based social ties.
+
+OWNS
+-----
+- relationship types
+- closeness
+- trust
+- affection
+- respect
+- loyalty
+- familiarity
+- reciprocity
+- frequency
+- expectations
+- boundaries
+- conflicts
+- shared history
+- relationship origin/history
+
+DOES NOT OWN
+------------
+- family genealogy
+- raw communication transport
+- reputation
+- temporary emotions
+- final NPC decisions
+
+MODEL / STATE
+-------------
+- Relationship and Interaction are distinct
+- Relationships can be symmetric or asymmetric
+- Multiple relationship types can coexist between the same people
+- Types include acquaintance, friend, close friend, rival, enemy, neighbor, teammate, romance/dating/partner/spouse/ex, family, coworker, manager/employee, mentor/client, business partner, and institutional roles
+
+RULES / BEHAVIOR
+-----------------
+- Status is not the same as relationship quality
+- Important turning points matter more than storing every routine conversation
+- Trust, boundaries, reciprocity, betrayal, apology, forgiveness, and reconciliation can evolve
+- Romance is a specialized context within the same social core
+- Family structure comes from System 19
+- Social network links can affect information propagation
+
+SYSTEM INTERACTIONS
+-------------------
+- Conversation and messaging are handled by Systems 49/50; relationships resolve their social implications
+- Mental State, Personality, Cognition, Goals, Reputation, Conflict, Employment, Family, and Organizations all feed relationships
+- Commands create social attempts; events record actual interactions/outcomes
+
+TESTING / QUALITY
+-----------------
+- Test symmetry/asymmetry, overlapping roles, trust repair, conflict transitions, social graph sparsity, repeated interactions, privacy, and exploit loops
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Relationships are persistent social states; interactions are the events that can change them.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

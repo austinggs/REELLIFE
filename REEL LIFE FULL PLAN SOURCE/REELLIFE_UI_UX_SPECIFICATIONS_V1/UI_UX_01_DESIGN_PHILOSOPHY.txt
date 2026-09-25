@@ -1,0 +1,60 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 01 — Design Philosophy & UX Principles
+==============================================================================
+
+Purpose
+Defines the core UX philosophy for ReelLife. The interface should make a complex simulation understandable without turning it into a spreadsheet or a stack of disconnected system menus.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Primary Experience
+---------------------
+The primary loop is:
+
+Life → Situation → Decision → Consequence → Understanding
+
+The player should feel that they are living inside a world, not operating an administration dashboard.
+
+2. Core Principles
+------------------
+• UI is presentation, not simulation authority.
+• The UI reads authoritative state and issues Commands.
+• Events and consequences are surfaced in human-readable form.
+• Deep information should be available progressively rather than forced onto every screen.
+• The same underlying systems support player and NPC actions.
+• Truth, belief, rumor, estimate, inference, and hidden information must remain distinguishable.
+
+3. Surface Simplicity / Deep Simulation
+---------------------------------------
+A screen should be easy to read at first glance while allowing deeper inspection. Important depth can be reached through drill-down rather than displaying every underlying variable at once.
+
+4. Player Agency
+----------------
+The interface presents choices and consequences; it should not silently perform unauthorized actions or convert suggestions into commands. Every meaningful mutation should map to an underlying command.
+
+5. Context First
+----------------
+Actions should appear in context. A person view should expose person-relevant actions. A home view should expose home-relevant actions. The UI should avoid forcing the player through irrelevant global menus for common decisions.
+
+6. Uncertainty
+--------------
+Where the simulation itself is uncertain, the UI should communicate uncertainty. A character’s belief should not be shown as objective truth unless the player has appropriate knowledge.
+
+7. Causal Understanding
+-----------------------
+The interface should help the player understand why something happened by connecting events, causes, actors, affected systems, and consequences when known and appropriate.
+
+8. Long-Term Continuity
+-----------------------
+The interface must work for lives spanning years or generations. Current-state views and historical views should coexist without confusing the two.
+
+9. Accessibility
+----------------
+Readable typography, clear hierarchy, adaptable density, input flexibility, and reduced reliance on color alone are first-class requirements.
+
+10. World Presence
+------------------
+World representation should communicate that the simulation is already active. The player enters an existing world rather than starting a static board.
+
+End of specification.

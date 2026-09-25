@@ -1,0 +1,81 @@
+REELLIFE — SYSTEM 25: FINANCE & ECONOMY ARCHITECTURE
+======================================================
+Status: Approved architecture
+
+ROLE
+----
+Provides precise monetary state and economic flows for people, households, businesses, institutions, and governments.
+
+OWNS
+-----
+- Money primitive
+- accounts and ledgers
+- income/expense flows
+- debt/credit state
+- savings
+- investment positions
+- financial obligations
+- interest and fees where modeled
+- economic transaction history
+- aggregate economic flow integration
+
+DOES NOT OWN
+------------
+- physical assets themselves
+- market structure alone
+- legal rules alone
+- UI representations of balances
+
+MODEL / STATE
+-------------
+- Money uses currency + integer minorUnits; authoritative balances never rely on floating-point money
+- Ledger-based state makes monetary changes traceable
+- Account types include cash, bank, savings, credit, loans, investments, and business/institutional accounts
+- Credit reflects repayment history, income, assets, obligations, risk, collateral, and policy
+
+RULES / BEHAVIOR
+-----------------
+- Every authoritative monetary change has a causal trace
+- Investment includes ownership, securities/funds/business investment, returns, losses, dividends, and capital gains; detailed market mechanics are System 35
+- Economy loop: production -> income -> consumption -> savings -> investment -> credit -> prices -> demand/supply -> business -> employment
+- Personal finance remains contextual to household/business obligations rather than a UI budget meter
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Employment, Markets, Housing, Businesses, Insurance, Government, Macro, Ownership, and Life Continuity
+- Taxes/rules come from Laws; monetary transfers execute through the ledger
+- Ownership of assets is defined by System 26
+
+TESTING / QUALITY
+-----------------
+- Test conservation/traceability, debt accrual, defaults, transfers, inheritance, business cash flow, currency differences, and precision boundaries
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Every authoritative monetary change must have a believable economic cause and a traceable ledger path.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

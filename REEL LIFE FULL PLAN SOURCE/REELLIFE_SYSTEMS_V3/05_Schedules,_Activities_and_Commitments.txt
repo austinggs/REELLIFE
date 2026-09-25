@@ -1,0 +1,81 @@
+REELLIFE — SYSTEM 05: SCHEDULES, ACTIVITIES & COMMITMENTS
+===========================================================
+Status: Approved architecture
+
+ROLE
+----
+Bridges temporal structure and actual behavior by representing plans, occupied time, and obligations.
+
+OWNS
+-----
+- recurring schedules
+- activity instances
+- commitments
+- availability
+- reservations
+- recurrence rules
+- activity templates
+- conflict detection/indexes
+
+DOES NOT OWN
+------------
+- final NPC choices
+- domain-specific consequences
+- the authoritative world clock
+- transport route truth
+
+MODEL / STATE
+-------------
+- Schedule = recurring/planned pattern
+- Activity = specific time-occupying instance
+- Commitment = activity with consequences for failure
+- Activity lifecycle can be planned, scheduled, ready, started, in progress, completed, cancelled, missed, interrupted, abandoned, waiting, delayed, rescheduled, or failed
+
+RULES / BEHAVIOR
+-----------------
+- Activities occupy time; events describe what actually occurred
+- Commands create or modify activities; completion generates events
+- Recurring schedules create near-term instances rather than infinite future objects
+- Availability is derived from overlapping commitments, obligations, travel, and constraints
+- The decision system resolves competing activities rather than letting the scheduler hard-script behavior
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Time; feeds NPC Decision; coordinates Education, Employment, Family, Transport, and social activities
+- Travel is explicit inside activities
+- Activities can require resources, people, locations, authority, preparation, and travel time
+- Institutional, business, school, and household schedules use the same framework
+
+TESTING / QUALITY
+-----------------
+- Test conflicts, interruptions, resumption, schedule drift, missed commitments, repeated routines, group activities, dependency chains, and impossible temporal plans
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Schedules create structure and constraints; they do not script behavior.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

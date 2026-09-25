@@ -1,0 +1,84 @@
+REELLIFE — SYSTEM 19: FAMILY, HOUSEHOLD & GENEALOGY
+=====================================================
+Status: Approved architecture
+
+ROLE
+----
+Models family structure, household membership, lineage, caregiving structure, and shared living arrangements.
+
+OWNS
+-----
+- genealogy
+- parent-child structural links
+- biological/legal/adoptive links
+- household membership/history
+- household roles
+- dependents
+- caregiver structure
+- household formation/dissolution
+- lineage and ancestry/descendants
+- family records
+
+DOES NOT OWN
+------------
+- affection/trust quality
+- property title
+- financial balances
+- employment
+- medical state
+- NPC decisions
+- inheritance settlement
+
+MODEL / STATE
+-------------
+- Family = structural biological/legal relationships
+- Household = shared living/resource arrangement
+- Household roles include adult, child, dependent, caregiver, head, spouse, roommate, boarder, foster
+- Membership history records entry/exit rather than treating household as timeless
+
+RULES / BEHAVIOR
+-----------------
+- Parentage is explicit and historically preserved
+- Household and family may differ
+- Shared resources remain contextual and are not a duplicate finance system
+- Children are ordinary Persons; parenting behavior is System 20
+- Marriage/partnership history can be represented structurally without defining emotional quality
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Aging, Parenting, Needs, Housing, Employment, Finance, Life Continuity, Relationships, and Schedules
+- Events/commands handle formation, dissolution, birth, adoption, household moves, custody-like changes where configured
+
+TESTING / QUALITY
+-----------------
+- Test multi-household families, adoption/guardian structures, household turnover, dependents, caregiver changes, divorce/partnership history, and lineage continuity
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Family is structural lineage and kinship; household is a living arrangement; relationship is social meaning.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

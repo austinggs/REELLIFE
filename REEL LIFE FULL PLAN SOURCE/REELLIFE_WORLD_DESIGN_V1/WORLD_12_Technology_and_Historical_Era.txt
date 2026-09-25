@@ -1,0 +1,23 @@
+WORLD 12 — TECHNOLOGY & HISTORICAL ERA
+
+Defines technological civilization development and historical technological context.
+
+Core:
+- Invention → development → production → adoption → diffusion → access → use → improvement → obsolescence.
+- Technology is multidimensional, not a single score.
+- Categories: energy, transportation, communication, computing, medicine, agriculture, manufacturing, construction, household, military.
+- Technology definition includes TechnologyId, name, category, prerequisites, capabilities, inputs, outputs, production, knowledge, infrastructure, skills, cost, reliability, efficiency, risks, environmental effects, history, adoption, successors.
+- Technology ≠ product; invention/research/scientific knowledge distinct.
+- Prerequisite graphs and tech trees.
+- Stages: concept → prototype → experimental → functional → commercial → mass adoption → mature → obsolescent → legacy.
+- Adoption/accessibility/affordability/skills/education; regional inequality.
+- Infrastructure dependency, household/communication/transport/medical/agricultural/manufacturing technology, automation and labor.
+- AI can be a technology category if applicable.
+- Culture/religion/government/military/double-use interactions.
+- Secrecy, IP, transfer, standards, compatibility.
+- Failures, risks, breakthroughs, historical eras, transitions, legacy technology.
+- Technology interacts with migration, education, population, resources, environment, history.
+- Distinct states: existence, knowledge, production, availability, affordability, accessibility, adoption.
+- Player experience, resolution, validation.
+
+Core principle: Technology is accumulated capability, not a civilization score; existence ≠ known ≠ produced ≠ affordable ≠ accessible ≠ adopted.

@@ -1,0 +1,35 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 12 — Housing & Property
+==============================================================================
+
+Purpose
+Defines interfaces for homes, housing markets, leases, ownership, property condition, and residential life.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Property View
+----------------
+Show location, property type, ownership/occupancy status, condition, utilities, costs, capacity, and notable facilities.
+
+2. Ownership vs Possession
+--------------------------
+The UI should distinguish legal ownership from possession, access, control, use, and occupancy.
+
+3. Housing Search
+-----------------
+Provide search/browse by location, affordability, availability, property attributes, and relevant legal/contract constraints.
+
+4. Household View
+-----------------
+Show household members, roles, dependents, shared resources, responsibilities, and housing-related commitments.
+
+5. Move Flow
+------------
+Moving is a multi-step activity involving finding a place, eligibility, agreement, costs, logistics, travel, possession/access, and household changes.
+
+6. Neighborhood Context
+-----------------------
+Property screens should connect to the neighborhood and city map without pretending that the property UI owns the spatial model.
+
+End of specification.

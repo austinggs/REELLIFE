@@ -1,0 +1,83 @@
+REELLIFE — SYSTEM 16: GOALS, ASPIRATIONS & MOTIVATION
+=======================================================
+Status: Approved architecture
+
+ROLE
+----
+Models what people want, why they want it, how strongly they pursue it, and how goals adapt.
+
+OWNS
+-----
+- goal objects
+- goal hierarchy
+- motivation sources
+- priority and urgency
+- commitment
+- progress
+- subgoals/dependencies
+- goal status/history
+- goal replacement/adaptation
+
+DOES NOT OWN
+------------
+- needs themselves
+- personality traits
+- belief contents
+- final decisions
+- schedules
+- legal permissions
+
+MODEL / STATE
+-------------
+- Goals can be immediate, short-term, long-term, or life-scale
+- Motivation sources include needs, security, affection, belonging, achievement, curiosity, autonomy, status, reward, responsibility, values, fear, opportunity, social expectations, identity, habit, and obligation
+- Goal status can be active, paused, completed, failed, abandoned, expired, replaced, or impossible
+
+RULES / BEHAVIOR
+-----------------
+- Priority is not the same as urgency
+- Goals can conflict and compete for limited time/resources
+- Commitment changes with context
+- Feasibility depends on actual conditions and perceived conditions
+- Opportunities can unlock new trajectories
+- Goals guide decisions but never hard-script them
+
+SYSTEM INTERACTIONS
+-------------------
+- NPC Decision evaluates goals alongside needs, relationships, habits, opportunities, risk, and constraints
+- Education, Employment, Finance, Family, and social systems can create or remove opportunities
+- Cognition and Mental State can change goal interpretation and persistence
+
+TESTING / QUALITY
+-----------------
+- Test conflicting goals, blocked goals, impossible goals, shifting priorities, long-term tradeoffs, and resolution compression
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Goals provide direction, not guaranteed behavior.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

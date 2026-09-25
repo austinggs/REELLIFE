@@ -1,0 +1,85 @@
+REELLIFE — SYSTEM 12: MENTAL & EMOTIONAL STATE
+================================================
+Status: Approved architecture
+
+ROLE
+----
+Models mood, emotion, stress, resilience, psychological pressure, coping, and configurable mental-health conditions.
+
+OWNS
+-----
+- emotional state
+- mood
+- stress/arousal
+- psychological pressure
+- temporary emotional effects
+- accumulated stress
+- recovery
+- resilience
+- grief processes
+- mental-state history
+
+DOES NOT OWN
+------------
+- world facts
+- memories/beliefs/knowledge
+- personality
+- goals
+- decisions
+- relationship structure
+- medical infrastructure
+
+MODEL / STATE
+-------------
+- Emotion, mood, and stress are distinct layers
+- Event appraisal follows event -> known information -> interpretation -> relevance -> personality/history/relationships -> response -> mental update -> decision
+- State tracks intensity, duration, residue, associations, recovery, and support where needed
+
+RULES / BEHAVIOR
+-----------------
+- Not every emotional reaction is a clinical diagnosis
+- Grief is modeled as a process, not a single switch
+- Mixed/conflicting emotions are valid
+- Internal state and outward expression differ; concealment and social expression are separate
+- Coping is chosen by NPC Decision and can be effective, ineffective, adaptive, avoidant, or habitual
+- Culture and beliefs can change expression and interpretation
+
+SYSTEM INTERACTIONS
+-------------------
+- Consumes information from Cognition and events from the Event Engine
+- Feeds NPC Decision, Relationships, Needs, Health, Goals, and social behavior
+- Meaningful mental history should be persisted without storing every tiny fluctuation
+
+TESTING / QUALITY
+-----------------
+- Test repeated stress, recovery, grief, contradictory emotions, concealment, coping loops, social support, and resolution compression
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+The same event can produce different internal experiences because people interpret and regulate events differently.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

@@ -1,0 +1,76 @@
+REELLIFE — SYSTEM 52: INTERNATIONAL RELATIONS & GLOBAL EVENTS
+===============================================================
+Status: Approved architecture
+
+ROLE
+----
+Models country-to-country relations, diplomacy, treaties, alliances, trade, sanctions, conflict, international organizations, and global shocks.
+
+OWNS
+-----
+- diplomatic relations
+- trade relations
+- treaties/alliances
+- sanctions
+- international disputes
+- military relations
+- international organizations
+- cross-border migration pressure
+- global event state/history
+
+DOES NOT OWN
+------------
+- country legal rules
+- domestic market microstructure
+- individual travel choice
+- international infrastructure detail
+
+MODEL / STATE
+-------------
+- Country relationships can be diplomatic, economic, military, cultural, trade-based, cooperative, or adversarial simultaneously
+- Global events can include financial crises, pandemics, wars, tech breakthroughs, supply shocks, commodity shocks, and climate events
+- International organizations use the shared Organization Core
+
+RULES / BEHAVIOR
+-----------------
+- Diplomatic commands become events and can affect multiple systems
+- Global shocks cascade country -> markets -> businesses -> supply chains -> employment -> households -> individual decisions
+- International conditions change domestic opportunities and constraints rather than directly dictating personal choices
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Countries, Government, Laws, Finance, Markets, Supply Chains, Migration, Technology, Security, Information, and Population
+
+TESTING / QUALITY
+-----------------
+- Test sanctions, treaty changes, trade disruption, war-like shocks, global recessions, migration pressure, and cross-border information effects
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+International events alter cross-border conditions; domestic consequences emerge through connected systems.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

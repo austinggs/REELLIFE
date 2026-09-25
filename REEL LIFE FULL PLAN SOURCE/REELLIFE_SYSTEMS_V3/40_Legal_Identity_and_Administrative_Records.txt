@@ -1,0 +1,76 @@
+REELLIFE — SYSTEM 40: LEGAL IDENTITY & ADMINISTRATIVE RECORDS
+===============================================================
+Status: Approved architecture
+
+ROLE
+----
+Models formal institutional representations of people through documents, registrations, certificates, licenses, permits, and administrative records.
+
+OWNS
+-----
+- legal/admin identity references
+- birth/death registration
+- names as recorded
+- citizenship/residency records
+- passports/IDs/licenses/permits
+- certificates
+- administrative records
+- record corrections/disputes/access state
+
+DOES NOT OWN
+------------
+- PersonId itself
+- legal rules
+- physical person truth
+- criminal adjudication
+- immigration policy itself
+
+MODEL / STATE
+-------------
+- AdministrativeRecord includes authority, subject, type, issue/status/validity, source, corrections, and access rules
+- Documents track issue, expiration, issuer, identifier/security metadata, status, and replacement history
+- Legal status can include citizen, resident, visitor, undocumented, stateless, asylum, and scenario-specific states
+
+RULES / BEHAVIOR
+-----------------
+- Records may be missing, delayed, wrong, conflicting, fraudulent, forged, or disputed
+- Institutional records are representations and can differ from underlying world truth
+- Document access is authority/permission sensitive
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Countries, Laws, Government, Travel/Immigration, Institutions, Security, Family, Life Continuity, and AuthorityCheck
+
+TESTING / QUALITY
+-----------------
+- Test missing records, duplicate identities, correction history, forgery, conflicting records, expiration, citizenship changes, and access restrictions
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Legal identity is an institutional representation of a person, not the person themselves.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

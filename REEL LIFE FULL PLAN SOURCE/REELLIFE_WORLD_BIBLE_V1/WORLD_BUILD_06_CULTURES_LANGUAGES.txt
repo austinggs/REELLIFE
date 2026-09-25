@@ -1,0 +1,144 @@
+WORLD BUILD 06 — CULTURES & LANGUAGES
+AURELIA WORLD BIBLE V1
+============================================================
+
+Core cultural principle
+-----------------------
+Culture is learned, transmitted, adapted and contested. Culture influences behavior but does not determine it.
+
+Important distinctions
+----------------------
+- culture
+- ethnicity
+- nationality
+- language
+- religion
+- citizenship
+- personal identity
+
+Cultural regions
+----------------
+Cultural regions may be:
+- local
+- regional
+- cross-border
+- historical
+- diaspora-based
+- urban
+- occupational
+- digital
+
+Language families
+-----------------
+The approved first-pass build explicitly established six major language families. An earlier draft mistakenly referred to eight; no unsupported families are invented here.
+
+1. Ardanic Family
+   Languages: Ardan, Valed, Selvar, Torren, Caldic, Narethic
+
+2. Veyric Family
+   Languages: Veyric, Norvan, Edrian, Sorellan, Lethenic, Coravelan
+
+3. Sahric Family
+   Languages: Sahric, Namari, Keshic, Arashi, Tereni, Belaran, Omeran, Jandori
+
+4. Orinthian Family
+   Languages: Orinthian, Westmarker, Avelic, Tarsenic, Belmondian, Sarethic, Southern Coastal, Mariner's Creole
+
+5. Kharic Family
+   Languages: Kharic, Estaran, Varonic, Dorenic, Kalenic, Northern Kharic, Steppe Kharic
+
+6. Ilyran Family
+   Languages: Ilyran, Selini, Asteran, Eastern Ilyran, Lyrenic, Island Languages
+
+Additional language phenomena
+-----------------------------
+- minority languages
+- indigenous/local languages
+- creoles
+- trade languages
+- sign languages
+- historical languages
+- endangered languages
+- revived languages
+- constructed languages
+- multilingualism
+- code-switching
+
+Writing systems
+---------------
+- Ardan Script
+- Veyric Script
+- Sahric Script
+- Orinthian Script
+- Kharic Scripts
+- Ilyran Maritime Script
+
+Naming systems
+--------------
+Names may use:
+- given names
+- family names
+- patronymics
+- matronymics
+- clan names
+- occupational names
+- place names
+- religious names
+- titles
+- nicknames
+- stage names
+- professional names
+
+Cultural expression
+-------------------
+Culture can shape:
+- food
+- clothing
+- music
+- art
+- stories
+- festivals
+- etiquette
+- ceremonies
+- architecture
+- family practices
+- social expectations
+
+Transmission
+------------
+Culture moves through:
+- family
+- peers
+- schools
+- religion
+- workplaces
+- neighborhoods
+- media
+- books
+- entertainment
+- institutions
+- online communities
+
+Identity
+--------
+Individual cultural identity is composite and dynamic. People can be multilingual, bicultural, diaspora-connected, highly traditional, hybridized, secular, religious or culturally detached from their ancestry.
+
+Diffusion and change
+--------------------
+Cultures can:
+- diffuse
+- mix
+- conflict
+- revive
+- adapt
+- fragment
+- hybridize
+- change between generations
+
+Data models
+-----------
+CultureProfile
+LanguageProfile
+CharacterCulturalProfile
+
+The culture layer should provide context and probabilities, not fixed behavioral scripts.

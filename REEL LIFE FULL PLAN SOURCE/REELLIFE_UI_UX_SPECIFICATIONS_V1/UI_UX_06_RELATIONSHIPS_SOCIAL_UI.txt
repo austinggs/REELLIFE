@@ -1,0 +1,35 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 06 — Relationships & Social UI
+==============================================================================
+
+Purpose
+Defines presentation of interpersonal relationships and social networks.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Relationship Core
+--------------------
+Display relationship type and important dimensions such as trust, affection, respect, loyalty, reciprocity, boundaries, and conflict when meaningful and knowable.
+
+2. Network View
+---------------
+Support a social graph showing family, friendship, work, community, organizations, and other relevant ties. The graph should emphasize relevance rather than attempt to display everyone globally.
+
+3. Relationship History
+-----------------------
+Show significant interactions, turning points, conflicts, reconciliations, shared experiences, and relationship changes over time.
+
+4. Social Perception
+--------------------
+Reputation and social perception are observer-relative. The UI should show whose opinion is being represented and avoid presenting one global social score as universal truth.
+
+5. Interaction Surface
+----------------------
+Present socially meaningful actions such as talk, apologize, ask, invite, help, negotiate, reconcile, set boundary, or disclose information according to context and permissions.
+
+6. Privacy
+----------
+Private messages, secret relationships, and hidden information require explicit access. Social UI must respect the simulation information and secrecy model.
+
+End of specification.

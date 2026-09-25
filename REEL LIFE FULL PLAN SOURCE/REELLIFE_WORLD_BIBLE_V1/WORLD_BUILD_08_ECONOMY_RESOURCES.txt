@@ -1,0 +1,155 @@
+WORLD BUILD 08 — ECONOMY & RESOURCES
+AURELIA WORLD BIBLE V1
+============================================================
+
+Economic principle
+------------------
+Aurelia's economy is a network of people, households, organizations, resources, infrastructure, knowledge, contracts, institutions and decisions.
+
+Economic model
+--------------
+Aurelia has a mixed global economy containing:
+- private businesses
+- family businesses
+- cooperatives
+- state-owned enterprises
+- nonprofits
+- informal businesses
+- public institutions
+- agrarian households
+- multinational corporations
+- independent workers
+
+Economic geography
+------------------
+Economic specialization emerges from:
+- resources
+- terrain
+- climate
+- population
+- transport
+- technology
+- institutions
+- history
+
+Resource categories
+-------------------
+Energy:
+- coal
+- petroleum
+- natural gas
+- uranium
+- hydropower
+- solar
+- wind
+- geothermal
+
+Metals and minerals:
+- iron
+- copper
+- aluminum-bearing ores
+- nickel
+- tin
+- zinc
+- precious metals
+- rare industrial minerals
+
+Construction:
+- limestone
+- clay
+- sand
+- gravel
+- stone
+- timber
+
+Biological:
+- forests
+- fisheries
+- livestock
+- crops
+- medicinal plants
+
+Water:
+- rivers
+- lakes
+- groundwater
+- reservoirs
+- desalination capacity
+
+Major economic zones
+--------------------
+Ardan Basin / Elandra:
+Agriculture, river transport, manufacturing, finance, logistics, technology and construction.
+
+Veyran Heartland / Central Basin / Westhaven:
+Agriculture, manufacturing, finance, technology and maritime trade.
+
+Sahraen:
+Desert trade, river agriculture, mining, pastoralism, coastal fishing, manufacturing, renewable energy and logistics.
+
+Orinth:
+Agriculture, livestock, mining, manufacturing and maritime trade.
+
+Kharos:
+Minerals, forestry, livestock, southern agriculture, energy and overland trade.
+
+Ilyra:
+Shipping, fishing, shipbuilding, tourism, finance, trade, maritime services and specialized manufacturing.
+
+Trade corridors
+---------------
+- Ardan Corridor
+- Veyran Corridor
+- Saren Corridor
+- Orin Corridor
+- Kharic Corridor
+- Ilyran Maritime Corridor
+
+Major financial centers
+-----------------------
+- Arden
+- Veyr
+- Westhaven
+- Selin
+- Ilyra City
+
+Economic systems
+----------------
+The world supports:
+- agriculture
+- food systems
+- mining
+- energy systems
+- manufacturing
+- technology industries
+- services
+- informal economies
+- banking
+- credit
+- labor markets
+- investment
+- cross-border trade
+
+Resource dynamics
+-----------------
+Resources can experience:
+- booms
+- shortages
+- price shocks
+- depletion
+- substitution
+- technological improvement
+- renewable replacement
+- environmental constraints
+
+Economic interdependence
+------------------------
+Aurelia's economy is globally connected. Resource and transport shocks can propagate from production to prices, firms, employment, household income and consumer behavior.
+
+Data and simulation
+-------------------
+Monetary transactions use the Finance system's precise Money primitive. Economic changes must be traceable through ledgers, contracts, market transactions and organizational records.
+
+Deferred exact content
+---------------------
+Country-by-country GDP, output, currencies, central banks, corporations, banks, stock exchanges, labor unions, tax systems, national budgets, trade treaties and detailed statistics are to be added in later current-state and institutional content passes.

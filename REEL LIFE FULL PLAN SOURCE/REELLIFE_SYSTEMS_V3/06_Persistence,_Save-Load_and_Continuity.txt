@@ -1,0 +1,81 @@
+REELLIFE — SYSTEM 06: PERSISTENCE, SAVE/LOAD & CONTINUITY
+===========================================================
+Status: Approved architecture
+
+ROLE
+----
+Preserves the simulated world as serializable, versioned, recoverable state.
+
+OWNS
+-----
+- save representation
+- save metadata
+- serialization contracts
+- schema and simulation/content version tracking
+- integrity checks
+- atomic writes and recovery
+- migration orchestration
+- save slots and lineage
+- snapshot/checkpoint semantics
+
+DOES NOT OWN
+------------
+- simulation outcomes
+- UI state
+- runtime functions/DOM objects
+- domain decisions during loading
+
+MODEL / STATE
+-------------
+- Native format is .reel
+- A save contains serializable world state, entity IDs, relevant system state, clock, RNG state, pending events, activities, required history, configuration, versions, and integrity data
+- System-level serializers validate references and omit runtime-only objects
+
+RULES / BEHAVIOR
+-----------------
+- Saving must not alter simulation outcomes
+- Atomic writes preserve the last known-good save
+- Checksums/hashes and schema validation guard against corruption
+- Schema, simulation, content, RNG, and serialization versions are explicit
+- Migrations are explicit rather than silently changing meaning
+- Death and descendant continuation remain within the same persistent world
+
+SYSTEM INTERACTIONS
+-------------------
+- Consumes state from every domain system and restores it without duplicating ownership
+- Depends on deterministic Time/RNG/Event infrastructure
+- Supports offline catch-up by persisting the last authoritative simulation timestamp and pending work
+
+TESTING / QUALITY
+-----------------
+- Test save/load equivalence, corrupted saves, version migrations, interrupted writes, reference validation, RNG preservation, pending events, and long-lived lineage continuity
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+.reel preserves the world; it does not simulate the world while loading.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

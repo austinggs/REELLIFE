@@ -1,0 +1,127 @@
+WORLD BUILD 03 — COUNTRIES
+AURELIA WORLD BIBLE V1
+============================================================
+
+Aurelia contains 48 sovereign countries at the game-start baseline.
+
+ELANDRA — 10 COUNTRIES
+----------------------
+1. Republic of Ardin
+2. Kingdom of Valedon
+3. Republic of Selvara
+4. Republic of Torren
+5. Highland Federation
+6. Republic of Darsen
+7. Kingdom of Mereth
+8. Republic of Caldor
+9. Republic of Nareth
+10. Free State of Ordel
+
+VEYRA — 9 COUNTRIES
+-------------------
+1. Republic of Veyra
+2. Federation of Norvale
+3. Republic of Westhaven
+4. Kingdom of Edria
+5. Republic of Sorell
+6. Highland Republic of Varin
+7. Republic of Lethen
+8. Republic of Coravel
+9. Republic of Ansel
+
+SAHRAEN — 8 COUNTRIES
+---------------------
+1. Republic of Sarad
+2. Kingdom of Namar
+3. Republic of Kesh
+4. Republic of Arasha
+5. Highland Union of Teren
+6. Republic of Belara
+7. Republic of Omera
+8. Republic of Jandor
+
+ORINTH — 8 COUNTRIES
+--------------------
+1. Republic of Orinth
+2. Republic of Westmark
+3. Kingdom of Avelon
+4. Republic of Tarsen
+5. Republic of Belmond
+6. Republic of Sareth
+7. Southern Republic
+8. Coastal Federation
+
+KHAROS — 7 COUNTRIES
+--------------------
+1. Republic of Khar
+2. Northern Federation
+3. Republic of Estara
+4. Kingdom of Varon
+5. Steppe Republic
+6. Republic of Doren
+7. Free Republic of Kalen
+
+ILYRA — 6 COUNTRIES
+-------------------
+1. Republic of Ilyra
+2. Maritime Republic of Selin
+3. Republic of Aster
+4. Eastern Republic
+5. Kingdom of Lyren
+6. Island Federation
+
+Country architecture
+--------------------
+CountryId
+Name
+HistoricalNames
+Territory
+Capital
+MajorSettlements
+Population
+CitizenshipRules
+Government
+LegalSystem
+Currency
+Languages
+ReligiousLandscape
+Economy
+Institutions
+Infrastructure
+Security
+InternationalRelations
+TradeRelations
+ImmigrationRules
+Environment
+History
+
+Country is not synonymous with:
+- government
+- nation
+- ethnicity
+- culture
+- language
+- religion
+
+Border rules
+------------
+Borders may follow rivers, mountains, coastlines, historical boundaries or negotiated lines. Countries may contain enclaves, exclaves, autonomous areas and disputed territories.
+
+Country borders may change through:
+- treaties
+- wars
+- independence
+- negotiated territorial transfer
+- annexation
+- dissolution
+- decolonization
+
+Historical country state tracks former borders, governments, capitals, conflicts and population conditions.
+
+International relationships
+---------------------------
+Countries can have diplomatic, trade, military, cultural, migration and historical relationships. Those relationships use the broader systems architecture rather than hard-coded one-off effects.
+
+Country reputation uses the System 22 reputation model.
+
+Exact country populations, currencies, ministries, budgets, named institutions and detailed relations remain current-state content rather than immutable country definition.

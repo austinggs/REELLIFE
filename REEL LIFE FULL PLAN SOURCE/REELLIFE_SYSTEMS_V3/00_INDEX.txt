@@ -1,0 +1,96 @@
+REELLIFE — INDIVIDUAL SYSTEM FILES V3
+======================================
+Status: Approved system architecture package
+
+This package contains one implementation-facing .txt file for each of the 59 approved ReelLife systems.
+The files preserve the approved register, boundaries, terminology, and governing architecture.
+
+SYSTEM REGISTER
+---------------
+01 — Simulation Core & World State
+02 — Time, Calendar & Clock
+03 — Randomness, Seeds & Scenario Resolution
+04 — Event & Consequence Engine
+05 — Schedules, Activities & Commitments
+06 — Persistence, Save/Load & Continuity
+07 — Simulation Scale, Relevance & Materialization
+08 — Character Identity & Origin
+09 — Aging, Development & Life Stages
+10 — Needs & Daily Living
+11 — Physical Health & Medicine
+12 — Mental & Emotional State
+13 — Personality, Traits & Aptitudes
+14 — Skills & Competence
+15 — Cognition & Knowledge
+16 — Goals, Aspirations & Motivation
+17 — NPC Decision-Making & Autonomy
+18 — Relationship & Social Interaction Core
+19 — Family, Household & Genealogy
+20 — Children & Parenting
+21 — Conflict, Negotiation & Reconciliation
+22 — Reputation & Social Perception
+23 — Education
+24 — Employment & Labor
+25 — Finance & Economy Architecture
+26 — Ownership / Contracts / Asset Rights
+27 — Housing & Property
+28 — Transportation & Vehicles
+29 — Inventory / Items & Object State
+30 — Food / Nutrition & Consumption
+31 — Insurance & Risk Management
+32 — Organization Core
+33 — Organizations & Businesses
+34 — Supply Chains & B2B
+35 — Markets / Prices & Competition
+36 — Macroeconomic Layer
+37 — Geography / Cities / Neighborhoods / Infrastructure
+38 — Infrastructure Operations
+39 — Countries & World Rules
+40 — Legal Identity & Administrative Records
+41 — Laws & Regulatory Rules
+42 — Institutions & Institutional Memory
+43 — Government & Public Services
+44 — Culture / Religion / Community / Tradition
+45 — Travel / Immigration / Borders
+46 — Weather / Environment / Disasters
+47 — Population & Demographics
+48 — Security & Legal Pipeline
+49 — Information / Communication / Media
+50 — Communication / Messaging
+51 — Technology & Historical Change
+52 — International Relations & Global Events
+53 — Life Continuity
+54 — Player History & Analytics
+55 — Player UI
+56 — Map & Spatial Presentation
+57 — Console / Command Interface
+58 — Configuration & Content Architecture
+59 — Debugging / Observability / Simulation Testing
+
+SHARED PRIMITIVES
+-----------------
+EntityRef — stable entity reference surviving save/load and lifecycle changes.
+Money — integer minor units; never authoritative floating-point balances.
+Time — timestamp/duration representation tied to the authoritative clock.
+LocationRef — stable spatial reference.
+EventRef — stable event reference.
+Contract — parties, rights, obligations, terms, dates, and state.
+Relationship — universal contextual interpersonal relationship structure.
+Organization — universal organization structure.
+InformationClaim — claim + source/provenance + confidence + visibility + propagation state.
+Asset — economic/legal/ownership-relevant thing.
+Activity — time-occupying action instance.
+AuthorityCheck — actor + action + target + jurisdiction + time + context -> ALLOWED / DENIED / CONDITIONAL.
+ResolutionObject — applicability + conditions + candidates + weights/probabilities + selected outcome + RNG/debug metadata.
+
+ACTION / COMMAND MODEL
+----------------------
+Intent -> Command -> Validation -> Action Resolution -> Event -> Consequences -> New State
+
+AUTHORITY / ACCESS MODEL
+------------------------
+actor + action + target + jurisdiction + time + role + credentials + ownership + permissions + legal status + organizational status + secrecy/access state -> allowed / denied / conditional
+
+CORE DESIGN LAW
+---------------
+CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS

@@ -1,0 +1,79 @@
+REELLIFE — SYSTEM 10: NEEDS & DAILY LIVING
+============================================
+Status: Approved architecture
+
+ROLE
+----
+Models recurring physical and practical pressures that living people must manage.
+
+OWNS
+-----
+- need definitions
+- current need level/pressure
+- urgency
+- satisfaction state
+- deterioration/recovery
+- need thresholds and history
+- need modifiers
+
+DOES NOT OWN
+------------
+- food item state
+- housing property state
+- medical outcomes
+- psychological interpretation
+- affordability
+- final NPC behavior
+
+MODEL / STATE
+-------------
+- Core needs include hunger, thirst, sleep, rest/fatigue, temperature/comfort, hygiene, and toilet; social contact, personal space, routine, and recreation can be configured
+- NeedState includes currentLevel, pressure, urgency, lastSatisfied, lastChange, history, and recovery/deterioration modifiers
+- Need level and pressure are distinct
+
+RULES / BEHAVIOR
+-----------------
+- Needs are pressures, not scripts
+- Satisfaction occurs through actions and resources owned by other systems
+- Hunger belongs here but food properties/meals/preparation/spoilage/diet/consumption belong to Food
+- Children and caregivers can create dependency relationships around satisfaction
+- Suppressed needs still exist and can re-emerge
+
+SYSTEM INTERACTIONS
+-------------------
+- Strongly interacts with Health, Mental State, Food, Housing, Finance, Family, Schedules, and NPC Decision
+- Environmental/accessibility constraints can prevent satisfaction even when a need is recognized
+
+TESTING / QUALITY
+-----------------
+- Test deprivation, recovery, interruptions, accessibility barriers, age differences, child dependency, resource shortages, and speed/resolution changes
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Needs describe what a living person requires; they do not dictate exactly how the person behaves.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

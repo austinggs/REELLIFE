@@ -1,0 +1,81 @@
+REELLIFE — SYSTEM 32: ORGANIZATION CORE
+=========================================
+Status: Approved architecture
+
+ROLE
+----
+Universal collective-actor foundation for companies, schools, hospitals, governments, charities, clubs, banks, media, unions, religious groups, and other organizations.
+
+OWNS
+-----
+- organization identity
+- type/legal identity
+- parent/child hierarchy
+- members and roles
+- departments/units
+- organization assets
+- locations
+- resources
+- goals/policies
+- authority model
+- organization history
+- basic organizational reputation/finance references
+
+DOES NOT OWN
+------------
+- commercial strategy details
+- specific institutional procedures
+- individual employee behavior
+- legal rules
+- market mechanics
+
+MODEL / STATE
+-------------
+- Organization includes type/name/legal identity/parent/subsidiaries/members/roles/departments/assets/locations/resources/goals/policies/authority/reputation/finances/contracts/operations/history
+- Membership roles can include employee, student, member, officer, manager, owner, volunteer, contractor, customer, or participant
+- Hierarchy supports parent/division/department/team/unit
+
+RULES / BEHAVIOR
+-----------------
+- Organization lifecycle can be forming, active, suspended, restructuring, closed, or dissolved
+- Authority is evaluated through shared AuthorityCheck
+- Organization behavior emerges from leadership, policies, resources, members, incentives, and external conditions rather than a magical collective personality
+
+SYSTEM INTERACTIONS
+-------------------
+- Foundation for Education, Employment, Businesses, Institutions, Government, Security, International Organizations, Culture, Media, and Finance
+- Individuals remain ordinary actors with their own cognition/goals/decisions
+
+TESTING / QUALITY
+-----------------
+- Test membership changes, nested organizations, role authority, closures, restructuring, resource constraints, and delegated decisions
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Organizations are persistent collective actors built from people, roles, resources, procedures, and authority—not super-NPCs.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

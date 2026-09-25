@@ -1,0 +1,18 @@
+WORLD 04 — COUNTRIES
+
+Defines countries as persistent territorial, institutional, economic, cultural, and historical environments.
+
+Core:
+- Country combines territory, population, institutions, laws, economy, culture, history, infrastructure, international relationships.
+- CountryId, official/common/historical names, symbols, capital, founding date, constitutional history.
+- Territory distinct from claims/control; government distinct from country.
+- Citizenship distinct from residence, nationality, ethnicity, birthplace.
+- Population dynamic and internally diverse; no single national personality.
+- Currency and monetary architecture.
+- Economy is derived, not a magical wealth score.
+- Economic specialization emerges from geography, resources, labor, education, infrastructure, history, technology, institutions, trade, investment.
+- Regional variation, urbanization, infrastructure, public services, resources, international relationships, country reputation, information/security/environmental conditions.
+- Country creation, transformation, dissolution; authored major countries and procedural support for minor content.
+- Country is a simulation context, not a giant NPC.
+
+Core principle: A country is a persistent territorial, institutional, economic, cultural, and historical environment.

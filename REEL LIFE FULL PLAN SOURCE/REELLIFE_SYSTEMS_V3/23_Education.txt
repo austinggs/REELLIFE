@@ -1,0 +1,89 @@
+REELLIFE — SYSTEM 23: EDUCATION
+=================================
+Status: Approved architecture
+
+ROLE
+----
+Models structured and informal learning opportunities, educational institutions, programs, attendance, assessment, credentials, progression, and access.
+
+OWNS
+-----
+- education institutions/programs
+- courses/curricula
+- enrollment/attendance
+- instruction
+- assessment/exams/grades
+- progression
+- credentials
+- education records
+- teacher assignment
+- capacity
+- learning environments/resources
+- interruptions/transfers
+
+DOES NOT OWN
+------------
+- skill truth
+- aptitude
+- beliefs/knowledge itself
+- personality
+- employment
+- finance
+- health
+- NPC decisions
+- laws/government
+
+MODEL / STATE
+-------------
+- Institutions are Organizations
+- Enrollment states include applied, admitted, enrolled, active, suspended, leave, withdrawn, dropped, completed, expelled, transferred, deferred
+- Programs/courses/curriculum are data-driven
+- Credentials are formal recognition distinct from competence
+
+RULES / BEHAVIOR
+-----------------
+- Access depends on distance, transport, cost, resources, capacity, disability, law, language, family responsibilities, employment, childcare, and safety
+- Attendance is not enrollment
+- Teaching quality does not guarantee learning
+- Grades are institutional assessments, not objective skill truth
+- Learning can be formal or informal; apprenticeship and lifelong learning are supported
+- Academic integrity and contested/forged/incomplete records are possible
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Skills, Cognition, Aging, Employment, Finance, Transport, Family, Culture, and Reputation
+- Education can create opportunities but does not guarantee employment or life outcomes
+
+TESTING / QUALITY
+-----------------
+- Test dropout/return, transfer, interrupted education, access inequality, teacher capacity, credential recognition variance, and learning uncertainty
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Education creates structured opportunities for learning; it does not guarantee the outcome.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

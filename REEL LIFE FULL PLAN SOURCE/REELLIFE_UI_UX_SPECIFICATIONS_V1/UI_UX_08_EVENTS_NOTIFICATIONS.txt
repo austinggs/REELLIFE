@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 08 — Events & Notifications
+==============================================================================
+
+Purpose
+Defines how simulation events become understandable player-facing notifications without turning every event into an interruption.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Event Types
+--------------
+Use categories such as informational, actionable, urgent, milestone, warning, social, financial, work, education, health, travel, world, and system/debug as appropriate.
+
+2. Relevance
+------------
+Notification relevance should consider player involvement, consequence magnitude, proximity, relationships, commitments, and knowledge.
+
+3. Interruption Policy
+----------------------
+Only high-value or urgent notifications should interrupt current activity. Others should accumulate in an accessible feed or inbox.
+
+4. Knowledge Boundaries
+-----------------------
+A notification can only contain information the player is entitled to know. Rumor, uncertainty, inference, and fact should be distinguishable.
+
+5. Event Chaining
+-----------------
+Related events may be grouped into a causal thread while preserving the individual event history underneath.
+
+6. Acknowledgement
+------------------
+Reading a notification is not the same as resolving an event. The UI should not mark an unresolved simulation event as completed merely because the player viewed it.
+
+7. History
+----------
+Notifications should link to the underlying timeline/history entry when retained.
+
+End of specification.

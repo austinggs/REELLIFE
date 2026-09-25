@@ -1,0 +1,18 @@
+REELLIFE WORLD DESIGN — INDEX
+
+WORLD 01 — World Design Philosophy
+WORLD 02 — Planetary Geography
+WORLD 03 — Political Geography
+WORLD 04 — Countries
+WORLD 05 — Cities & Settlements
+WORLD 06 — Neighborhoods
+WORLD 07 — World History
+WORLD 08 — Cultures & Languages
+WORLD 09 — Religion & Belief Communities
+WORLD 10 — Economy & Resources
+WORLD 11 — Institutions
+WORLD 12 — Technology & Historical Era
+WORLD 13 — World Population
+WORLD 14 — World State at Game Start
+
+All 14 World Design sections were approved before packaging.

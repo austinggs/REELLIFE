@@ -1,0 +1,23 @@
+REELLIFE FULL PLAN SOURCE — IMPLEMENTATION INDEX V2
+
+This bundle contains the completed ReelLife planning corpus and implementation instructions.
+It intentionally does NOT contain a starter life-simulator codebase.
+
+PLANNING PACKAGES
+- REELLIFE_SYSTEMS_V3/ — Systems 01-59, master architecture, and system index
+- REELLIFE_WORLD_DESIGN_V1/ — World Design 01-14
+- REELLIFE_WORLD_BIBLE_V1/ — World Build 01-14 and World Bible master reference
+- REELLIFE_UI_UX_SPECIFICATIONS_V1/ — UI/UX 01-24 and UI/UX master reference
+
+IMPLEMENTATION / REFERENCE MATERIAL
+- REELLIFE_MASTER_AI_PROMPT_V2.txt — master AI implementation prompt and source-ingestion rules
+- REELLIFE_IMPLEMENTATION_CONTEXT.txt — current implementation constraints
+- REELLIFE_UPSTREAM_TREE_MANIFEST.txt — audit/reference manifest for the inspected upstream life-simulator repository
+
+IMPORTANT
+ReelLife is a clean, from-scratch implementation in the current JavaScript/TypeScript web stack.
+There is no external life-simulator repository serving as the implementation base.
+
+The repository robert1811/life-simulator is reference-only. Its architecture, source code, data,
+and gameplay are not authoritative for ReelLife. Do not restore or recreate the removed stripped
+starter as the project base.

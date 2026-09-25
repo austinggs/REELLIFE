@@ -1,0 +1,78 @@
+REELLIFE — SYSTEM 41: LAWS & REGULATORY RULES
+===============================================
+Status: Approved architecture
+
+ROLE
+----
+Provides machine-readable rules for permissions, prohibitions, obligations, licenses, penalties, exemptions, and regulatory requirements.
+
+OWNS
+-----
+- rule definitions
+- jurisdiction/effective-date scope
+- conditions
+- permissions/prohibitions/obligations
+- penalties
+- exemptions
+- licensing/permit/inspection rules
+- regulatory authorities
+- historical rule versions
+
+DOES NOT OWN
+------------
+- enforcement outcomes
+- individual beliefs about laws
+- court adjudication
+- raw behavior
+- organization authority beyond legal rules
+
+MODEL / STATE
+-------------
+- Rule includes jurisdiction, effective dates, subjects, conditions, prohibitions, permissions, obligations, penalties, exemptions, and enforcement authority
+- Law pipeline: law -> legal status -> AuthorityCheck -> detection -> enforcement -> adjudication
+
+RULES / BEHAVIOR
+-----------------
+- Historical laws can change over time
+- People may misunderstand, intentionally violate, exploit ambiguity, or lack access to legal information
+- Law and enforcement are distinct
+- Licensing and regulated-work requirements are contextual and jurisdiction-specific
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds AuthorityCheck, Security/Legal, Organizations, Government, Travel, Finance, Employment, and Ownership
+- Cognition/Information determine what people believe the law says
+
+TESTING / QUALITY
+-----------------
+- Test effective-date changes, overlapping jurisdictions, conflicting rules, exemptions, permits, ambiguous cases, and enforcement separation
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Law defines formal rules; it does not define what people will do or what authorities will discover.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

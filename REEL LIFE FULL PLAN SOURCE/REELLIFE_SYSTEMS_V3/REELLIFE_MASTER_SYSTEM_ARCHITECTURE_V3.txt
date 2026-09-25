@@ -1,0 +1,729 @@
+REELLIFE — MASTER SYSTEM ARCHITECTURE V3
+==========================================
+Status: Architectural lock draft for review
+
+PURPOSE
+-------
+This document converts the approved conceptual Systems 01–74 register and the
+user's review into the implementation-level architecture. It defines top-level
+systems, merged systems, shared primitives, ownership boundaries, dependencies,
+and deferred expansion areas.
+
+CORE LAW
+--------
+CONDITIONS → DECISIONS → EVENTS → CONSEQUENCES → NEW CONDITIONS
+
+ARCHITECTURAL LAWS
+------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+======================================================================
+I. FOUNDATION
+======================================================================
+
+01 — Simulation Core & World State
+Role: authoritative coordinator/infrastructure layer.
+Owns: WorldState coordination, registries, lifecycle, indexes, validation,
+system registration, simulation coordination.
+Does not own domain decisions such as affordability, forgiveness, promotion,
+medical judgment, or legal permission.
+
+02 — Time, Calendar & Clock
+Owns: authoritative timestamp, calendar, durations, time zones, local time,
+seasons, holidays, day/night, deadlines, expiration, temporal ordering,
+simulation speed/pause.
+Boundary: Time = WHEN; Activities = WHAT IS EXPECTED; Decision system =
+WHAT ACTUALLY HAPPENS.
+
+03 — Randomness, Seeds & Scenario Resolution
+Owns: master/world/scenario/entity seeds, RNG streams, distributions,
+weighted outcomes, deterministic scenario resolution, replay metadata.
+Rules: no authoritative Math.random(); eligibility is separate from
+probability; impossible differs from unlikely; save/load preserves RNG state.
+
+04 — Event & Consequence Engine
+Action = attempt; Event = occurrence; Consequence = resulting change.
+Owns event structure, ordering, handlers, causal links, delayed effects,
+idempotency, cancellation, stale-event handling, event-storm prevention,
+replay/inspection.
+Domain systems own the actual state changes.
+
+05 — Schedules, Activities & Commitments
+Schedule = recurring/planned pattern.
+Activity = time-occupying instance.
+Commitment = activity with consequences for failure.
+Owns schedules, activities, commitments, reservations, availability and
+recurrence. Planned behavior is not guaranteed behavior.
+
+06 — Persistence, Save/Load & Continuity
+Native format: .reel.
+Stores serializable authoritative world representation, entity IDs, system
+state, clock, RNG, pending events, activities, required history,
+configuration, schema/simulation/content/RNG/serialization versions and
+integrity data.
+Requires atomic writes, validation, recovery and explicit migrations.
+
+07 — Simulation Scale, Relevance & Materialization
+Resolution levels: Abstract, Light, Active, High Detail.
+Relevance considers relationships, interactions, geography, institutions,
+events, schedules, causal dependency and player connection.
+Materialization reveals an existing life; it must not invent a convenient one.
+Compression must preserve causality and determinism.
+
+======================================================================
+II. HUMAN
+======================================================================
+
+08 — Character Identity & Origin
+Owns immutable personId, identity fields, origin, birth, parentage references,
+appearance foundation, generation metadata and identity history.
+Names can change. Death does not delete identity. Origin creates conditions,
+not destiny. Player and NPCs use the same Person architecture.
+
+09 — Aging, Development & Life Stages
+Owns age/development facts, life-stage transitions and milestones.
+Consumes Time, Health, Needs, Education, Skills, Family and environment.
+Chronological age, biological/developmental state and legal age are distinct.
+
+10 — Needs & Daily Living
+Owns recurring need pressure/deficits and satisfaction state.
+Examples: hunger, thirst, sleep, hygiene, comfort, safety, social contact,
+rest and environmental comfort.
+Does not own food, housing, health or psychology.
+
+11 — Physical Health & Medicine
+Owns conditions, injuries, symptoms, treatment and recovery state.
+Does NOT own hospital capacity, staffing, insurance eligibility, transport
+access or geography.
+
+12 — Mental & Emotional State
+Owns mood, emotional state, stress, resilience and configurable mental-health
+state. Not every reaction is a clinical diagnosis.
+
+13 — Personality, Traits & Aptitudes
+Owns relatively persistent traits, preferences, aptitudes and tendencies.
+Traits modify decisions; they do not dictate them.
+
+14 — Skills & Competence
+Owns learned capabilities, proficiency, practice and competence.
+Skill is explicitly separate from credential.
+
+15 — Cognition & Knowledge
+MERGES original Memory + Knowledge/Beliefs/Perception.
+Owns memory records, knowledge, beliefs, perception filters, source
+confidence and recall/access state.
+World truth != person knowledge. Information may be incomplete, false,
+outdated, forgotten or misunderstood.
+
+16 — Goals, Aspirations & Motivation
+Owns goals, aspirations, priorities, motivation pressures and progress.
+Goals are not quests and are not scripts.
+
+17 — NPC Decision-Making & Autonomy
+Central behavior system.
+Consumes state, goals, personality, needs, knowledge, relationships,
+schedules, obligations, resources, laws, opportunities and risks.
+Produces commands/actions/plans. NPCs use the same action/event architecture
+as the player.
+
+======================================================================
+III. SOCIAL
+======================================================================
+
+18 — Relationship & Social Interaction Core
+MERGES Relationships + Conversation + Dating/Romance.
+One universal relationship architecture with friendship, romance, family,
+household, workplace, business, professional, community and institutional
+contexts.
+Conversation is an interaction mechanism; romance is a specialized context.
+
+19 — Family, Household & Genealogy
+Owns family links, household membership, genealogy and family roles.
+Family != household != legal relation.
+
+20 — Children & Parenting
+SUBMODULE of Family/Household.
+Owns caregiving obligations, parenting responsibilities and custody-related
+state where applicable. It does not independently own child development,
+health, needs or education.
+
+21 — Conflict, Negotiation & Reconciliation
+Owns disputes, agreements, negotiation, escalation/de-escalation and repair.
+Interacts with relationships, contracts, organizations, law, courts and
+reputation.
+
+22 — Reputation & Social Perception
+Owns audience-specific reputation, familiarity, social perception and fame.
+Reputation is not a universal objective score; it depends on audience and
+available information.
+
+======================================================================
+IV. EDUCATION / EMPLOYMENT
+======================================================================
+
+23 — Education
+Owns enrollment, programs, academic progression, credentials, attendance and
+educational records. Uses organizations, skills, aging, finance, transport
+and schedules.
+
+24 — Employment & Labor
+MERGES Careers/Jobs + Workplace + Labor Market.
+Submodules:
+- Employment: positions, contracts, compensation.
+- Workplace: organizational daily life.
+- Labor Market: aggregate labor supply/demand.
+Organization Core owns generic teams/hierarchy/policies.
+
+======================================================================
+V. FINANCE / PROPERTY / CONSUMPTION
+======================================================================
+
+25 — Finance & Economy Architecture
+Unified architecture for:
+- Personal/Household Finance: budgets, obligations, cash-flow pressure.
+- Banking/Credit: accounts, loans, payments, credit profiles.
+- Investment: holdings, positions, orders.
+- Markets: prices, supply/demand, clearing.
+- Macro: aggregate indicators and shocks.
+Macro never directly rewrites personal state; effects propagate through jobs,
+prices, credit, demand, supply and other channels.
+Money uses integer minor units, never authoritative floating-point balances.
+
+26 — Ownership / Contracts / Asset Rights
+SHARED PRIMITIVE, not a normal standalone simulation brain.
+Supports ownership, possession, custody, leases, titles, liens, contracts,
+rights, obligations and transfers.
+Used by housing, vehicles, businesses, banking, investment, estates,
+insurance, organizations and government.
+
+27 — Housing & Property
+Domain module on top of Ownership + Markets + Geography.
+Owns residence, occupancy, condition and housing-market interactions.
+
+28 — Transportation & Vehicles
+Owns vehicles, vehicle condition, transport modes, route/availability
+interactions, travel feasibility and travel costs.
+Travel takes time and can fail.
+
+29 — Inventory / Items & Object State
+Shared object domain.
+Owns item identity, quantity, location, condition, ownership reference,
+durability and spoilage where relevant.
+
+30 — Food / Nutrition & Consumption
+Owns food, meals, nutrition, spoilage, consumption and food security.
+Built on Items + Needs + Health + Markets + Finance.
+
+31 — Insurance & Risk Management
+New formalized system.
+Owns policies, premiums, coverage, deductibles, claims, payouts,
+exclusions and policy state.
+Domains: health, vehicle, property, business, life and other insurable risks.
+
+======================================================================
+VI. ORGANIZATIONS / MARKETS
+======================================================================
+
+32 — Organization Core
+Universal organization model for businesses, corporations, schools,
+hospitals, government agencies, courts, police, clubs, religious groups,
+communities, criminal groups and hidden organizations.
+Owns identity, membership, roles, leadership, departments, hierarchy,
+facilities, resources, policies, schedules and internal organization.
+
+33 — Organizations & Businesses
+MERGES Businesses + Corporations + Organizational Control.
+Submodules: legal structure, ownership/control, operations, B2B and supply
+chain. Uses Organization Core, Ownership, Contracts, Employment, Markets,
+Finance and Information.
+
+34 — Supply Chains & B2B
+Submodule/domain under Organizations & Businesses.
+Owns supplier/customer relationships, procurement, production dependencies,
+logistics dependencies, inventory flow and B2B contracts.
+
+35 — Markets / Prices & Competition
+Owns supply, demand, price formation, market clearing and competition state.
+Businesses submit offers/actions; markets resolve market state.
+
+36 — Macroeconomic Layer
+Owns aggregate economic indicators, cycles and shocks.
+Does not directly mutate individuals.
+
+======================================================================
+VII. WORLD / SOCIETY
+======================================================================
+
+37 — Geography / Cities / Neighborhoods / Infrastructure
+Spatial authority for world geography, cities, neighborhoods, buildings,
+spatial relationships and infrastructure references.
+
+38 — Infrastructure Operations
+New formalized system.
+Owns maintenance, outages, capacity, degradation, repairs, construction
+status and service availability for roads, power, water, communications,
+transport infrastructure and public facilities.
+
+39 — Countries & World Rules
+Owns country identity, jurisdictional metadata and broad data-driven rule
+configuration.
+
+40 — Legal Identity & Administrative Records
+Owns official identity records, citizenship, registrations, licenses,
+permits, documents and administrative status.
+
+41 — Laws & Regulatory Rules
+Owns laws, regulations, jurisdictions, effective periods, applicability,
+rights, penalties and restrictions.
+
+42 — Institutions & Institutional Memory
+Owns institutional procedures, workflows, case history, internal records,
+policies and long-term institutional memory.
+
+43 — Government & Public Services
+Owns public budgets, services, programs and policy execution.
+Uses Organization Core and shared legal/administrative infrastructure.
+
+44 — Culture / Religion / Community / Tradition
+Owns cultural norms, traditions, community practices and religious contexts.
+Specialized religious organizations use Organization Core.
+
+45 — Travel / Immigration / Borders
+Owns travel rules, border controls, visas, residency and migration
+processes. Uses Legal Identity, Countries, Authority Checks, Transport,
+Schedules and Geography.
+
+46 — Weather / Environment / Disasters
+Owns weather, environmental conditions, hazards and disasters and their
+environmental effects.
+
+47 — Population & Demographics
+New aggregate layer.
+Owns population groups, demographic rates, births, deaths, migration,
+household formation/dissolution, age distributions and broad population
+changes.
+Must support deterministic individual materialization from aggregate state.
+
+======================================================================
+VIII. SECURITY / LEGAL
+======================================================================
+
+48 — Security & Legal Pipeline
+MERGES Crime/Emergencies + Justice/Courts + Criminal Organizations +
+Hidden/Grey/Black Economies.
+Layers:
+- Incident/Emergency
+- Investigation/Evidence
+- Court/Proceeding
+- Criminal/Hidden Organization
+- Secrecy/Detection
+Criminal organizations use Organization Core. Hiddenness uses Authority,
+Access and Secrecy primitives.
+
+======================================================================
+IX. INFORMATION
+======================================================================
+
+49 — Information / Communication / Media
+MERGES Information Graph + News/Media + Internet/Social Media.
+Submodules:
+- Information Graph: claims, sources, provenance, confidence, propagation.
+- Communication: in-person, phone, mail, digital and institutional channels.
+- Media: editorial/newsroom behavior.
+- Internet/Social: platforms, accounts, posts, algorithms.
+Information truth and personal knowledge remain distinct.
+
+50 — Communication / Messaging
+SUBLAYER of 49.
+Owns messages, sender/recipient, channel, timestamp, delivery and
+visibility/access state.
+Channels include in-person, phone, mail, text, email, social and institutional.
+
+======================================================================
+X. TECHNOLOGY / GLOBAL
+======================================================================
+
+51 — Technology & Historical Change
+Owns technologies, availability, adoption, diffusion and technological eras.
+Affects jobs, business, medicine, transport, communication, education,
+security and household life.
+
+52 — International Relations & Global Events
+Owns diplomatic relationships, treaties, international events, sanctions,
+conflicts and international trade relationships where modeled.
+Keep abstract early; increase detail when relevant.
+
+======================================================================
+XI. LIFE CONTINUITY
+======================================================================
+
+53 — Life Continuity
+MERGES Death + Estate + Generations + Multi-Generational Consequences.
+Pipeline:
+Death → End-of-Life/Funeral → Estate/Probate → Succession →
+Generational Continuation → Legacy/Consequence Tracing.
+Legacy must travel through actual property, records, institutions,
+relationships, culture, knowledge, organizations or reputation.
+No arbitrary invisible descendant bonuses/penalties.
+
+======================================================================
+XII. PLAYER / SUPPORT
+======================================================================
+
+54 — Player History & Analytics
+MERGES Timeline + Journal + Statistics.
+Timeline = curated chronology.
+Journal = player-perspective record.
+Statistics = derived analytics.
+None becomes authoritative simulation state.
+
+55 — Player UI
+Presentation layer only. Reads state and issues commands.
+
+56 — Map & Spatial Presentation
+Presentation layer for geography and spatial state. Does not own spatial truth.
+
+57 — Console / Command Interface
+Debug/power-user interface using command/query architecture.
+May expose hidden/debug state only in authorized modes.
+
+58 — Configuration & Content Architecture
+MERGES Game Modes + Difficulty + Data/Rules.
+Schemas for scenario, difficulty, world configuration, content definitions,
+rule configuration and mod/expansion metadata.
+
+59 — Debugging / Observability / Simulation Testing
+Required infrastructure.
+Owns diagnostics, traces, event inspection, causal inspection, invariants,
+performance telemetry, simulation probes and cross-system tests.
+Must support deterministic replay and save/load equivalence testing.
+
+======================================================================
+SHARED PRIMITIVES
+======================================================================
+
+EntityRef
+- Stable entity reference surviving save/load and lifecycle changes.
+
+Money
+- Integer minor units; never authoritative floating-point balances.
+
+Time
+- Timestamp/duration representation tied to the authoritative clock.
+
+LocationRef
+- Stable spatial reference.
+
+EventRef
+- Stable event reference.
+
+Contract
+- Parties, rights, obligations, terms, dates and state.
+
+Relationship
+- Universal contextual interpersonal relationship structure.
+
+Organization
+- Universal organization structure.
+
+InformationClaim
+- Claim + source/provenance + confidence + visibility + propagation state.
+
+Asset
+- Economic/legal/ownership-relevant thing.
+
+Activity
+- Time-occupying action instance.
+
+AuthorityCheck
+- actor + action + target + jurisdiction + time + context →
+  ALLOWED / DENIED / CONDITIONAL.
+
+ResolutionObject
+- applicability + conditions + candidates + weights/probabilities +
+  selected outcome + RNG/debug metadata.
+
+======================================================================
+ACTION / COMMAND MODEL
+======================================================================
+
+This is a required shared architecture primitive.
+
+Pipeline:
+Intent → Command → Validation → Action Resolution → Event →
+Consequences → New State
+
+Example:
+Player wants to quit a job
+→ QuitJobCommand
+→ validate contract/authority/time
+→ employment resolves resignation
+→ JobResignation event
+→ finance + schedule + reputation + organization + information effects
+
+The UI never performs those mutations itself.
+
+======================================================================
+AUTHORITY / ACCESS MODEL
+======================================================================
+
+Reusable evaluation:
+actor + action + target + jurisdiction + time + role + credentials +
+ownership + permissions + legal status + organizational status +
+secrecy/access state
+→ allowed / denied / conditional
+
+Examples:
+- entering a building
+- accessing records
+- voting
+- crossing a border
+- accessing evidence
+- performing regulated work
+- transferring an asset
+
+Law defines rules; AuthorityCheck resolves a specific contextual action.
+
+======================================================================
+DEPENDENCY PRINCIPLES
+======================================================================
+
+Foundation:
+Simulation Core ↔ Time, RNG, Events, Persistence, Simulation Scale.
+
+Time → Aging, Activities, Events, Expiration.
+RNG → generation, development, decisions, events, markets, world variation.
+Events ↔ all domain systems.
+Schedules ↔ Time, NPC Decisions, Education, Employment, Family, Transport.
+
+Identity → Aging, Family, Legal Identity, Life Continuity.
+Needs ↔ Food, Housing, Health, Mental State, Finance.
+Health ↔ institutions, Insurance, Transport, Employment, Finance.
+Cognition ↔ Information, Relationships, NPC Decisions.
+Goals → NPC Decisions.
+NPC Decisions → Commands, Activities, Social actions, Work, Finance,
+Crime, Communication, Relationships.
+
+Relationships ↔ Family, Employment, Organizations, Information, Reputation,
+Conflict.
+Education ↔ Organizations, Skills, Aging, Finance, Transport, Schedules.
+Employment ↔ Organizations, Labor, Finance, Schedules, Skills.
+Finance ↔ Employment, Markets, Banking, Housing, Businesses, Insurance,
+Government.
+
+Geography → Housing, Transport, Organizations, Infrastructure, Environment,
+Population.
+Legal Identity ↔ Countries, Laws, Government, Immigration.
+Laws → Authority, Security/Legal, Organizations, Government.
+Information ↔ Cognition, Reputation, Organizations, Government, Security,
+Social systems.
+Life Continuity ↔ Identity, Family, Ownership, Contracts, Finance, Legal
+Identity, Reputation, Organizations, History.
+
+======================================================================
+POPULATION / ABSTRACT SIMULATION RULES
+======================================================================
+
+At low resolution, simulate groups:
+births, deaths, age distribution, households, migration, employment,
+education participation, broad health, housing pressure and movement.
+
+When relevance increases, materialize individuals.
+
+Materialization must preserve:
+existing demographic history, geography, economic conditions, relevant
+relationships and causal history.
+
+Never create a convenient NPC merely because the player looks at them.
+
+======================================================================
+INFRASTRUCTURE / CONSTRUCTION EXPANSION
+======================================================================
+
+Construction/Industrial Capacity is a planned later expansion, not required
+for the initial core.
+
+Potential state:
+construction projects, industrial capacity, production facilities,
+materials, construction labor, capital requirements and infrastructure
+buildout.
+
+It integrates with Organizations, Markets, Finance, Employment, Geography,
+Infrastructure and Technology.
+
+======================================================================
+FINAL IMPLEMENTATION REGISTER
+======================================================================
+
+Foundation:
+01 Simulation Core & World State
+02 Time, Calendar & Clock
+03 Randomness, Seeds & Scenario Resolution
+04 Event & Consequence Engine
+05 Schedules, Activities & Commitments
+06 Persistence, Save/Load & Continuity
+07 Simulation Scale, Relevance & Materialization
+
+Human:
+08 Character Identity & Origin
+09 Aging, Development & Life Stages
+10 Needs & Daily Living
+11 Physical Health & Medicine
+12 Mental & Emotional State
+13 Personality, Traits & Aptitudes
+14 Skills & Competence
+15 Cognition & Knowledge
+16 Goals, Aspirations & Motivation
+17 NPC Decision-Making & Autonomy
+
+Social:
+18 Relationship & Social Interaction Core
+19 Family, Household & Genealogy
+20 Children & Parenting (submodule)
+21 Conflict, Negotiation & Reconciliation
+22 Reputation & Social Perception
+
+Education/Employment:
+23 Education
+24 Employment & Labor
+
+Finance:
+25 Finance & Economy Architecture
+26 Ownership / Contracts / Asset Rights (shared primitive)
+27 Housing & Property
+28 Transportation & Vehicles
+29 Inventory / Items & Object State
+30 Food / Nutrition & Consumption
+31 Insurance & Risk Management
+
+Organizations/Markets:
+32 Organization Core
+33 Organizations & Businesses
+34 Supply Chains & B2B
+35 Markets / Prices & Competition
+36 Macroeconomic Layer
+
+World:
+37 Geography / Cities / Neighborhoods / Infrastructure
+38 Infrastructure Operations
+39 Countries & World Rules
+40 Legal Identity & Administrative Records
+41 Laws & Regulatory Rules
+42 Institutions & Institutional Memory
+43 Government & Public Services
+44 Culture / Religion / Community / Tradition
+45 Travel / Immigration / Borders
+46 Weather / Environment / Disasters
+47 Population & Demographics
+
+Security:
+48 Security & Legal Pipeline
+
+Information:
+49 Information / Communication / Media
+50 Communication / Messaging (sublayer)
+
+Technology/Global:
+51 Technology & Historical Change
+52 International Relations & Global Events
+
+Continuity:
+53 Life Continuity
+
+Player/Support:
+54 Player History & Analytics
+55 Player UI
+56 Map & Spatial Presentation
+57 Console / Command Interface
+58 Configuration & Content Architecture
+59 Debugging / Observability / Simulation Testing
+
+NOTE:
+The final .txt documentation pack should be based on implementation-level
+systems, not the original conceptual 74. Each final system document should
+contain: purpose, philosophy, scope, owned state, entities, attributes,
+rules, inputs, outputs, dependencies, interactions, hidden/observable state,
+time behavior, decision logic, event interactions, consequences, edge cases,
+failure states, exploit prevention, data definitions, formulas, UI,
+privacy, save/load, resolution/performance, tests, emergent stories,
+explicit exclusions, open questions and future expansion.
+
+ARCHITECTURAL LOCK CHECKLIST
+----------------------------
+[ ] Every persistent authoritative field has one owner.
+[ ] Relationship databases are unified.
+[ ] Organization hierarchy is unified.
+[ ] Money uses integer minor units.
+[ ] One authoritative clock exists.
+[ ] RNG is controlled and serializable.
+[ ] Commands are distinct from events.
+[ ] Events are distinct from activities.
+[ ] Information is distinct from truth.
+[ ] Cognition is distinct from world state.
+[ ] Legal identity is distinct from simulation identity.
+[ ] Authority checks are reusable.
+[ ] Ownership/contracts are reusable.
+[ ] Organizations share Organization Core.
+[ ] Population simulation can materialize individuals.
+[ ] Resolution changes preserve causality.
+[ ] UI cannot directly mutate state.
+[ ] .reel is native persistence format.
+[ ] Save/load preserves deterministic continuation.
+[ ] Death preserves identity/history.
+[ ] Legacy is causally propagated.
+[ ] Hidden state remains protected.
+[ ] Debugging/observability is first-class.
+[ ] Cross-system tests exist.
+[ ] Content/configuration is separate from engine logic.
+[ ] No system has become a god-object.
+[ ] Deferred systems have explicit boundaries.
+
+FINAL DESIGN PRINCIPLE
+----------------------
+ReelLife should feel alive because interacting systems generate stories,
+not because stories are secretly scripted.
+
+People have state.
+People have needs.
+People have knowledge.
+People have relationships.
+People make decisions.
+Organizations have incentives.
+Institutions have procedures.
+Markets respond.
+Laws constrain behavior.
+Information propagates.
+Time passes.
+Environments change.
+Events create consequences.
+Consequences create new conditions.
+
+CONDITIONS
+    ↓
+DECISIONS
+    ↓
+EVENTS
+    ↓
+CONSEQUENCES
+    ↓
+NEW CONDITIONS
+    ↓
+MORE DECISIONS
+    ↓
+MORE EVENTS
+    ↓
+...
+
+That loop is ReelLife.

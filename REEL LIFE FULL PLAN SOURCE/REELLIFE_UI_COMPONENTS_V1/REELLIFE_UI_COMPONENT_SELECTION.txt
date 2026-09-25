@@ -1,0 +1,36 @@
+REELLIFE UI COMPONENT SELECTION RULES
+=====================================
+
+1. Prefer semantic utility over visual novelty.
+A component must solve a real UI/UX requirement from the approved specifications.
+
+2. Preserve the simulation boundary.
+Components can display state and dispatch commands. They cannot own authoritative state.
+
+3. Progressive disclosure.
+A visually simple component may open a deeper surface. Do not expose every simulation field at once.
+
+4. Accessibility first.
+Prefer components with keyboard support, focus handling, semantic structure, labels, and reduced-
+motion options.
+
+5. Performance awareness.
+Do not use expensive pointer/scroll animations across large NPC lists or frequently updating data.
+
+6. Exact values remain exact.
+Animated counters are presentation only. Never let animation obscure source-of-truth values or
+uncertainty status.
+
+7. Uncertainty must remain visible.
+Facts, estimates, unknowns, rumors, and inferences must not be visually flattened into the same
+semantic treatment merely because the component is decorative.
+
+8. Context first.
+Buttons and actions should appear where the decision is being made, rather than forcing navigation
+through unrelated menus.
+
+9. Responsive behavior.
+Components must degrade cleanly across desktop and mobile layouts specified by UI/UX 23.
+
+10. Motion is optional.
+Every non-essential motion effect should have a reduced-motion-safe alternative.

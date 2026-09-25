@@ -1,0 +1,209 @@
+WORLD BUILD 11 — POPULATION & DEMOGRAPHICS
+AURELIA WORLD BIBLE V1
+============================================================
+
+Global population
+-----------------
+Aurelia begins with approximately 6.8 billion people.
+
+Continental population targets
+------------------------------
+Elandra: ~1.35 billion
+Veyra: ~1.55 billion
+Sahraen: ~1.25 billion
+Orinth: ~1.10 billion
+Kharos: ~0.85 billion
+Ilyra: ~0.70 billion
+Total: ~6.80 billion
+
+Population distribution
+-----------------------
+Population is concentrated in:
+- river basins
+- fertile agricultural regions
+- temperate coasts
+- industrial corridors
+- major ports
+- established metropolitan regions
+
+Low-density environments include:
+- deserts
+- high mountains
+- tundra
+- dense rainforest interiors
+- remote islands
+- extreme northern regions
+
+Demographic dimensions
+----------------------
+- age structure
+- fertility
+- mortality
+- life expectancy
+- household size and composition
+- births and deaths
+- marriage and cohabitation patterns
+- urbanization
+- density
+- education and literacy
+- employment and labor participation
+- health
+- wealth and income distributions
+- internal migration
+- international migration
+- refugee and displacement patterns
+- language composition
+- religious composition
+- citizenship
+
+Age structure
+-------------
+Population is tracked through age cohorts including infants, children, adolescents, young adults, adults, middle-aged adults and elderly populations.
+
+Births and fertility
+--------------------
+Births emerge from population age structure, fertility rates, relationships, household formation, healthcare access, economic conditions, cultural context and individual reproductive decisions.
+
+Mortality
+---------
+Deaths emerge from age, health, disease, accidents, disaster exposure, violence, environmental conditions, healthcare access and conflict.
+
+Life expectancy
+---------------
+Average life expectancy differs by country and region because of healthcare, nutrition, sanitation, income, education, environment and safety. Individual lifespan remains variable.
+
+Households
+----------
+Household types include:
+- single-person
+- couple
+- family with children
+- multigenerational
+- extended-family
+- shared housing
+- student housing
+- communal living
+- institutional households
+
+Household formation can result from marriage, partnership, leaving home, migration, education, employment, divorce, separation, widowhood, family decisions and housing availability.
+
+Urbanization
+------------
+Approximately 70% of Aurelia's population is urban or metropolitan at game start, with substantial country-level variation.
+
+Rural populations remain economically important through farming, livestock, forestry, fishing, resource extraction and remote community life.
+
+Migration
+---------
+Internal migration is driven by jobs, education, housing, family, marriage, disasters, conflict, climate and opportunity.
+
+International migration is shaped by employment, education, family reunification, safety, political conditions, economics and legal eligibility.
+
+Forced displacement can result from war, persecution, disaster, famine, instability and environmental collapse.
+
+Diaspora
+--------
+Migration creates long-lived diaspora networks that can preserve language, religion, food, businesses, family connections and cultural practices while also evolving over generations.
+
+Education and labor demographics
+-------------------------------
+Age structure affects demand for schools, teachers, universities and vocational training. Labor-force size depends on working-age population, health, education, participation, migration and retirement.
+
+Dependency
+----------
+The simulation tracks broad dependency relationships between children, working-age adults and elderly populations.
+
+Population interactions
+-----------------------
+Population interacts with housing, infrastructure, economy, culture, religion, technology, environment and institutions.
+
+Key feedback loop:
+Population -> Households -> Labor / Education / Consumption -> Economy -> Housing / Infrastructure -> Living Conditions -> Fertility / Mortality / Migration -> Population
+
+Demographic equation
+--------------------
+Population Change = Births - Deaths + Immigration - Emigration
+
+At regional levels, internal migration is also represented.
+
+Demographic transition
+----------------------
+Countries may move through different combinations of:
+- high births and high deaths
+- falling mortality
+- rapid population growth
+- declining fertility
+- stabilization
+- aging
+
+Countries need not follow identical trajectories.
+
+Generational cohorts
+--------------------
+Cohorts can be shaped by wars, economic booms, disasters, technological shifts, pandemics and migration waves. Those experiences can persist across decades.
+
+Aggregate simulation
+--------------------
+At low resolution, populations are represented statistically. When relevance rises, households and individuals can be materialized while preserving demographic context and causal history.
+
+PopulationRegion model
+----------------------
+RegionId
+TotalPopulation
+AgeDistribution
+SexDistribution
+BirthRate
+DeathRate
+FertilityRate
+LifeExpectancy
+HouseholdDistribution
+UrbanizationRate
+EmploymentRate
+EducationDistribution
+MigrationRate
+Immigration
+Emigration
+PopulationDensity
+ReligiousComposition
+LanguageDistribution
+CitizenshipDistribution
+IncomeDistribution
+HistoricalTrend
+
+Household model
+---------------
+HouseholdId
+Members
+HouseholdType
+FormationDate
+Location
+Income
+Housing
+Dependents
+Children
+CareResponsibilities
+MigrationHistory
+CulturalProfile
+EconomicStatus
+HistoricalChanges
+
+Individual demographic context
+------------------------------
+Person
+Age
+Sex
+Birthplace
+CurrentLocation
+Citizenship
+Household
+Parents
+Children
+MigrationHistory
+Education
+Employment
+CulturalProfile
+ReligiousProfile
+
+Demographic determinism rule
+----------------------------
+Demographic categories are statistical structures, not deterministic personality or behavior scripts.

@@ -1,0 +1,161 @@
+WORLD BUILD 09 — INSTITUTIONS & ORGANIZATIONS
+AURELIA WORLD BIBLE V1
+============================================================
+
+Institution vs organization
+---------------------------
+Institution = durable social system or framework.
+Organization = concrete entity operating within one or more institutions.
+
+Universal organization model
+----------------------------
+Every organization should be able to represent:
+- identity
+- founders
+- owners
+- members
+- employees
+- leadership
+- departments
+- locations
+- assets
+- liabilities
+- revenue
+- expenses
+- contracts
+- policies
+- goals
+- capacity
+- reputation
+- legal status
+- relationships
+- history
+- organizational memory
+
+Organization types
+------------------
+- governmental
+- commercial
+- financial
+- educational
+- healthcare
+- religious
+- civic
+- labor
+- media
+- international
+
+Institutional areas
+-------------------
+Aurelia contains institutional networks for:
+- government
+- municipal administration
+- courts
+- education
+- healthcare
+- finance
+- religion
+- media
+- labor
+- civil society
+- international cooperation
+
+Institutional memory
+--------------------
+Institutions and organizations retain knowledge through:
+- records
+- procedures
+- precedents
+- policies
+- reputation
+- employee knowledge
+- institutional history
+
+Organizations can gain, lose or distort institutional memory.
+
+Organizational dynamics
+-----------------------
+Organizations can experience:
+- founding
+- growth
+- restructuring
+- hiring
+- leadership change
+- mergers
+- acquisitions
+- branch creation
+- branch closure
+- failure
+- bankruptcy
+- reputational damage
+- recovery
+- organizational politics
+- path dependence
+
+Institutional capacity
+----------------------
+Institution quality is not a single score. Relevant dimensions include:
+- funding
+- staffing
+- administrative capacity
+- public trust
+- service reach
+- expertise
+- bottlenecks
+- procedures
+- infrastructure
+
+Organizations affect cities and communities through employment, investment, infrastructure, services and culture.
+
+Data models
+-----------
+Organization:
+OrganizationId
+LegalName
+CommonName
+OrganizationType
+LegalStatus
+FoundingDate
+Founders
+ParentOrganization
+Subsidiaries
+Owners
+Members
+Employees
+Leadership
+Departments
+Locations
+Assets
+Liabilities
+Revenue
+Expenses
+Contracts
+Policies
+Goals
+Capacity
+Reputation
+InstitutionalMemory
+PublicInformation
+PrivateInformation
+Relationships
+CurrentState
+History
+
+Institution:
+InstitutionId
+Name
+InstitutionType
+Jurisdictions
+HistoricalOrigins
+Rules
+Norms
+Organizations
+Authorities
+Participants
+PublicTrust
+Capacity
+Funding
+HistoricalChanges
+CurrentState
+
+Exact named governments, ministries, banks, universities, hospitals, media organizations, major corporations, unions and international organizations remain later content.

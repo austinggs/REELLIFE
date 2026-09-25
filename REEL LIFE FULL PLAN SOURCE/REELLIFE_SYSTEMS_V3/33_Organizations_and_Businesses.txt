@@ -1,0 +1,83 @@
+REELLIFE — SYSTEM 33: ORGANIZATIONS & BUSINESSES
+==================================================
+Status: Approved architecture
+
+ROLE
+----
+Commercial specialization of Organization Core for firms, stores, services, factories, startups, employers, and other businesses.
+
+OWNS
+-----
+- business state
+- commercial structure
+- ownership references
+- products/services
+- locations
+- employees
+- suppliers/customers references
+- assets/capacity
+- revenue/cost flow references
+- inventory
+- strategy/operations
+- business history
+
+DOES NOT OWN
+------------
+- generic organization membership rules
+- market price formation
+- detailed industrial capacity
+- ownership rights semantics
+- personal labor competence
+
+MODEL / STATE
+-------------
+- Businesses can be sole proprietorships, partnerships, corporations, stores, services, factories, startups, and similar structures
+- Business lifecycle: idea -> forming -> opening -> active -> expanding -> restructuring -> suspended -> closed
+- Capacity is constrained by employees, equipment, space, capital, inventory, supply, and time
+
+RULES / BEHAVIOR
+-----------------
+- Creation can come from entrepreneurship, investment, inheritance, partnerships, or spin-offs
+- Management is driven by people and organizational decision processes
+- Revenue can come from sales, contracts, subscriptions, services, licensing, or investment
+- Costs include wages, rent, materials, utilities, transport, taxes, financing, insurance, maintenance, and marketing
+- Failure can come from insolvency, low demand, supply shocks, competition, poor management, disasters, regulation, staff loss, financing, or reputation
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Finance, Employment, Supply Chains, Markets, Ownership, Insurance, Infrastructure, Law, Geography, and Reputation
+- Industrial detail beyond abstract input/output is deferred to the planned construction/industrial expansion
+
+TESTING / QUALITY
+-----------------
+- Test startup creation, staffing, cash flow, supply failure, demand shocks, closures, restructures, spin-offs, ownership changes, and organizational autonomy
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+A business coordinates people, resources, capital, production, and exchange under uncertainty.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

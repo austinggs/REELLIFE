@@ -1,0 +1,31 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 13 — Inventory & Assets
+==============================================================================
+
+Purpose
+Defines how players inspect, use, move, transfer, repair, sell, and otherwise interact with physical items and assets.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Item vs Asset
+----------------
+Display the difference between an ItemDefinition and an individual ItemInstance. Named or persistent objects should retain their identity when appropriate.
+
+2. Possession State
+-------------------
+Show owner, possessor/custodian, location, condition, and access status where relevant.
+
+3. Actions
+----------
+Use, consume, equip, store, transfer, sell, repair, transform, lose, recover, or dispose according to item capabilities and authority.
+
+4. Context
+----------
+Inventory views should support filters by location, owner, type, condition, and relevance to current activity.
+
+5. Financial/Legal Link
+-----------------------
+Valuable or legally significant assets should link to ownership, contracts, insurance, and financial records where relevant.
+
+End of specification.

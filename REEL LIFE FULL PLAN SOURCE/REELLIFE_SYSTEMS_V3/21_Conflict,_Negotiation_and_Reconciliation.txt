@@ -1,0 +1,87 @@
+REELLIFE — SYSTEM 21: CONFLICT, NEGOTIATION & RECONCILIATION
+==============================================================
+Status: Approved architecture
+
+ROLE
+----
+Models disputes, incompatible interests, bargaining, mediation, apology, settlement, escalation, and unresolved conflict.
+
+OWNS
+-----
+- conflict state
+- disputes
+- claims/counterclaims
+- offers/demands
+- concessions
+- negotiation
+- mediation
+- arbitration configuration
+- escalation/de-escalation
+- settlement
+- apology
+- forgiveness/reconciliation state
+- conflict history
+
+DOES NOT OWN
+------------
+- personality
+- emotions
+- relationship values
+- formal contracts
+- crime/courts/laws
+- medical/financial state
+
+MODEL / STATE
+-------------
+- Conflict lifecycle can move NONE -> EMERGING -> ACTIVE -> NEGOTIATING -> ESCALATING or DEESCALATING -> RESOLVED, with unresolved/withdrawn/expired variants
+- Claims can be true, false, partial, uncertain, disputed, or misunderstood
+- Positions differ from underlying interests
+- Bargaining power is contextual
+
+RULES / BEHAVIOR
+-----------------
+- Conflict does not automatically imply violence, crime, hatred, or legal proceedings
+- Informal agreements differ from formal contracts
+- Broken agreements create downstream consequences
+- Information asymmetry affects negotiation
+- Apology, forgiveness, and reconciliation depend on context and relationship history
+- Group conflict is supported
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Relationship Core for social ties; Cognition/Information for claims and asymmetry; NPC Decision for negotiation actions; Legal/Contract systems when disputes formalize
+- ResolutionObject supports offers, counteroffers, settlement, and mediator outcomes
+
+TESTING / QUALITY
+-----------------
+- Test deadlock, partial agreement, hidden interests, asymmetric information, escalation cycles, and unresolved-but-stable disputes
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Conflict should have a believable causal path toward resolution, transformation, or persistent unresolved tension.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

@@ -1,0 +1,82 @@
+REELLIFE — SYSTEM 02: TIME, CALENDAR & CLOCK
+==============================================
+Status: Approved architecture
+
+ROLE
+----
+Provides the single authoritative temporal model for the world.
+
+OWNS
+-----
+- authoritative world timestamp
+- durations and temporal ordering
+- calendar/date/week/season calculations
+- time zones and local time
+- DST rules where applicable
+- holidays as data-driven calendar content
+- day/night derivation
+- deadlines and expiration
+- simulation speed and pause state
+
+DOES NOT OWN
+------------
+- what a person chooses to do
+- relationship outcomes
+- medical outcomes
+- economic consequences
+- domain-specific activity behavior
+
+MODEL / STATE
+-------------
+- Use an absolute timestamp internally and derive calendar fields from it
+- Shared duration abstraction is used by Activities, Events, aging, deadlines, travel, and contracts
+- Temporal ordering uses timestamp + priority + sequence to make same-time events deterministic
+- Seasons and holidays are location/configuration aware rather than globally hard-coded
+
+RULES / BEHAVIOR
+-----------------
+- Aging derives from birthTimestamp and currentTimestamp
+- Scheduled activities may be interrupted even though time continues
+- Simulation speeds such as 1x/10x/100x/1000x change processing cadence, not temporal truth
+- Pause freezes authoritative simulation time
+- Offline catch-up uses saved time and current time with resolution-aware processing
+
+SYSTEM INTERACTIONS
+-------------------
+- Time feeds Aging, Activities, Events, expiration, contracts, employment, education, travel, weather, and world events
+- Activities specify what is expected during time; NPC Decision determines what actually happens
+- All systems must share the same authoritative clock
+
+TESTING / QUALITY
+-----------------
+- Test boundary dates, leap/calendar behavior as configured, time zones, DST, deadlines, simultaneous ordering, speed changes, pause, catch-up, and replay equivalence
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Time answers WHEN; it does not answer WHY or WHAT someone chooses.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

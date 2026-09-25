@@ -1,0 +1,41 @@
+REELLIFE UI COMPONENT ACQUISITION LOG
+=====================================
+Date: 2026-09-24
+
+A. SHADCN/UI — BUNDLED SOURCE
+Repository:
+https://github.com/shadcn-ui/ui
+License:
+MIT
+Official documentation:
+https://ui.shadcn.com/docs/components
+
+Reason for inclusion:
+The official shadcn/ui repository is MIT-licensed and its model is source-oriented/customizable.
+A curated set of source components is therefore included with the required MIT license notice.
+The components are reference/use material and are not automatically enabled in ReelLife.
+
+B. REACT BITS — REFERENCE ONLY
+Repository:
+https://github.com/DavidHDev/react-bits
+Official site:
+https://reactbits.dev/
+License observed:
+MIT + Commons Clause License Condition v1.0
+
+Reason for link-only treatment:
+The current React Bits license permits use under its conditions but specifically restricts
+redistribution of the components themselves, including in a bundle or as a port. The ReelLife
+bundle therefore contains metadata and official links only for React Bits.
+
+C. OTHER UI SOURCES
+Aceternity UI was reviewed as an additional source of free React/Tailwind components and blocks.
+It was not bundled in this first pack. Its official site and CLI are recorded here for future
+review when a specific component is needed:
+https://ui.aceternity.com/components
+https://ui.aceternity.com/components/cli
+
+D. SELECTION PRINCIPLE
+We are not adopting a component marketplace as ReelLife's architecture. UI components are chosen
+for bounded purposes and remain subordinate to the approved ReelLife UI/UX specifications and
+simulation boundary.

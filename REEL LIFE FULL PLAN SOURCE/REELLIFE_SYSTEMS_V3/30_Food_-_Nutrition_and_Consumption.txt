@@ -1,0 +1,80 @@
+REELLIFE — SYSTEM 30: FOOD / NUTRITION & CONSUMPTION
+======================================================
+Status: Approved architecture
+
+ROLE
+----
+Models food as a physical, nutritional, economic, cultural, and consumption system.
+
+OWNS
+-----
+- food properties
+- meals
+- preparation
+- spoilage
+- dietary properties
+- nutrition
+- food safety
+- consumption process
+- food preference effects
+- food origin/context
+
+DOES NOT OWN
+------------
+- hunger need state
+- general inventory ownership
+- money ledger
+- housing kitchen structure
+- market prices
+
+MODEL / STATE
+-------------
+- FoodItem can track quantity, freshness, spoilage, preparation, nutrition, safety, and origin
+- Nutrition can include energy, protein, carbohydrate, fat, fiber, micronutrients, and hydration
+- Process: acquire -> store -> prepare -> consume -> digestion/metabolic effects -> need satisfaction/nutrition effects
+
+RULES / BEHAVIOR
+-----------------
+- Preparation can change safety, nutrition, taste, and shelf life
+- Spoilage depends on time, temperature, storage, packaging, and preservation
+- Food preference can be affected by culture, religion, family, availability, personal preference, and finance
+- Hunger is a Needs input; food is not itself a need gauge
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Inventory, Needs, Health, Culture, Housing, Finance, Markets, and NPC Decision
+- Consumption creates events and monetary/inventory changes where appropriate
+
+TESTING / QUALITY
+-----------------
+- Test spoilage, preparation variants, dietary restrictions, shortages, refrigeration failures, cultural patterns, and nutrition over time
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Food is a physical resource connecting hunger, health, culture, finance, inventory, housing, and behavior.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

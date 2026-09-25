@@ -1,0 +1,101 @@
+WORLD BUILD 07 — RELIGIONS & BELIEF COMMUNITIES
+AURELIA WORLD BIBLE V1
+============================================================
+
+Core separation
+---------------
+The simulation distinguishes:
+- belief
+- religious identity
+- religious practice
+- religious community
+- religious institution
+- religious tradition
+- spirituality
+- nonbelief
+
+Seven major transregional traditions
+------------------------------------
+1. The Covenant Faith
+   Strong historical presence in western and central Elandra.
+   Themes: covenant, moral law, responsibility, community, charity, justice, scholarship.
+
+2. The Way of the Living Word
+   Strong historical presence in the Veyran sphere.
+   Themes: sacred teaching, compassion, personal transformation, community and service.
+   Historical institutions include monasteries, schools and hospitals.
+
+3. The Radiant Path
+   Strong presence along Sahraen trade corridors.
+   Themes: balance, discipline, enlightenment, compassion, self-knowledge and cycles of existence.
+
+4. The Many-Hearth Traditions
+   Family of local and regional traditions, especially in Sahraen and Orinth.
+   Themes: ancestors, household spirits, sacred places, nature, community, seasons and oral tradition.
+
+5. The River Teachings
+   Historical roots in Ardan, Saren, Veyr and Orin river civilizations.
+   Themes: harmony, responsibility, wisdom, learning, proper conduct and social/natural balance.
+   These teachings may function as religious, philosophical or blended traditions.
+
+6. The Sky and Earth Tradition
+   Strong historical presence among northern and highland peoples.
+   Themes: sky, land, ancestors, seasons, animals and stewardship.
+
+7. The Open Hand Philosophy
+   Ethical and philosophical movement centered on human dignity, compassion, mutual aid, reason and social equality.
+   It can function as secular humanism or a broader ethical philosophy.
+
+Other religious and nonreligious life
+-------------------------------------
+Aurelia contains:
+- local religions
+- denominations
+- syncretic traditions
+- minority traditions
+- diaspora religious communities
+- personal spiritual practices
+- secular worldviews
+- nonreligious and atheist populations
+
+Religious change
+----------------
+Religion can change through:
+- birth
+- death
+- migration
+- conversion
+- deconversion
+- intermarriage
+- education
+- institutional influence
+- personal experience
+- family transmission
+
+Religion and social systems
+---------------------------
+Religion may interact with:
+- family
+- law
+- education
+- community organization
+- architecture
+- holidays
+- charity
+- political legitimacy
+- migration
+- identity
+
+Religion does not automatically determine political or individual behavior.
+
+Data models
+-----------
+IndividualBeliefProfile
+ReligiousTradition
+ReligiousCommunity
+ReligiousInstitution
+PracticeProfile
+
+Religious institutions use the universal Organization model.
+
+Exact religious population shares, major named institutions and sacred sites remain later current-state content.

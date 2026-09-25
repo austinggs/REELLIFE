@@ -1,0 +1,79 @@
+REELLIFE — SYSTEM 59: DEBUGGING / OBSERVABILITY / SIMULATION TESTING
+======================================================================
+Status: Approved architecture
+
+ROLE
+----
+Mandatory engineering layer for explaining, tracing, validating, replaying, and stress-testing the simulation.
+
+OWNS
+-----
+- diagnostic tools
+- event tracing
+- state inspection
+- invariants
+- causal debugging
+- deterministic replay
+- performance metrics
+- scenario tests
+- regression scenarios
+- consistency checks
+
+DOES NOT OWN
+------------
+- normal gameplay presentation
+- hidden-state rules themselves
+- domain simulation ownership
+
+MODEL / STATE
+-------------
+- Important trace: Command -> Validation -> Action -> Event -> Consequences -> State Changes
+- Causal traces should be able to explain outcomes such as unemployment, disasters, inheritance, or relationship shifts
+- Metrics include step time, throughput, active entities, materialization, memory, event queue, and resolution distribution
+
+RULES / BEHAVIOR
+-----------------
+- Invariants include valid money, valid references/relationships, monotonic authoritative time, event identity/versioning, save/load equivalence, and ownership consistency
+- Deterministic replay uses initial save + content/simulation version + RNG state + command sequence where deterministic mode applies
+- Debugging should detect duplicate state ownership, orphaned entities, impossible dates, invalid relationships, money errors, event loops, RNG misuse, resolution inconsistency, serialization failure, stale entities, and authority violations
+- Debug tools may expose hidden state; normal UI must not
+
+SYSTEM INTERACTIONS
+-------------------
+- Observes all systems without becoming a second source of truth
+- Feeds regression tests and scenario libraries back into implementation
+- Works closely with Console and Persistence
+
+TESTING / QUALITY
+-----------------
+- Cross-system scenario coverage is mandatory: job loss, marriage, disaster, death, rumor, inheritance, migration, market shock, and other causal chains should be reproducible
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+If the simulation cannot explain why something happened, the simulation is not finished.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

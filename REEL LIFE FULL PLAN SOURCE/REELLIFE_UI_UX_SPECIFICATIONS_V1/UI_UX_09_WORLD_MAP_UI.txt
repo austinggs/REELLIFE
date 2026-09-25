@@ -1,0 +1,47 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 09 — World & Map UI
+==============================================================================
+
+Purpose
+Defines the main world-facing spatial interface. This specification is the direct UI/UX dependency that triggered the need for the fictional World Bible.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Purpose
+----------
+The World View answers: Where am I? What exists around me? What is happening nearby? How are places connected?
+
+2. Fictional World
+------------------
+ReelLife uses a fully fictional world rather than relying on real-world geography. The map therefore reads from the Aurelia authoritative geography model.
+
+3. Spatial Hierarchy
+--------------------
+Planet → Continent → Country → Region → City/Settlement → District → Neighborhood → Property → Building → Unit → Room.
+
+4. Map Layers
+-------------
+Political boundaries; physical geography; settlements; infrastructure; transport; properties; organizations; events; services; player-relevant markers; and knowledge-limited information.
+
+5. Marker Knowledge
+-------------------
+The map must not expose hidden events or entities merely because they exist in simulation state. Marker visibility follows player knowledge/access.
+
+6. Routes
+---------
+Routes come from Transportation and are affected by geography, infrastructure, weather, borders, traffic, and availability. The map does not invent route truth.
+
+7. Scale / LOD
+--------------
+World, country, city, and neighborhood views use different levels of detail. Spatial presentation should align with System 07 simulation relevance and materialization.
+
+8. Dynamic World
+----------------
+Geography may be relatively stable while settlements, infrastructure, markers, ownership, and events change. The UI must redraw from current authoritative state.
+
+9. World-Bible Branch
+---------------------
+Because the map is fictional, its place names, geography, countries, cities, regions, historical context, and starting state must be designed as coherent canonical content. This led directly to the World Design and World Build work.
+
+End of specification.

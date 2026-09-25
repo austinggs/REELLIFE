@@ -1,0 +1,108 @@
+WORLD BUILD 02 — CONTINENTS & REGIONS
+AURELIA WORLD BIBLE V1
+============================================================
+
+Aurelia contains six continents and 36 major geographic regions.
+
+1. Elandra
+----------
+- Crownlands
+- Ardan Basin
+- Western Marches
+- Green Coast
+- Inner Steppe
+- Eastern Highlands
+
+2. Veyra
+--------
+- Veyran Heartland
+- Northern Forests
+- Western Coast
+- Central Basin
+- Southern Uplands
+- Eastern Littoral
+
+3. Sahraen
+----------
+- Northern Coast
+- Great Interior
+- Saren Basin
+- Eastern Highlands
+- Southern Savannah
+- Rainforest Belt
+
+4. Orinth
+---------
+- Northern Plains
+- Orinthian Basin
+- Western Grasslands
+- Central Highlands
+- Southern Wall
+- Southern Coast
+
+5. Kharos
+---------
+- Northern Tundra
+- Kharic Range
+- Great Plateau
+- Eastern Forests
+- Central Steppe
+- Southern Basin
+
+6. Ilyra
+--------
+- Western Peninsula
+- Inner Sea Region
+- Central Highlands
+- Eastern Coast
+- Island Arc
+- Southern Peninsula
+
+Regional structure
+------------------
+A Region is a geographic and ecological unit. A region is not automatically a country, culture, language group or political jurisdiction.
+
+Countries may cross regional boundaries. Cultural regions may cross countries. Economic regions may also span multiple jurisdictions.
+
+Regional model
+--------------
+RegionId
+Name
+Continent
+Boundaries
+Elevation
+Climate
+Ecology
+Hydrology
+Geology
+Resources
+Hazards
+SettlementPotential
+AgriculturalPotential
+TransportPotential
+HistoricalImportance
+SpatialRelationships
+
+Major corridors
+---------------
+Ardan Corridor
+Veyran Corridor
+Saren Corridor
+Orin Corridor
+Kharic Corridor
+Ilyran Maritime Corridor
+
+Regional design rules
+---------------------
+Regions should provide meaningful causal context for:
+- settlement density
+- agricultural productivity
+- migration
+- transportation
+- economic specialization
+- cultural exchange
+- political boundaries
+- resource extraction
+- environmental risk
+
+Regions must remain spatially coherent even as borders, settlements or infrastructure change over time.

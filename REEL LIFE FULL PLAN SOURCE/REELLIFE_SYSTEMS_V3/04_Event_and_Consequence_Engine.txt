@@ -1,0 +1,80 @@
+REELLIFE — SYSTEM 04: EVENT & CONSEQUENCE ENGINE
+==================================================
+Status: Approved architecture
+
+ROLE
+----
+Causal plumbing that turns validated actions and world conditions into occurrences and downstream state changes.
+
+OWNS
+-----
+- event structure and identity
+- event ordering and dispatch
+- causal links and parent/child chains
+- precondition revalidation
+- delayed effects scheduling
+- idempotency and cancellation
+- stale-event handling
+- event-storm prevention
+- replay and causal inspection
+
+DOES NOT OWN
+------------
+- domain state semantics for health, finance, relationships, law, etc.
+- player UI state
+- the NPC decision process itself
+
+MODEL / STATE
+-------------
+- Action = attempt; Event = occurrence; Consequence = resulting change
+- Events may contain actors, targets, location, context, visible facts, hidden facts, immediate effects, delayed effects, domain effect descriptors, follow-ups, parent links, and metadata
+- Events are caused by player commands, NPC actions, systems, environments, institutions, schedules, or chains
+
+RULES / BEHAVIOR
+-----------------
+- Preconditions are checked again at execution time
+- Delayed consequences are represented as future scheduled events
+- Domain systems own their actual mutations after event resolution
+- Event handling must be transactional enough to prevent partial causal updates
+- Event visibility is separate from event existence
+- Event storms and recursive chains require guards, quotas, or explicit cycle prevention
+
+SYSTEM INTERACTIONS
+-------------------
+- Consumes Commands from UI/NPCs and emits events consumed by domain systems
+- Feeds history, information propagation, reputation, finance, legal systems, life continuity, and analytics
+- Supports causal traces such as cause -> event -> consequence -> new condition
+
+TESTING / QUALITY
+-----------------
+- Test ordering, idempotency, stale events, cancellation, chain depth, hidden/visible facts, delayed effects, replay, and cross-system causality
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Events explain how the world changes without becoming the brain that decides every outcome.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

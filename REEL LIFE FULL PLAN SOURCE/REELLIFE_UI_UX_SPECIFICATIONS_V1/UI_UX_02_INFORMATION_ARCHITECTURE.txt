@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 02 — Information Architecture
+==============================================================================
+
+Purpose
+Defines how ReelLife information is organized around life context rather than around the 59 simulation systems.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Information Layers
+---------------------
+Life View; Person View; World View; Social View; History/Journal; Search/Discovery; Settings/Configuration; Advanced/Debug. These are presentation groupings, not replacements for simulation domains.
+
+2. Core Entity Navigation
+-------------------------
+Common entity pivots include Person, Household, Relationship, Organization, Job, Property/Home, Vehicle, Item/Asset, Location, Event, Contract, Institution, and Message/Information Claim.
+
+3. Knowledge State
+------------------
+Displayed information should carry a knowledge state where relevant: known fact, estimate, uncertainty, rumor, inference, or hidden/unknown. The UI must not collapse these into one visual category.
+
+4. Depth Model
+--------------
+Level 1 = immediate situation; Level 2 = relevant context; Level 3 = detailed history and causal explanation; Level 4 = system/debug detail for authorized interfaces.
+
+5. Information Ownership
+------------------------
+The UI does not define which system owns a fact. It requests data through presentation-facing queries and renders the returned state.
+
+6. Cross-Linking
+----------------
+Entities should be navigable through contextual links without losing the current simulation moment. Example: Event → Person → Organization → Location → related Event.
+
+7. World-Bible Dependency
+-------------------------
+World View and location-oriented interfaces depend on the authoritative fictional world model. This is the point at which the UI specification branches into the World Bible: map and spatial UX need a coherent fictional geography, settlements, countries, regions, and names to render.
+
+End of specification.

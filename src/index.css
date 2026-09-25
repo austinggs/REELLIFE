@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * ReelLife design tokens.
+ *
+ * The bundled shadcn/ui components (src/ui/components) expect the standard
+ * shadcn token vocabulary. The additional `--state-*` tokens exist because
+ * UI/UX 02 section 3 and UI/UX 19 section 4 require knowledge states
+ * (known / estimate / rumor / inference / unknown / hidden) to stay visually
+ * distinguishable and never be flattened into one semantic treatment.
+ */
+:root {
+  --radius: 0.625rem;
+
+  --background: oklch(0.995 0.002 250);
+  --foreground: oklch(0.19 0.012 250);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.012 250);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.012 250);
+
+  --primary: oklch(0.42 0.09 255);
+  --primary-foreground: oklch(0.985 0.005 250);
+
+  --secondary: oklch(0.965 0.006 250);
+  --secondary-foreground: oklch(0.28 0.02 255);
+
+  --muted: oklch(0.965 0.006 250);
+  --muted-foreground: oklch(0.51 0.015 255);
+
+  --accent: oklch(0.955 0.014 250);
+  --accent-foreground: oklch(0.28 0.02 255);
+
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.985 0.005 250);
+
+  --border: oklch(0.9 0.008 250);
+  --input: oklch(0.9 0.008 250);
+  --ring: oklch(0.62 0.06 255);
+
+  --chart-1: oklch(0.6 0.15 255);
+  --chart-2: oklch(0.62 0.13 165);
+  --chart-3: oklch(0.58 0.14 300);
+  --chart-4: oklch(0.7 0.15 85);
+  --chart-5: oklch(0.62 0.17 30);
+
+  /* Knowledge-state semantics (UI/UX 02.3, UI/UX 19.4). */
+  --state-known: oklch(0.58 0.13 155);
+  --state-estimate: oklch(0.6 0.11 230);
+  --state-rumor: oklch(0.66 0.14 70);
+  --state-inference: oklch(0.58 0.14 300);
+  --state-unknown: oklch(0.58 0.02 250);
+  --state-hidden: oklch(0.5 0.03 285);
+}
+
+.dark {
+  --background: oklch(0.16 0.012 260);
+  --foreground: oklch(0.965 0.005 250);
+
+  --card: oklch(0.2 0.014 260);
+  --card-foreground: oklch(0.965 0.005 250);
+
+  --popover: oklch(0.2 0.014 260);
+  --popover-foreground: oklch(0.965 0.005 250);
+
+  --primary: oklch(0.75 0.1 255);
+  --primary-foreground: oklch(0.18 0.015 260);
+
+  --secondary: oklch(0.27 0.016 260);
+  --secondary-foreground: oklch(0.965 0.005 250);
+
+  --muted: oklch(0.27 0.016 260);
+  --muted-foreground: oklch(0.71 0.015 255);
+
+  --accent: oklch(0.3 0.02 260);
+  --accent-foreground: oklch(0.965 0.005 250);
+
+  --destructive: oklch(0.65 0.19 25);
+  --destructive-foreground: oklch(0.16 0.012 260);
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.62 0.07 255);
+
+  --chart-1: oklch(0.62 0.16 255);
+  --chart-2: oklch(0.66 0.14 165);
+  --chart-3: oklch(0.64 0.15 300);
+  --chart-4: oklch(0.74 0.15 85);
+  --chart-5: oklch(0.66 0.18 30);
+
+  --state-known: oklch(0.72 0.13 155);
+  --state-estimate: oklch(0.72 0.11 230);
+  --state-rumor: oklch(0.78 0.14 70);
+  --state-inference: oklch(0.72 0.14 300);
+  --state-unknown: oklch(0.7 0.02 250);
+  --state-hidden: oklch(0.62 0.04 285);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-state-known: var(--state-known);
+  --color-state-estimate: var(--state-estimate);
+  --color-state-rumor: var(--state-rumor);
+  --color-state-inference: var(--state-inference);
+  --color-state-unknown: var(--state-unknown);
+  --color-state-hidden: var(--state-hidden);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
+
+@layer components {
+  /* Knowledge-state presentation primitives (color is never the only signal). */
+  .knowledge-badge {
+    @apply inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-xs font-medium;
+  }
+
+  .knowledge-known {
+    @apply border-state-known/40 text-state-known;
+  }
+
+  .knowledge-estimate {
+    @apply border-state-estimate/40 text-state-estimate;
+  }
+
+  .knowledge-rumor {
+    @apply border-state-rumor/40 text-state-rumor;
+  }
+
+  .knowledge-inference {
+    @apply border-state-inference/40 text-state-inference;
+  }
+
+  .knowledge-unknown {
+    @apply border-state-unknown/40 text-state-unknown;
+  }
+
+  .knowledge-hidden {
+    @apply border-state-hidden/40 text-state-hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

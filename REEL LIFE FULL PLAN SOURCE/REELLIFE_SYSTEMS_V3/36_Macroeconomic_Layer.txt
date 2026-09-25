@@ -1,0 +1,78 @@
+REELLIFE — SYSTEM 36: MACROECONOMIC LAYER
+===========================================
+Status: Approved architecture
+
+ROLE
+----
+Models aggregate economic conditions emerging from lower-level households, businesses, finance, trade, and government activity.
+
+OWNS
+-----
+- aggregate inflation/deflation measures
+- unemployment aggregates
+- growth/output indicators
+- productivity aggregates
+- aggregate demand/supply
+- interest/credit environment
+- currency context
+- macro shocks/indicators
+
+DOES NOT OWN
+------------
+- individual prices directly
+- individual hiring decisions
+- business strategy
+- government policy mechanics
+- market microstructure
+
+MODEL / STATE
+-------------
+- Macro indicators should be derived from lower-level activity wherever possible
+- Historical macro behavior varies by technology, institutions, monetary/fiscal systems, financial development, country, and era
+- Macro shocks can influence lower-level conditions but do not magically rewrite them
+
+RULES / BEHAVIOR
+-----------------
+- Macro is an aggregate state, not a god-mode controller
+- Indicators have time windows and aggregation definitions
+- External shocks must enter through explicit events/conditions
+- Feedback loops between aggregate and local conditions should be causal
+
+SYSTEM INTERACTIONS
+-------------------
+- Reads Finance, Employment, Markets, Businesses, Government, International Relations, Technology, and Population
+- Feeds interest/credit, demand, employment, and price conditions back into local systems
+
+TESTING / QUALITY
+-----------------
+- Test inflation calculation, unemployment, growth, recession-like shocks, lagged effects, policy changes, and cross-system aggregate consistency
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Macroeconomics describes aggregate conditions that emerge from many lower-level interactions.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

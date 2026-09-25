@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 04 — Main Life Screen
+==============================================================================
+
+Purpose
+Defines the primary screen for experiencing the current life situation.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Purpose
+----------
+The Main Life Screen answers: What is happening now? What needs attention? What can I do? What just changed?
+
+2. Core Regions
+---------------
+Current situation summary; time/date; location context; immediate needs/conditions; active commitments; current activity; nearby or relevant people; recent events; actionable prompts.
+
+3. Avoid Spreadsheet UI
+-----------------------
+The screen should emphasize meaningful conditions instead of exposing every raw metric. Detailed values remain available through drill-down.
+
+4. Activity Representation
+--------------------------
+The current Activity should be visually distinct from scheduled plans and future commitments. Time = when; Activity/Schedule = expected or planned; Decision = actual choice.
+
+5. Event Feed
+-------------
+Recent meaningful events should be summarized with severity, relevance, and actionability. The feed should not become an unfiltered firehose of low-value simulation events.
+
+6. Priority Logic
+-----------------
+Priority should be driven by relevance, urgency, player commitments, consequences, and explicit player settings—not simply by system creation time.
+
+7. Quick Actions
+----------------
+Common commands may be exposed directly from context. They must still pass through the authoritative Command/Validation/Resolution pipeline.
+
+End of specification.

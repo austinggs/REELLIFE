@@ -1,0 +1,121 @@
+WORLD BUILD 04 — MAJOR CITIES & SETTLEMENTS
+AURELIA WORLD BIBLE V1
+============================================================
+
+Settlement hierarchy
+--------------------
+Continent
+-> Country
+-> Region
+-> Settlement System
+-> Megacity / Major Metropolitan City / Large City / Medium City / Small City / Town / Village / Rural Community / Specialized Settlement / Temporary or Seasonal Settlement
+
+Cities and settlements emerge from combinations of:
+- freshwater
+- fertile land
+- rivers
+- ports
+- trade
+- minerals
+- transport
+- defense
+- administration
+- religion
+- education
+- industry
+- employment
+- migration
+- historical inertia
+
+Metropolitan structure
+----------------------
+A metropolitan area may contain:
+- core city
+- suburbs
+- satellite cities
+- industrial zones
+- airport districts
+- agricultural fringes
+- independent municipalities
+
+Initial major settlements — 30
+-------------------------------
+ELANDRA
+1. Arden — Republic of Ardin — Ardan Basin — capital / major economic center
+2. Varenport — Republic of Selvara — Green Coast — maritime center
+3. Valedor — Kingdom of Valedon — Western Marches — historic capital
+4. Crownreach — Highland Federation — Crownlands — mountain administrative center
+5. Caldor — Republic of Caldor — Lower Ardan Basin — industrial/commercial center
+6. Nareth — Republic of Nareth — Eastern Highlands — crossroads
+
+VEYRA
+7. Veyr — Republic of Veyra — Veyran Heartland — global-scale metropolitan center
+8. Westhaven — Republic of Westhaven — Western Coast — global port
+9. Edria — Kingdom of Edria — Central Basin — historic capital
+10. Norvale — Federation of Norvale — Northern Forests — resource/logistics center
+11. Sorell — Republic of Sorell — Central Basin — agricultural-industrial center
+12. Lethen — Republic of Lethen — Eastern Littoral — maritime center
+
+SAHRAEN
+13. Sarad — Republic of Sarad — Saren Basin — river metropolis
+14. Namar — Kingdom of Namar — Northern Coast — coastal capital
+15. Keshara — Republic of Kesh — Great Interior — desert crossroads
+16. Arash — Republic of Arasha — Great Interior — trade/logistics center
+17. Teren — Highland Union of Teren — Eastern Highlands — highland capital
+18. Belara — Republic of Belara — Southern Savannah — agricultural metropolitan center
+
+ORINTH
+19. Orin — Republic of Orinth — Orinthian Basin — river metropolitan center
+20. Westmark — Republic of Westmark — Western Grasslands — agriculture/livestock center
+21. Avelon — Kingdom of Avelon — Southern Coast — maritime capital
+22. Tarsen — Republic of Tarsen — Central Highlands — mining/industrial center
+23. Belmond — Republic of Belmond — Northern Plains — agricultural-industrial center
+24. Sareth — Republic of Sareth — Northern Plains / Highlands transition — transportation center
+
+KHAROS
+25. Khar — Republic of Khar — Great Plateau — inland capital
+26. Estara — Republic of Estara — Eastern Forests — resource center
+27. Varon — Kingdom of Varon — Southern Basin — southern commercial center
+28. Doren — Republic of Doren — Kharic Range — mountain city
+29. Kalen — Free Republic of Kalen — mountain corridor — strategic transit center
+
+ILYRA
+30. Ilyra City — Republic of Ilyra — Western Peninsula — capital / major port
+31. Selin — Maritime Republic of Selin — Inner Sea — maritime commercial center
+32. Aster — Republic of Aster — Central Highlands — highland administrative center
+33. Eastport — Eastern Republic — Eastern Coast — major international port
+34. Lyren — Kingdom of Lyren — Southern Peninsula — historic coastal capital
+
+Note: the source build established 30 as the initial major-settlement count but enumerated 34 named major settlements. The master package preserves the canonical names and roles while treating the count as an earlier drafting inconsistency to be reconciled in later content refinement rather than silently deleting cities.
+
+Population and growth
+---------------------
+Exact city populations are intentionally not fixed at this stage. They will be reconciled from:
+- geography
+- history
+- fertility/mortality
+- migration
+- employment
+- housing
+- infrastructure
+- urbanization
+- economic opportunity
+
+Cities can rise, decline, densify, suburbanize, stagnate, recover, fragment or become partially abandoned. Historical settlements may remain as archaeological or cultural locations even after depopulation.
+
+District and neighborhood layers
+--------------------------------
+Cities contain districts and neighborhoods whose:
+- population
+- housing
+- land use
+- infrastructure
+- organizations
+- commercial activity
+- social composition
+- transportation
+change dynamically.
+
+Population simulation
+---------------------
+Settlement populations use the aggregate-to-materialized-individual model from System 07. The city exists as a statistical population at low resolution and can generate relevant households and individuals when required by the simulation.

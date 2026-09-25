@@ -1,0 +1,18 @@
+WORLD 06 — NEIGHBORHOODS
+
+Defines neighborhoods as immediate physical, social, economic, cultural, and historical contexts.
+
+Core:
+- Physical area + population + built/social/economic environment + history.
+- Hierarchy continues to property/building/unit/room.
+- NeighborhoodId, official/common/historical names, boundaries, parent settlement/district, development period, land use, population, housing, institutions, infrastructure, economy, culture, reputation, history.
+- Administrative, social, physical, economic, perceptual boundaries.
+- Housing stock, affordability, population composition/turnover, social networks, community organizations.
+- Local institutions, schools, employment, commerce, specialization.
+- Culture/language/religion as patterns, not determinants.
+- Reputation distinct from objective conditions; safety distinct from reporting.
+- Infrastructure, accessibility, transport, public space, local events.
+- Development/redevelopment/displacement/gentrification can emerge.
+- History, generational continuity, inequality, interdependence, resolution, validation.
+
+Core principle: The neighborhood is where large-scale world conditions become immediate lived context.

@@ -1,0 +1,31 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 20 — Settings / Configuration
+==============================================================================
+
+Purpose
+Defines player-facing settings and configuration without conflating them with simulation state or developer-only configuration.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. User Settings
+----------------
+Accessibility, audio, display, controls, notification preferences, privacy-style presentation preferences, information density, and other presentation options belong here.
+
+2. Simulation Configuration
+---------------------------
+World mode, scenario, difficulty, content packs, and other supported configuration are surfaced through controlled interfaces tied to System 58.
+
+3. Boundaries
+-------------
+Changing a presentation setting should not alter world truth. Changing a simulation configuration should be explicit and should respect mode restrictions.
+
+4. Save/Load
+------------
+Save-slot management should present world date/time, character/context, version, integrity state, and relevant metadata without exposing internal implementation details unnecessarily.
+
+5. Reset / Dangerous Actions
+----------------------------
+Destructive configuration changes should require explicit confirmation and clear consequences.
+
+End of specification.

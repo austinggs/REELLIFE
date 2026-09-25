@@ -1,0 +1,76 @@
+REELLIFE — SYSTEM 35: MARKETS / PRICES & COMPETITION
+======================================================
+Status: Approved architecture
+
+ROLE
+----
+Models exchange environments, price formation, competition, scarcity, consumer choice, and market structure.
+
+OWNS
+-----
+- market state
+- price formation inputs
+- supply/demand context
+- competition structure
+- market participants
+- market transactions/quotes where modeled
+- local/informal market variants
+
+DOES NOT OWN
+------------
+- money ledger semantics
+- individual utility calculation
+- business ownership
+- macroeconomic aggregates
+
+MODEL / STATE
+-------------
+- Prices reflect supply, demand, inventory, cost, competition, scarcity, expectations, transport, taxes, regulation, and market structure
+- Structures can be competitive, monopoly, oligopoly, regulated, local, or informal
+- Consumers use NPC Decision rather than a universal market score
+
+RULES / BEHAVIOR
+-----------------
+- Information is imperfect
+- Alternatives, urgency, quality, availability, reputation, and affordability affect choices
+- Competition can occur on price, quality, location, convenience, reputation, innovation, specialization, capacity, and advertising
+- Markets can remain locally fragmented
+
+SYSTEM INTERACTIONS
+-------------------
+- Consumes Finance, Organizations, Supply Chains, Macro, Geography, Technology, Information, and Government/Law
+- Feeds prices and availability back into household and business decisions
+
+TESTING / QUALITY
+-----------------
+- Test shortages, surpluses, monopolies, price shocks, differentiated goods, local markets, regulation, imperfect information, and competitor entry/exit
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Markets coordinate distributed decisions under incomplete information and constraints.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

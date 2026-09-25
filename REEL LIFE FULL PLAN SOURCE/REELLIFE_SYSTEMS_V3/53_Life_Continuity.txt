@@ -1,0 +1,81 @@
+REELLIFE — SYSTEM 53: LIFE CONTINUITY
+=======================================
+Status: Approved architecture
+
+ROLE
+----
+Consolidates death, estate, generations, inheritance, descendant continuation, and multigenerational consequences.
+
+OWNS
+-----
+- death lifecycle
+- cause/context of death
+- death determination
+- historical person state
+- estate process
+- inheritance references
+- descendant continuation
+- legacy effects
+- death-related records/history
+- life continuity metadata
+
+DOES NOT OWN
+------------
+- medical diagnosis
+- asset ownership semantics
+- legal rules
+- family structure itself
+- player UI
+
+MODEL / STATE
+-------------
+- Lifecycle: ACTIVE -> DECEASED -> HISTORICAL
+- Death pipeline: cause -> determination -> person state -> records -> relationships -> household -> employment -> finance -> estate -> information -> memory/reputation -> descendants
+- Estate resolution uses Ownership, Contracts, wills/beneficiaries, debts, jurisdiction, and legal rules
+
+RULES / BEHAVIOR
+-----------------
+- PersonId persists after death
+- Death can arise from age, disease, injury, accident, violence, disaster, or other causes
+- Inheritance can affect wealth, property, business, relationships, education, housing, opportunity, reputation, and conflict
+- Information about death propagates through witnesses, family, institutions, records, media, and communication
+- Player can transfer control to a descendant or another eligible person without resetting the world
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Identity, Family, Ownership, Contracts, Finance, Legal Identity, Reputation, Organizations, Information, Government, and History
+- Legacy should propagate through concrete system effects rather than arbitrary hidden modifiers
+
+TESTING / QUALITY
+-----------------
+- Test sudden death, missing heirs, debts, shared ownership, estate disputes, orphaned responsibilities, descendant continuation, and preserved causal history
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Death changes the world state; it does not erase the causal graph.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

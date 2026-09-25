@@ -1,0 +1,304 @@
+WORLD BUILD 14 — WORLD BIBLE MASTER REFERENCE
+AURELIA WORLD BIBLE V1
+============================================================
+
+Purpose
+-------
+This is the authoritative first-pass master reference for the fictional world of ReelLife.
+
+The governing rule is:
+World Bible = world definition + initial world conditions.
+Simulation = ongoing change and consequences.
+
+1. Canonical Identity
+---------------------
+Planet: Aurelia
+Scale: Earth-scale terrestrial world
+Game start: 1 January 2042
+Global population: approximately 6.8 billion
+Continents: 6
+Major oceans: 5
+Sovereign countries: 48
+Historical eras: 8
+Technological era: Contemporary Age
+Approximate urbanization: 70%
+
+2. Continents
+-------------
+Elandra
+Veyra
+Sahraen
+Orinth
+Kharos
+Ilyra
+
+Continental population targets:
+Elandra ~1.35B
+Veyra ~1.55B
+Sahraen ~1.25B
+Orinth ~1.10B
+Kharos ~0.85B
+Ilyra ~0.70B
+
+3. Major Oceans
+---------------
+Meridian Ocean
+Western Ocean
+Eastern Ocean
+Southern Ocean
+Polar Ocean
+
+4. Major Geography
+------------------
+Mountain systems:
+Crown Mountains
+Veyran Spine
+Kharic Range
+Southern Wall
+
+River systems:
+Ardan River
+Veyr River
+Saren River
+Orin River
+Khar River
+
+Climate, ecology, resources and hazard regions are authoritative spatial state.
+
+5. Regions
+----------
+Elandra: Crownlands, Ardan Basin, Western Marches, Green Coast, Inner Steppe, Eastern Highlands.
+Veyra: Veyran Heartland, Northern Forests, Western Coast, Central Basin, Southern Uplands, Eastern Littoral.
+Sahraen: Northern Coast, Great Interior, Saren Basin, Eastern Highlands, Southern Savannah, Rainforest Belt.
+Orinth: Northern Plains, Orinthian Basin, Western Grasslands, Central Highlands, Southern Wall, Southern Coast.
+Kharos: Northern Tundra, Kharic Range, Great Plateau, Eastern Forests, Central Steppe, Southern Basin.
+Ilyra: Western Peninsula, Inner Sea Region, Central Highlands, Eastern Coast, Island Arc, Southern Peninsula.
+
+6. Countries
+------------
+Elandra: Republic of Ardin; Kingdom of Valedon; Republic of Selvara; Republic of Torren; Highland Federation; Republic of Darsen; Kingdom of Mereth; Republic of Caldor; Republic of Nareth; Free State of Ordel.
+
+Veyra: Republic of Veyra; Federation of Norvale; Republic of Westhaven; Kingdom of Edria; Republic of Sorell; Highland Republic of Varin; Republic of Lethen; Republic of Coravel; Republic of Ansel.
+
+Sahraen: Republic of Sarad; Kingdom of Namar; Republic of Kesh; Republic of Arasha; Highland Union of Teren; Republic of Belara; Republic of Omera; Republic of Jandor.
+
+Orinth: Republic of Orinth; Republic of Westmark; Kingdom of Avelon; Republic of Tarsen; Republic of Belmond; Republic of Sareth; Southern Republic; Coastal Federation.
+
+Kharos: Republic of Khar; Northern Federation; Republic of Estara; Kingdom of Varon; Steppe Republic; Republic of Doren; Free Republic of Kalen.
+
+Ilyra: Republic of Ilyra; Maritime Republic of Selin; Republic of Aster; Eastern Republic; Kingdom of Lyren; Island Federation.
+
+Country boundaries can change through simulation-driven historical events. Country is not equivalent to culture, ethnicity, language, government or religion.
+
+7. Major Settlements
+--------------------
+Canonical named major settlements include:
+Arden, Varenport, Valedor, Crownreach, Caldor, Nareth,
+Veyr, Westhaven, Edria, Norvale, Sorell, Lethen,
+Sarad, Namar, Keshara, Arash, Teren, Belara,
+Orin, Westmark, Avelon, Tarsen, Belmond, Sareth,
+Khar, Estara, Varon, Doren, Kalen,
+Ilyra City, Selin, Aster, Eastport, Lyren.
+
+The drafting process referred to these as 30 initial major settlements while naming 34. This inconsistency remains explicitly logged for later reconciliation; names are retained rather than silently discarded.
+
+Cities can grow, decline, densify, suburbanize, lose industry, recover or become abandoned.
+
+8. History
+---------
+Eight eras:
+Deep Settlement
+First Civilizations
+Age of Kingdoms
+Age of Networks
+Age of States
+Industrial Transformation
+Modern Transformation
+Contemporary Age
+
+Historical causality runs through geography, population, technology, institutions, trade, conflict/cooperation and cultural change.
+
+9. Cultures and Languages
+-------------------------
+Culture is learned, transmitted, adapted and contested.
+
+Six explicitly established major language families:
+Ardanic, Veyric, Sahric, Orinthian, Kharic, Ilyran.
+
+Additional language states include minority, local, indigenous, creole, trade, sign, endangered, revived and constructed languages.
+
+Culture and language may cross political borders.
+
+10. Religion and Belief
+-----------------------
+Seven major transregional traditions:
+The Covenant Faith
+The Way of the Living Word
+The Radiant Path
+The Many-Hearth Traditions
+The River Teachings
+The Sky and Earth Tradition
+The Open Hand Philosophy
+
+The system also includes local traditions, denominations, syncretic communities, spiritual practices, secular worldviews and nonbelief.
+
+11. Economy and Resources
+------------------------
+Mixed economy with private businesses, family businesses, cooperatives, state-owned enterprises, nonprofits, public institutions, informal businesses, agrarian households, multinational corporations and independent workers.
+
+Major resource groups:
+energy, metals/minerals, construction materials, biological resources, water.
+
+Major corridors:
+Ardan, Veyran, Saren, Orin, Kharic and Ilyran Maritime.
+
+Major financial centers:
+Arden, Veyr, Westhaven, Selin, Ilyra City.
+
+12. Institutions and Organizations
+----------------------------------
+Aurelia contains governments, courts, schools, universities, hospitals, banks, companies, unions, religious organizations, media organizations, NGOs/civil society and international institutions.
+
+Organizations use the universal Organization model. Institutions track rules, norms, authorities, participants, capacity, trust and historical change.
+
+13. Technology
+--------------
+Contemporary Age with advanced computing, internet, mobile systems, cloud infrastructure, AI, robotics, biotechnology, modern medicine, aviation, modern vehicles, advanced manufacturing, satellites, renewable energy and nuclear power.
+
+Technology must be separated into existence, availability, affordability and adoption.
+
+14. Population
+--------------
+Approximately 6.8 billion people at game start.
+Approximately 70% urban/metropolitan.
+Population is dynamic through births, deaths, migration, household formation, aging and demographic shocks.
+
+Aggregate populations can be materialized into relevant households and individuals while preserving causal demographic state.
+
+15. Current World State
+-----------------------
+Game starts in a functioning but interconnected world containing:
+- energy transition
+- technology and AI expansion
+- migration pressures
+- water stress
+- disaster recovery
+- mining expansion
+- port competition and infrastructure growth
+- supply-chain pressure
+- environmental challenges
+- active international disputes
+- political transitions
+- uneven institutional capacity
+
+The world is not at predetermined global war and no future event is scripted to a fixed outcome.
+
+16. Game-Start Timeline
+-----------------------
+Relevant recent history begins in 2041.
+Active and pending events exist at 1 January 2042, including regional infrastructure projects, Saren Basin flood recovery, technological and AI-sector expansion, water pressure in Sahraen, Kharic mining expansion, Westhaven port expansion, diplomatic negotiations, corporate restructuring, migration and international disputes.
+
+17. Information and Knowledge
+-----------------------------
+Reality -> Observation -> Information -> Transmission -> Interpretation -> Belief -> Behavior
+
+Information is not truth. Reputation is not truth. A widely believed claim is not automatically true. The simulation tracks public, restricted, private, secret and unknown knowledge.
+
+18. Canonicality Rules
+----------------------
+When later content conflicts with the World Bible:
+1. identify the conflict
+2. determine source authority
+3. preserve causal consistency
+4. update dependent data
+5. record the change
+6. do not silently create contradictory versions
+
+Authority order for world content:
+World Bible Master Reference
+-> World Build Source Sections
+-> System Content Definitions
+-> Generated World State
+-> Derived Presentation
+
+19. Stable Identity
+-------------------
+Every persistent world entity gets a stable ID. Names can change; IDs should not.
+
+Example forms:
+WORLD-AURELIA
+CONT-ELANDRA
+COUNTRY-ARDIN
+REGION-ARDAN-BASIN
+CITY-ARDEN
+RIVER-ARDAN
+ORG-...
+EVENT-...
+
+20. Definition vs State
+-----------------------
+World Definition = what exists.
+World State = what is happening now.
+
+This separation supports:
+- standard mode
+- historical mode
+- alternate mode
+- sandbox mode
+- scenario mode
+- custom mode
+
+21. Expansion Rules
+-------------------
+New content should respect geography, history, demographics, culture, language, religion, economy, institutions, technology and existing political structures.
+
+Do not add content only because a feature needs it. New content must fit the causal world.
+
+22. World Bible Architecture
+----------------------------
+AURELIA
+|-- Planet
+|-- Continents
+|   |-- Regions
+|-- Countries
+|   |-- Territories / Jurisdictions
+|-- Settlements
+|   |-- Cities / Towns / Villages / Rural Areas
+|       |-- Districts
+|           |-- Neighborhoods
+|-- History
+|-- Cultures
+|   |-- Languages
+|-- Religions & Belief
+|-- Economy & Resources
+|-- Institutions & Organizations
+|-- Technology
+|-- Population & Demographics
+|-- Current World State
+|-- Game-Start Timeline
+|   |-- Active / Pending / Hidden Events
+
+23. Final World Model
+---------------------
+GEOGRAPHY
+ -> SETTLEMENT
+ -> POPULATION
+ -> CULTURE / LANGUAGE / RELIGION
+ -> INSTITUTIONS
+ -> ECONOMY
+ -> TECHNOLOGY
+ -> CURRENT CONDITIONS
+ -> INDIVIDUAL LIVES
+ -> PLAYER ACTIONS
+ -> EVENTS & CONSEQUENCES
+ -> NEW WORLD STATE
+
+This loop is the intended bridge between world content and ReelLife's simulation engine.
+
+24. Final Principle
+-------------------
+Aurelia has history without a predetermined story.
+
+The World Bible establishes enough structure that the simulation can answer where people live, why cities and industries exist, why cultures and languages are distributed as they are, why institutions exist, how resources and geography matter, and why present conditions exist.
+
+It does not predetermine what the world becomes next.

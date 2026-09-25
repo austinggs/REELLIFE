@@ -1,0 +1,56 @@
+REELLIFE — UI/UX SPECIFICATION INDEX
+====================================
+
+Package: REELLIFE_UI_UX_SPECIFICATIONS_V1
+Purpose: Approved UI/UX specification branch that led into the fictional Aurelia World Bible.
+
+CONTENTS
+--------
+01. UI_UX_01_DESIGN_PHILOSOPHY.txt
+02. UI_UX_02_INFORMATION_ARCHITECTURE.txt
+03. UI_UX_03_NAVIGATION.txt
+04. UI_UX_04_MAIN_LIFE_SCREEN.txt
+05. UI_UX_05_PERSON_CHARACTER_INTERFACE.txt
+06. UI_UX_06_RELATIONSHIPS_SOCIAL_UI.txt
+07. UI_UX_07_DECISION_ACTION_UI.txt
+08. UI_UX_08_EVENTS_NOTIFICATIONS.txt
+09. UI_UX_09_WORLD_MAP_UI.txt
+10. UI_UX_10_WORK_EDUCATION.txt
+11. UI_UX_11_FINANCE_ECONOMY.txt
+12. UI_UX_12_HOUSING_PROPERTY.txt
+13. UI_UX_13_INVENTORY_ASSETS.txt
+14. UI_UX_14_HEALTH_NEEDS.txt
+15. UI_UX_15_ORGANIZATIONS_INSTITUTIONS.txt
+16. UI_UX_16_INFORMATION_NEWS_MEDIA.txt
+17. UI_UX_17_TIMELINE_JOURNAL_HISTORY.txt
+18. UI_UX_18_SEARCH_DISCOVERY.txt
+19. UI_UX_19_WORLD_MAP_SPATIAL_UI.txt
+20. UI_UX_20_SETTINGS_CONFIGURATION.txt
+21. UI_UX_21_ACCESSIBILITY.txt
+22. UI_UX_22_ADVANCED_DEBUG_UI.txt
+23. UI_UX_23_RESPONSIVE_MOBILE_DESKTOP.txt
+24. UI_UX_24_UI_STATE_SIMULATION_BOUNDARY.txt
+25. UI_UX_MASTER_REFERENCE_V1.txt
+
+CORE PREMISE
+------------
+Life → Situation → Decision → Consequence → Understanding
+
+The UI is a presentation/control layer. It reads authoritative state and issues Commands. It does not own simulation truth.
+
+BRANCH THAT LED TO THE WORLD BIBLE
+-----------------------------------
+The World View / World Map requirements required a fully coherent fictional geography: planet, continents, regions, countries, settlements, spatial hierarchy, names, history, and current world state. That dependency caused the project to branch from UI/UX specification into World Design and World Build, producing the Aurelia World Bible.
+
+ARCHITECTURE REFERENCES
+-----------------------
+System 55 — Player UI
+System 56 — Map & Spatial Presentation
+System 37 — Geography / Cities / Neighborhoods / Infrastructure
+System 57 — Console / Command Interface
+System 58 — Configuration & Content Architecture
+System 59 — Debugging / Observability / Simulation Testing
+
+PACKAGE NOTE
+------------
+This package captures the UI/UX specification branch as it existed when it led to the World Bible. The 24 files are presentation specifications, not new simulation systems.

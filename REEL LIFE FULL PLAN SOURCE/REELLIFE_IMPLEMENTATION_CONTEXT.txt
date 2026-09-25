@@ -1,0 +1,70 @@
+REELLIFE IMPLEMENTATION CONTEXT — V2
+
+STATUS
+The ReelLife planning phase is complete. The implementation phase now begins from the
+planning corpus in this bundle and a clean, from-scratch ReelLife codebase.
+
+NON-NEGOTIABLE PROJECT CONSTRAINTS
+1. Use the ReelLife plan, Systems V3, World Design, World Bible, and UI/UX documents in this
+   bundle as the authoritative design source.
+2. Build using FREE AI only. AI is an implementation aid; the ReelLife runtime must not depend
+   on a paid AI model, paid AI API, or paid AI service.
+3. Maintain the current web-oriented JavaScript/TypeScript stack. Browser-native HTML/CSS remain
+   the presentation foundation. JavaScript and/or TypeScript may be used as appropriate.
+4. Do not migrate the project to Rust, C++, Unity, Unreal, Godot, Python, or another primary
+   runtime stack unless the project owner explicitly changes this decision later.
+5. There is NO external life-simulator repository serving as ReelLife's implementation base.
+   ReelLife is a clean, purpose-built implementation derived from its own architecture.
+6. robert1811/life-simulator is REFERENCE ONLY. Its code, data, architecture, and gameplay rules
+   are not authoritative and must not be treated as the ReelLife foundation.
+7. Other open-source repositories are RESEARCH/REFERENCE ONLY unless a specific component is
+   later approved for reuse after compatibility and licensing review.
+8. Do not reconstruct a previous stripped starter or preserve legacy architecture merely because
+   it came from an upstream life simulator.
+
+ARCHITECTURAL AUTHORITY
+The authoritative simulation flow is:
+Intent -> Command -> Validation -> Action Resolution -> Event -> Consequences -> New State
+
+The UI reads authoritative simulation state and dispatches commands. UI state is not simulation
+truth and UI code must not directly mutate authoritative simulation state.
+
+CORE ARCHITECTURAL PRINCIPLES
+- Single authoritative owner for every persistent state field.
+- Commands before state change.
+- Events are causal plumbing, not arbitrary story decoration.
+- Derived state remains derived.
+- Information is distinct from truth.
+- Player and NPCs use the same underlying person architecture.
+- Time is authoritative and central.
+- Randomness is controlled, seeded, and serializable where required.
+- Materialization reveals/restores coherent existing state; it must not invent convenient NPCs.
+- Organizations are universal collective actors.
+- Relationships are universal social primitives.
+- Money is precise and traceable.
+- Legacy remains causal after death.
+- Simulation resolution is dynamic and relevance-based.
+- UI is presentation/control, not simulation ownership.
+
+IMPLEMENTATION STRATEGY
+Build ReelLife from scratch as a modular web simulation engine. Do not begin by modifying an
+existing life simulator. Build and validate a small vertical slice first, then expand by bounded
+systems while preserving the ownership and event architecture.
+
+FREE-AI DEVELOPMENT RULE
+AI may generate, explain, test, refactor, or document code. Any AI-assisted implementation must
+respect the source hierarchy and the current codebase. Do not ask an AI to redesign the project
+from scratch when a relevant ReelLife specification already exists. Implement one bounded change
+at a time, inspect the current code, run tests, and preserve existing architectural invariants.
+
+SOURCE HIERARCHY
+1. Current project-owner decisions stated in this context and the master prompt.
+2. REELLIFE_SYSTEMS_V3/REELLIFE_MASTER_SYSTEM_ARCHITECTURE_V3.txt
+3. The individual approved Systems 01-59 specifications.
+4. REELLIFE_WORLD_BIBLE_V1/WORLD_BUILD_14_WORLD_BIBLE_MASTER_REFERENCE.txt and its source sections.
+5. REELLIFE_UI_UX_SPECIFICATIONS_V1/UI_UX_MASTER_REFERENCE_V1.txt and its source sections.
+6. The consolidated planning/reference documents elsewhere in this bundle.
+7. Research/reference material and external repositories.
+
+When lower-priority material conflicts with higher-priority material, follow the higher-priority
+material and document the conflict rather than silently changing the design.

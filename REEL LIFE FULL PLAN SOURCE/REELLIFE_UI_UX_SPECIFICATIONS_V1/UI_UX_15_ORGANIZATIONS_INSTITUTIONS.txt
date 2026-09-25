@@ -1,0 +1,31 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 15 — Organizations & Institutions
+==============================================================================
+
+Purpose
+Defines interfaces for organizations, businesses, schools, hospitals, banks, governments, religious organizations, media, and other institutional structures.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Organization Overview
+------------------------
+Show identity, type, leadership, roles, locations, assets/liabilities, goals, policies, contracts, current state, reputation, and public information as appropriate.
+
+2. Membership / Employment
+--------------------------
+Link people to organizations through roles, employment, membership, ownership, governance, or participation rather than treating all affiliation as one relationship type.
+
+3. Institutional Memory
+-----------------------
+Where relevant, show records, policies, precedents, history, and public-facing institutional information. Private organizational knowledge follows access rules.
+
+4. Capacity
+-----------
+Institutions may have limited capacity, funding, staff, infrastructure, and operational performance. UI should expose meaningful capacity constraints without creating fake precision.
+
+5. Organizational Actions
+-------------------------
+Join, apply, hire, fire, promote, contract, purchase, sell, merge, communicate, or submit requests according to authority.
+
+End of specification.

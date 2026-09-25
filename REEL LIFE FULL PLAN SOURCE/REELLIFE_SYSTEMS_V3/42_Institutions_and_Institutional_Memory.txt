@@ -1,0 +1,77 @@
+REELLIFE — SYSTEM 42: INSTITUTIONS & INSTITUTIONAL MEMORY
+===========================================================
+Status: Approved architecture
+
+ROLE
+----
+Models persistent institutions, procedures, records, precedents, organizational routines, and memory across time.
+
+OWNS
+-----
+- institution references
+- mandates
+- jurisdiction
+- procedures/policies
+- institutional records
+- knowledge/precedents
+- capacity
+- reputation
+- history
+- memory continuity/loss
+
+DOES NOT OWN
+------------
+- individual personalities
+- legal rule definitions
+- government sovereignty itself
+- raw information transmission
+
+MODEL / STATE
+-------------
+- Institution includes OrganizationRef, mandate, jurisdiction, procedures, policies, records, knowledge, precedents, reputation, capacity, and history
+- Institutional memory is carried by records, procedures, staff practices, precedents, and stored knowledge
+
+RULES / BEHAVIOR
+-----------------
+- Institutions can lose memory through destruction, turnover, corruption, poor records, secrecy, or technology failure
+- Behavior emerges from rules, authority, procedures, staff, resources, incentives, leadership, and history
+- Institutional inertia and reform are both possible
+
+SYSTEM INTERACTIONS
+-------------------
+- Used by Education, Health, Government, Courts, Banking, Media, Corporations, Religion, and other persistent organizations
+- Records and procedures affect decision quality, service reliability, and information access
+
+TESTING / QUALITY
+-----------------
+- Test staff turnover, record loss, institutional reform, memory retention, precedent conflict, and capacity decline
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Institutions remember through records, procedures, practices, and continuity—not a magical collective mind.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

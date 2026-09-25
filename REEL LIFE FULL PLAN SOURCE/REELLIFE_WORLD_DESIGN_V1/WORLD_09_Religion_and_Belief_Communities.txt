@@ -1,0 +1,22 @@
+WORLD 09 — RELIGION & BELIEF COMMUNITIES
+
+Defines religions, belief systems, denominations, sects, spiritual traditions, secular worldviews, communities, institutions, practices, rituals, holidays, sacred spaces, texts, transmission, conversion, deconversion, reform, conflict, coexistence.
+
+Core:
+- Belief ≠ religion ≠ religious identity ≠ practice ≠ institution.
+- Religious identities may include member, adherent, practitioner, cultural member, nominal member, convert, former member, unaffiliated, spiritual, secular, atheist, agnostic, undecided.
+- Organized religions, indigenous traditions, philosophical traditions, spiritual movements, secular philosophies, fictional theological systems, syncretic traditions.
+- Traditions contain beliefs, practices, history, texts, symbols, rituals, holidays, institutions, ethics.
+- Denominations, sects, movements, reform, schism, institutionalization.
+- Religious history uses World History/Event Engine.
+- Belief is distinct from historical truth/objective state.
+- Optional supernatural modes: belief-only, ambiguous, objectively supernatural, while preserving belief/reality distinction.
+- Local/regional/national/international/online/diaspora communities.
+- Religious institutions are Organizations; leaders and authority structures matter.
+- Sacred spaces/objects/texts/rituals/life-cycle rituals/calendars.
+- Conversion, deconversion, syncretism, secularism, atheism, agnosticism, spirituality.
+- Family transmission, education, culture, law, economy, charity.
+- Conflict, discrimination, tolerance, coexistence, internal diversity, reform, decline, revival, migration, international links.
+- Privacy, secrecy, artifacts, history, data model, resolution, discovery, validation.
+
+Core principle: Religion is a system of beliefs, practices, identities, communities, and institutions that develops through history and interacts with individuals without completely defining them.

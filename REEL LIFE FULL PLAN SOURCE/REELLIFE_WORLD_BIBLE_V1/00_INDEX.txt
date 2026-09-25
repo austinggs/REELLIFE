@@ -1,0 +1,66 @@
+REELLIFE — AURELIA WORLD BIBLE V1
+INDEX / PACKAGE MANIFEST
+============================================================
+
+Purpose
+-------
+This package contains the approved first-pass World Bible for ReelLife's fictional planet, Aurelia. It defines the world foundation and game-start conditions that the ReelLife simulation consumes.
+
+The World Bible is content architecture, not the runtime simulation engine.
+
+Core principle
+--------------
+The World Bible defines what the world is and what its starting conditions are.
+The simulation determines what the world becomes.
+
+Canonical game start
+--------------------
+Planet: Aurelia
+Date: 1 January 2042
+Global population: approximately 6.8 billion
+Continents: 6
+Major oceans: 5
+Sovereign countries: 48
+Initial major settlements: 30
+Historical eras: 8
+Technological era: Contemporary Age
+Approximate urbanization: 70%
+
+Construction order
+------------------
+1. WORLD BUILD 01 — Planet & Global Geography
+2. WORLD BUILD 02 — Continents & Regions
+3. WORLD BUILD 03 — Countries
+4. WORLD BUILD 04 — Major Cities & Settlements
+5. WORLD BUILD 05 — World History
+6. WORLD BUILD 06 — Cultures & Languages
+7. WORLD BUILD 07 — Religions & Belief Communities
+8. WORLD BUILD 08 — Economy & Resources
+9. WORLD BUILD 09 — Institutions & Organizations
+10. WORLD BUILD 10 — Technology & Historical Era
+11. WORLD BUILD 11 — Population & Demographics
+12. WORLD BUILD 12 — Current World State
+13. WORLD BUILD 13 — Game-Start Timeline & Active Events
+14. WORLD BUILD 14 — World Bible Master Reference
+
+Package contents
+----------------
+00_INDEX.txt
+WORLD_BUILD_01_PLANET_GLOBAL_GEOGRAPHY.txt
+WORLD_BUILD_02_CONTINENTS_REGIONS.txt
+WORLD_BUILD_03_COUNTRIES.txt
+WORLD_BUILD_04_MAJOR_CITIES_SETTLEMENTS.txt
+WORLD_BUILD_05_WORLD_HISTORY.txt
+WORLD_BUILD_06_CULTURES_LANGUAGES.txt
+WORLD_BUILD_07_RELIGIONS_BELIEF_COMMUNITIES.txt
+WORLD_BUILD_08_ECONOMY_RESOURCES.txt
+WORLD_BUILD_09_INSTITUTIONS_ORGANIZATIONS.txt
+WORLD_BUILD_10_TECHNOLOGY_HISTORICAL_ERA.txt
+WORLD_BUILD_11_POPULATION_DEMOGRAPHICS.txt
+WORLD_BUILD_12_CURRENT_WORLD_STATE.txt
+WORLD_BUILD_13_GAME_START_TIMELINE_ACTIVE_EVENTS.txt
+WORLD_BUILD_14_WORLD_BIBLE_MASTER_REFERENCE.txt
+
+Package rule
+------------
+The files are intended to be used as canonical content references. Future world expansions should preserve stable IDs, causality, geographic plausibility, demographic continuity, and the distinction between world definition and mutable world state.

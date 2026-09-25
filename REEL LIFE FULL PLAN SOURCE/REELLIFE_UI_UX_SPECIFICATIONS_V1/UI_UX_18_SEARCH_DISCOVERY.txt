@@ -1,0 +1,35 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 18 — Search & Discovery
+==============================================================================
+
+Purpose
+Defines how the player finds relevant people, places, organizations, events, opportunities, items, and information in a large simulated world.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Global Search
+----------------
+Support entity search across authorized/known content, including people, places, organizations, jobs, properties, events, items, and institutions.
+
+2. Knowledge-Aware Search
+-------------------------
+Search results should respect what the player can know. A secret organization should not appear merely because it exists in simulation state.
+
+3. Filters
+----------
+Location, type, time, relationship, organization, availability, price, role, and other domain-specific filters should be composable.
+
+4. Discovery
+------------
+Search should be complemented by contextual discovery: nearby places, contacts, recommended actions, recent events, and network connections.
+
+5. Relevance
+------------
+Rank by relevance and context rather than pretending a single universal ranking is objectively best.
+
+6. Historical Search
+--------------------
+Past people, places, events, and organizations can be discoverable through history when records or knowledge support them.
+
+End of specification.

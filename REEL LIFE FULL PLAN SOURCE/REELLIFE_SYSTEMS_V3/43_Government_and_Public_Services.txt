@@ -1,0 +1,78 @@
+REELLIFE — SYSTEM 43: GOVERNMENT & PUBLIC SERVICES
+====================================================
+Status: Approved architecture
+
+ROLE
+----
+Models public agencies, taxation, budgets, service provision, policy implementation, public records, welfare, regulation, and emergency coordination.
+
+OWNS
+-----
+- government structures
+- branches/agencies
+- official roles
+- budgets
+- public service systems
+- policy implementation state
+- administrative capacity
+- public records
+- emergency coordination
+- government history/legitimacy references
+
+DOES NOT OWN
+------------
+- laws themselves
+- individual tax balances
+- citizen beliefs
+- market prices
+- all infrastructure operations
+
+MODEL / STATE
+-------------
+- Government includes country, branches, agencies, officials, budgets, policies, services, authority, legitimacy, administrative capacity, and history
+- Service quality emerges from funding, capacity, staff, infrastructure, demand, geography, policy, administration, corruption/fraud, and emergencies
+
+RULES / BEHAVIOR
+-----------------
+- Tax rules are defined by Laws; transactions are executed by Finance
+- Policies change conditions and incentives rather than directly rewriting person state
+- Government workers are ordinary people with competence, workload, information limits, incentives, and mistakes
+- Emergency response coordinates across institutions and infrastructure
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Laws, Finance, Institutions, Organizations, Geography, Population, Infrastructure, Health, Security, and International Relations
+
+TESTING / QUALITY
+-----------------
+- Test budget changes, service overload, policy implementation gaps, administrative errors, emergency response, tax changes, and local service variation
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Government changes conditions through institutions, rules, budgets, services, and authority.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

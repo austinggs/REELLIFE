@@ -1,0 +1,81 @@
+REELLIFE — SYSTEM 48: SECURITY & LEGAL PIPELINE
+=================================================
+Status: Approved architecture
+
+ROLE
+----
+Consolidates crime, emergencies, investigation, courts, criminal organizations, and hidden/grey/black market processes into one causal legal-security pipeline.
+
+OWNS
+-----
+- incident generation
+- crime/emergency classification
+- detection/reporting
+- investigation
+- evidence handling
+- accusation/charge state
+- hearings/judgments/penalties
+- appeals
+- security incidents
+- criminal organization operational state
+- grey/black market incidents
+- legal-security history
+
+DOES NOT OWN
+------------
+- law definitions
+- general organizational structure
+- raw reputation
+- individual criminal intent
+- medical emergency care
+
+MODEL / STATE
+-------------
+- Pipeline: conditions -> opportunity -> decision/action -> incident -> detection -> report -> investigation -> accusation/charge -> adjudication -> consequence -> record/reputation
+- Crime requires behavior + applicable law + jurisdiction + legal conditions
+- Courts support charges, defenses, evidence, hearings, judgments, penalties, and appeals
+
+RULES / BEHAVIOR
+-----------------
+- Detection can fail because of witnesses, evidence, concealment, misinformation, institutional limits, jurisdiction, corruption, or resource scarcity
+- Criminal organizations use Organization Core
+- Grey/black markets use Markets plus Law rather than a separate universe
+- Emergencies can include accidents, fires, medical events, disasters, and security incidents
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Laws, AuthorityCheck, Organizations, Information, Cognition, Reputation, Finance, Markets, Government, Health, Transport, and Events
+
+TESTING / QUALITY
+-----------------
+- Test false accusations, missing evidence, failed detection, jurisdiction conflicts, appeals, penalties, organized crime networks, and emergency cascades
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Security and justice are processes of detection, authority, evidence, adjudication, and consequence.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

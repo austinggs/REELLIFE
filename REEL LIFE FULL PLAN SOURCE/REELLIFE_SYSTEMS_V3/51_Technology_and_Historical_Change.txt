@@ -1,0 +1,79 @@
+REELLIFE — SYSTEM 51: TECHNOLOGY & HISTORICAL CHANGE
+======================================================
+Status: Approved architecture
+
+ROLE
+----
+Models technologies, inventions, discoveries, adoption, diffusion, infrastructure prerequisites, innovation, obsolescence, and historical eras.
+
+OWNS
+-----
+- technology definitions
+- prerequisites
+- capabilities
+- resource requirements
+- production requirements
+- knowledge/skill requirements
+- adoption state
+- diffusion
+- innovation history
+- obsolescence
+- era availability
+
+DOES NOT OWN
+------------
+- individual skill itself
+- market prices
+- institutional law
+- construction detail
+- beliefs about technology
+
+MODEL / STATE
+-------------
+- Technology includes category, prerequisites, capabilities, resources, knowledge, production, adoption, history, and dependencies
+- Existence does not imply affordability, availability, trust, manufacturability, or access
+
+RULES / BEHAVIOR
+-----------------
+- Adoption depends on price, infrastructure, knowledge, skills, institutions, culture, regulation, compatibility, geography, and network effects
+- Innovation can come from research, business, universities, government, individuals, accidents, and cross-domain recombination
+- Historical prerequisites prevent accidental anachronism unless scenario configuration explicitly permits them
+- Technology changes action space, productivity, and constraints
+
+SYSTEM INTERACTIONS
+-------------------
+- Feeds Education, Skills, Employment, Businesses, Infrastructure, Markets, International Relations, Communication, and Government
+
+TESTING / QUALITY
+-----------------
+- Test tech introduction, adoption lag, diffusion, obsolescence, prerequisite chains, historical configurations, and infrastructure dependencies
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Technology expands action space; adoption is social, economic, institutional, and geographic.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

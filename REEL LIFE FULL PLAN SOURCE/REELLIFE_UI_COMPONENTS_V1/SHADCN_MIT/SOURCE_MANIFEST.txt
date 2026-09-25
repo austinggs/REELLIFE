@@ -1,0 +1,38 @@
+SHADCN/UI CURATED SOURCE MANIFEST
+=================================
+Repository: https://github.com/shadcn-ui/ui
+Source branch: main
+Source family: apps/v4/registry/new-york-v4/ui/
+Repository license: MIT
+
+These files were fetched from the official shadcn/ui source registry on 2026-09-24.
+The initial ReelLife pack contains these source references:
+
+- button.tsx
+- card.tsx
+- badge.tsx
+- input.tsx
+- progress.tsx
+- avatar.tsx
+- tabs.tsx
+- dialog.tsx
+- tooltip.tsx
+- scroll-area.tsx
+- command.tsx
+- sheet.tsx
+- table.tsx
+
+The source pack is provided as a curated reference/use set. Keep the included MIT license notice
+with the applicable source when redistributing or publishing derived code.
+
+Observed dependency names in the fetched sources include:
+- cn
+- class-variance-authority
+- radix-ui
+- lucide-react
+- cmdk
+
+Important integration note:
+Do not add dependencies merely because they appear in this reference pack. The active ReelLife
+frontend configuration decides whether React, Tailwind CSS, Radix, or other UI tooling is actually
+used. This pack is a source/resource library, not a forced stack migration.

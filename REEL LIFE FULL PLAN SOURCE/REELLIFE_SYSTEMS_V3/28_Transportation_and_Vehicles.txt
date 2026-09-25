@@ -1,0 +1,76 @@
+REELLIFE — SYSTEM 28: TRANSPORTATION & VEHICLES
+=================================================
+Status: Approved architecture
+
+ROLE
+----
+Models mobility options, vehicles, public transport, routes, travel costs, maintenance, traffic, and disruption.
+
+OWNS
+-----
+- vehicle instances
+- vehicle condition/capacity/energy
+- vehicle ownership/operator/location
+- maintenance state
+- registration history
+- transport routes/modes
+- public transport services
+- travel cost/risk/duration inputs
+
+DOES NOT OWN
+------------
+- geographic topology
+- weather truth
+- border rules
+- travel activities themselves
+
+MODEL / STATE
+-------------
+- Supports walking, cycling, motorcycles, cars, buses, trains, ships, aircraft, taxis, public transit, and freight
+- Vehicle state includes type, owner, operator, location, condition, capacity, energy, maintenance, registration, and history
+- Transportation capability is distinct from ownership
+
+RULES / BEHAVIOR
+-----------------
+- Travel is an Activity using transport to derive route, duration, cost, and risk
+- Routes depend on geography, infrastructure, traffic, weather, vehicle, transport, borders, and disruptions
+- Failures include breakdown, traffic, accidents, cancellation, fuel shortage, road closure, and weather
+- Public transit uses routes, stops, schedules, operators, fares, capacity, and disruptions
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Geography, Infrastructure, Weather, Travel/Immigration, Finance, Employment, Housing, and Schedules
+
+TESTING / QUALITY
+-----------------
+- Test multimodal travel, disruptions, maintenance, public transit capacity, cross-border trips, and route recalculation
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Transportation provides real mobility capability; it is not a teleportation layer.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

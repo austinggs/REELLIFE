@@ -1,0 +1,82 @@
+REELLIFE — SYSTEM 24: EMPLOYMENT & LABOR
+==========================================
+Status: Approved architecture
+
+ROLE
+----
+Models work, jobs, employers, labor markets, wages, working conditions, career transitions, and unemployment.
+
+OWNS
+-----
+- jobs and vacancies
+- employment relationships
+- job applications
+- hiring/termination/resignation
+- compensation/benefits
+- working conditions
+- promotions/transfers
+- occupations
+- labor supply/demand
+- freelance/self-employment/apprenticeships
+- employment history
+
+DOES NOT OWN
+------------
+- skill truth
+- business ownership
+- finance ledger semantics
+- personality
+- legal rules
+- reputation
+- NPC choices
+
+MODEL / STATE
+-------------
+- Employment includes person, organization, job, start/end, status, compensation, benefits, working conditions, authority, contract, and history
+- Labor markets respond to business demand, supply, wages, skills, geography, education, technology, migration, regulation, and market conditions
+- Performance is contextual
+
+RULES / BEHAVIOR
+-----------------
+- Hiring combines eligibility, credentials, skills, reputation, information, fit, availability, and employer constraints
+- Performance combines competence, health, mental state, fatigue, equipment, task difficulty, preparation, workplace conditions, and uncertainty
+- Termination/resignation generates explicit downstream events
+- Unemployment is a state/condition that can affect finance, reputation, goals, household life, and mental state
+
+SYSTEM INTERACTIONS
+-------------------
+- Strongly coupled to Organizations, Finance, Skills, Education, Schedules, Geography, Transport, Reputation, and NPC Decision
+
+TESTING / QUALITY
+-----------------
+- Test hiring, job loss, multiple jobs, promotions, discrimination/configured institutional rules, labor shocks, automation, migration, and work interruptions
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Employment creates opportunities and constraints for work; it does not determine competence or life trajectory.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

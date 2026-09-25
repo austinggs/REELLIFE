@@ -1,0 +1,78 @@
+REELLIFE — SYSTEM 27: HOUSING & PROPERTY
+==========================================
+Status: Approved architecture
+
+ROLE
+----
+Models homes, rentals, ownership, leases, property condition, utilities, housing availability, and residence.
+
+OWNS
+-----
+- property and unit state
+- housing supply
+- tenancy/residence
+- leases
+- maintenance/condition
+- utilities at property context
+- housing instability states
+- housing history
+- property-specific housing constraints
+
+DOES NOT OWN
+------------
+- ownership rights semantics
+- money ledger
+- transport
+- needs
+- city geography truth
+
+MODEL / STATE
+-------------
+- Property includes location, type, structure, units, condition, utilities, ownership, tenancy, market context, and history
+- Residence includes property/unit, occupants, start/end, and status
+- Housing conditions include size, privacy, safety, sanitation, temperature, utilities, accessibility, and overcrowding
+
+RULES / BEHAVIOR
+-----------------
+- Housing instability can be stable, temporary, overcrowded, threatened, evicted, homeless, or transitional
+- Housing decisions depend on affordability, location, commute, family needs, preferences, availability, safety, reputation, and legal eligibility
+- Maintenance depends on condition, resources, ownership/lease obligations, and service access
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Geography, Finance, Ownership, Family, Needs, Health, Employment, Transport, and Population
+- Moves are Commands/Activities producing events and updating residence history
+
+TESTING / QUALITY
+-----------------
+- Test rent/mortgage pressure, vacancies, overcrowding, homelessness, eviction, shared housing, utility outages, and property deterioration
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Housing is a physical environment and resource relationship emerging from property, finance, geography, household, and choices.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

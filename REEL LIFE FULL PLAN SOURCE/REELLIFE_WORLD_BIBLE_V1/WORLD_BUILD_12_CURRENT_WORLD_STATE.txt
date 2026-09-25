@@ -1,0 +1,153 @@
+WORLD BUILD 12 — CURRENT WORLD STATE
+AURELIA WORLD BIBLE V1
+============================================================
+
+Canonical game-start date
+--------------------------
+1 January 2042
+
+Global starting population
+--------------------------
+Approximately 6.8 billion
+
+Continental population snapshot
+-------------------------------
+Elandra ~1.35B
+Veyra ~1.55B
+Sahraen ~1.25B
+Orinth ~1.10B
+Kharos ~0.85B
+Ilyra ~0.70B
+
+Global urbanization
+-------------------
+Approximately 70% of the population is urban or metropolitan at game start, with substantial variation by country.
+
+Global demographic character
+----------------------------
+Aurelia contains:
+- rapid-growth populations
+- relatively stable populations
+- aging populations
+
+These are aggregate demographic patterns, not deterministic descriptions of individuals.
+
+Economic state
+--------------
+Aurelia has a globally interconnected mixed economy containing private firms, state-linked enterprises, cooperatives, family businesses, nonprofits, public institutions, informal businesses and independent workers.
+
+Technology state
+----------------
+Aurelia possesses advanced computing, smartphones, internet, cloud infrastructure, AI, robotics, satellites, advanced medicine, modern transportation, sophisticated manufacturing, renewable energy, nuclear energy and biotechnology, with uneven access.
+
+Energy state
+------------
+Energy remains mixed between fossil fuels, nuclear and renewable systems. The global energy transition is underway but incomplete.
+
+Labor market
+------------
+Labor markets are interconnected through local, national, remote and international work. Skill shortages, wage differences and technological change influence mobility.
+
+Education
+---------
+Global literacy is high by historical standards. Education systems include public basic education, vocational education, universities, private institutions, apprenticeships and professional certification, with uneven access and quality.
+
+Healthcare
+----------
+Medical capability ranges from advanced specialist systems in major metropolitan areas to more limited access in remote regions.
+
+Migration
+---------
+Migration remains a major demographic force. Historical ties, language, economic opportunity, education, family networks and geography influence movement.
+
+Religious landscape
+-------------------
+All seven major transregional traditions remain active alongside local traditions, denominations, syncretic communities, secular and nonreligious populations.
+
+Language landscape
+------------------
+Major language families remain active across country borders. Multilingualism is common in ports, trade corridors, border regions and major cities.
+
+Institutional state
+-------------------
+Aurelia contains governments, courts, schools, hospitals, universities, banks, corporations, unions, religious institutions, media organizations, NGOs/civil society and international bodies.
+
+Institutional capacity varies by funding, staffing, trust, procedures, infrastructure and expertise.
+
+Legal state
+-----------
+Countries maintain different legal systems covering identity, property, contracts, employment, family, criminal law, immigration, taxation and organizational activity.
+
+International system
+--------------------
+International organizations address diplomacy, trade, finance, health, migration, environment, humanitarian issues, transportation and communications. Their effectiveness depends on member states, treaties, funding and institutional capacity.
+
+Environmental state
+-------------------
+Aurelia faces climate change, water stress, deforestation, pollution, biodiversity loss, coastal pressure and extreme weather, with substantial regional variation.
+
+Security state
+--------------
+The world is not in predetermined global war. It does contain territorial disputes, maritime claims, trade disputes, sanctions, military tensions, organized crime, cybercrime, political instability and historical grievances.
+
+Information environment
+-----------------------
+Information is abundant and decentralized. Sources include television, newspapers, websites, social networks, messaging systems, organizations and personal networks.
+
+Global economic interdependence
+-------------------------------
+Economic and geopolitical disruptions can propagate through trade, supply chains, prices, businesses, employment, household incomes and consumption.
+
+World-start rule
+----------------
+The world is already active before the player begins. Governments, families, businesses, students, workers, criminals, researchers and institutions are already making decisions and experiencing events.
+
+World Definition vs World State
+--------------------------------
+World Definition answers: What exists?
+World State answers: What is happening right now?
+
+The same world definition can support standard, historical, alternate, sandbox, scenario and custom modes.
+
+World state initialization
+--------------------------
+Load World Definition
+-> Apply Historical State
+-> Generate Current Demographics
+-> Initialize Countries
+-> Initialize Cities
+-> Initialize Organizations
+-> Initialize Economy
+-> Initialize Technology
+-> Initialize Environment
+-> Initialize Active Events
+-> Start World Clock
+
+WorldState data
+---------------
+WorldDate
+WorldClock
+Countries
+Territories
+Cities
+Regions
+Population
+Demographics
+Households
+Languages
+Cultures
+Religions
+Organizations
+Institutions
+Infrastructure
+Economy
+Markets
+Technology
+Environment
+Weather
+InternationalRelations
+SecurityState
+InformationState
+ActiveEvents
+PendingEvents
+HistoricalState

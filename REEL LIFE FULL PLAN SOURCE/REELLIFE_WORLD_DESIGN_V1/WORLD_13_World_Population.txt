@@ -1,0 +1,26 @@
+WORLD 13 — WORLD POPULATION
+
+Defines the demographic structure of the fictional world.
+
+Core:
+- Population is a living system, not a static number.
+- Population results from births, aging, household formation, movement, work, reproduction, and death within environments.
+- Scales: planet, continent, country/territory, region, settlement, district, neighborhood, household, individual.
+- Distribution depends on geography, climate, water, agriculture, resources, transportation, employment, housing, infrastructure, history, institutions, security, migration.
+- Density has multiple valid measures.
+- Age structures/cohorts, births, fertility, mortality, life expectancy, infant/child/maternal mortality.
+- Households and household lifecycle.
+- Migration: internal/international, temporary/permanent, voluntary/forced, seasonal, educational, employment.
+- Diasporas and urbanization.
+- Settlement growth/decline/booms/depopulation.
+- Demographic transition is possible, not mandatory.
+- Population interacts with economy, housing, education, healthcare, transport, culture, language, religion, technology, resources, environment.
+- Demographic shocks: pandemics, famine, war, disasters, mass migration, economic collapse, technology.
+- Historical records can be complete, partial, estimated, disputed, lost; census records can disagree with actual state.
+- Minorities and multiple identities; mobility varies by person.
+- Projections are estimates, not guaranteed outcomes.
+- Aggregate simulation can materialize individuals; materialization/dematerialization preserves causal and aggregate consistency.
+- Population data includes totals, age/sex/household distributions, fertility, mortality, life expectancy, migration, urbanization, employment, education, cultural/language/religious distributions, historical series.
+- Materialized individuals reconcile with aggregates.
+
+Core principle: Population is the accumulated result of millions of individual lives; aggregate and individual simulation are representations of the same underlying world.

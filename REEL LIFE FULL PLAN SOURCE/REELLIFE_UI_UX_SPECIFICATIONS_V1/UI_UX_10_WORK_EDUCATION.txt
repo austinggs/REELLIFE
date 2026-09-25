@@ -1,0 +1,35 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 10 — Work & Education
+==============================================================================
+
+Purpose
+Defines presentation of employment, labor, education, learning, credentials, schedules, and career progression.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Work View
+------------
+Show current employer, role, compensation, schedule, workplace, duties, conditions, commitments, performance context, and relevant opportunities.
+
+2. Job Discovery
+----------------
+Search and browse vacancies according to location, qualifications, credentials, timing, and player knowledge.
+
+3. Employment Actions
+---------------------
+Apply, accept, resign, negotiate, request leave, change schedule, transfer, train, and other commands as supported by authoritative systems.
+
+4. Education View
+-----------------
+Show institution, program, course, attendance, assessments, progress, credentials, tuition/costs, schedule, and available learning actions.
+
+5. Learning vs Credential
+-------------------------
+UI should clearly distinguish actual competence development from formal certification or credentials.
+
+6. Time Integration
+-------------------
+Work and education should consume Activities and interact with schedules, travel, needs, household responsibilities, and commitments.
+
+End of specification.

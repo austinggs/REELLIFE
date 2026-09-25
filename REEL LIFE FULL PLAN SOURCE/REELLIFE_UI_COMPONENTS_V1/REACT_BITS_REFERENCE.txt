@@ -1,0 +1,70 @@
+REACT BITS — REFERENCE-ONLY UI CATALOG
+======================================
+Official repository: https://github.com/DavidHDev/react-bits
+Official site: https://reactbits.dev/
+License observed on 2026-09-24: MIT + Commons Clause License Condition v1.0
+
+LICENSE IMPORTANT
+React Bits permits use for personal/commercial software, but its Commons Clause condition bars
+redistributing the components themselves, including as a bundle or ported version. Therefore this
+ReelLife ZIP intentionally contains links/metadata only and does NOT redistribute React Bits source.
+
+CURATED CANDIDATES
+
+1. BlurText
+Purpose: soft-focus text reveal / onboarding / major section transitions.
+Suggested ReelLife surfaces: splash/introduction, major life-state headings, major event reveal.
+Official registry entries:
+https://github.com/DavidHDev/react-bits/blob/main/public/r/BlurText-TS-TW.json
+https://github.com/DavidHDev/react-bits/blob/main/public/r/BlurText-TS-CSS.json
+
+2. CountUp
+Purpose: animated numeric display.
+Suggested ReelLife surfaces: money totals, statistics, population, analytics, non-authoritative UI
+counters. Use carefully where animation would not obscure exact values.
+Official registry entries:
+https://github.com/DavidHDev/react-bits/blob/main/public/r/CountUp-TS-TW.json
+https://github.com/DavidHDev/react-bits/blob/main/public/r/CountUp-TS-CSS.json
+
+3. CardNav
+Purpose: expandable navigation with grouped panels.
+Suggested ReelLife surfaces: desktop navigation experiments. Must respect UI/UX navigation spec.
+Official registry entries:
+https://github.com/DavidHDev/react-bits/blob/main/public/r/CardNav-TS-TW.json
+https://github.com/DavidHDev/react-bits/blob/main/public/r/CardNav-TS-CSS.json
+
+4. SpotlightCard
+Purpose: pointer-driven card illumination.
+Suggested ReelLife surfaces: person/organization/location cards where visual emphasis is useful.
+Avoid using it as a substitute for semantic status indicators.
+Official registry entries:
+https://github.com/DavidHDev/react-bits/blob/main/public/r/SpotlightCard-TS-TW.json
+https://github.com/DavidHDev/react-bits/blob/main/public/r/SpotlightCard-TS-CSS.json
+
+5. TiltedCard
+Purpose: subtle 3D perspective card interaction.
+Suggested ReelLife surfaces: world/location presentation, selected inventory or media cards.
+Prefer reduced-motion fallbacks and avoid performance-heavy use in dense lists.
+Official registry entries:
+https://github.com/DavidHDev/react-bits/blob/main/public/r/TiltedCard-TS-TW.json
+https://github.com/DavidHDev/react-bits/blob/main/public/r/TiltedCard-TS-CSS.json
+
+6. Dock
+Purpose: magnifying quick-action/application dock.
+Suggested ReelLife surfaces: desktop quick navigation/action experiments.
+Must remain a UI control surface only.
+Official registry entries:
+https://github.com/DavidHDev/react-bits/blob/main/public/r/Dock-TS-TW.json
+https://github.com/DavidHDev/react-bits/blob/main/public/r/Dock-TS-CSS.json
+
+7. AnimatedContent
+Purpose: scroll/mount-driven content transition.
+Suggested ReelLife surfaces: progressive disclosure and non-critical transitions.
+Avoid introducing motion into high-frequency simulation displays.
+Official registry entries:
+https://github.com/DavidHDev/react-bits/blob/main/public/r/AnimatedContent-TS-TW.json
+https://github.com/DavidHDev/react-bits/blob/main/public/r/AnimatedContent-TS-CSS.json
+
+DEPENDENCY NOTE
+The currently observed TS/TW variants use Motion and, depending on the component, GSAP/react-icons.
+Treat those as optional UI dependencies that must be justified by the actual ReelLife build.

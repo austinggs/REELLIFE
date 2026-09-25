@@ -1,0 +1,17 @@
+WORLD 03 — POLITICAL GEOGRAPHY
+
+Defines political territories, borders, jurisdictions, administrative divisions, sovereignty, and territorial control.
+
+Core:
+- Political geography layered onto physical geography.
+- Hierarchy: Planet → Continent → Country/Territory → Administrative Region → District → Municipality/City → Neighborhood.
+- Countries, dependent/disputed/admin territories, borders, crossings, jurisdictions, capitals, territorial claims, historical borders.
+- Sovereignty categories include sovereign, autonomous, dependent, occupied, disputed, administered, protectorate, special administrative, unrecognized, neutral, international.
+- Territorial claim ≠ effective control ≠ recognized sovereignty.
+- Effective control ≠ formal jurisdiction.
+- Borders affect legal, tax, immigration, customs, transport, communication, policing, healthcare, education, employment, trade, identity, information.
+- Internal/overlapping jurisdictions, capitals, enclaves/exclaves, special zones.
+- Historical political geography can change through war, treaties, administration, and political change.
+- Data-driven, discoverable, validated, dynamically changeable.
+
+Core principle: Political geography defines who claims, controls, administers, and governs space; these do not necessarily belong to the same actor.

@@ -1,0 +1,84 @@
+REELLIFE — SYSTEM 01: SIMULATION CORE & WORLD STATE
+=====================================================
+Status: Approved architecture
+
+ROLE
+----
+Authoritative coordinator and infrastructure layer. It coordinates the simulation without becoming the domain brain.
+
+OWNS
+-----
+- WorldState coordination
+- entity registries and stable references
+- system registration and dependency metadata
+- entity lifecycle state
+- simulation-step coordination
+- indexes and integrity validation
+- history/event infrastructure coordination
+- RNG/persistence infrastructure integration
+- simulation resolution coordination
+- debugging/observability hooks
+
+DOES NOT OWN
+------------
+- relationship quality or forgiveness
+- medical judgment
+- promotion decisions
+- affordability judgments
+- legal permission decisions
+- domain-specific economic, social, health, education, or behavioral rules
+
+MODEL / STATE
+-------------
+- WorldState = meta + clock + registries + simulation + history + rng + configuration + indexes
+- Domain systems own their authoritative state; Core stores registries and references rather than duplicating domain state
+- Entity lifecycle supports CREATED -> ACTIVE -> INACTIVE -> HISTORICAL, with type-specific states where needed
+- Persistent authoritative fields have one owner; derived and temporary state are not treated as competing truth
+
+RULES / BEHAVIOR
+-----------------
+- Commands express intent; events represent occurrences; consequences change state
+- Simulation step advances time, resolves due events, updates relevant state, executes actions, applies consequences, records history, and reevaluates relevance
+- Preconditions and state integrity are validated at system boundaries
+- Hard deletion is not the default because identity and causal history must survive
+- Indexes are performance structures, not alternate authoritative databases
+
+SYSTEM INTERACTIONS
+-------------------
+- Foundational dependency hub for Time, RNG, Events, Persistence, Simulation Scale, and all domain systems
+- Consumes domain events and coordinates the next simulation step
+- UI and debug tools must call authoritative commands/interfaces rather than mutate state directly
+
+TESTING / QUALITY
+-----------------
+- Test state ownership, clock monotonicity, event ordering, RNG integration, save/load integrity, reference integrity, and causal continuity
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+The Core is the operating system of the simulation, not the decision-maker for every domain.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

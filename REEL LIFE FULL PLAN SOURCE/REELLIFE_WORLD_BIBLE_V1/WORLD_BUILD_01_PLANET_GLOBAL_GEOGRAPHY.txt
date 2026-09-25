@@ -1,0 +1,128 @@
+WORLD BUILD 01 — PLANET & GLOBAL GEOGRAPHY
+AURELIA WORLD BIBLE V1
+============================================================
+
+1. Planet Identity
+-------------------
+Planet name: Aurelia
+Scale: Earth-scale terrestrial world
+Coordinate model: latitude, longitude, elevation, depth
+
+Aurelia is a fully fictional world. It is not dependent on a real-world map and must remain internally coherent, spatially persistent, and causally meaningful.
+
+2. Global Geography
+--------------------
+Aurelia contains six major continents:
+- Elandra
+- Veyra
+- Sahraen
+- Orinth
+- Kharos
+- Ilyra
+
+The planet contains five major oceans:
+- Meridian Ocean
+- Western Ocean
+- Eastern Ocean
+- Southern Ocean
+- Polar Ocean
+
+Additional seas, bays, gulfs, inland waters and island groups can exist within the detailed geographic layer.
+
+3. Major Mountain Systems
+--------------------------
+- Crown Mountains
+- Veyran Spine
+- Kharic Range
+- Southern Wall
+
+Mountain systems shape climate, drainage, transportation, settlement, borders, resources, hazards and historical development.
+
+4. Major River Systems
+----------------------
+- Ardan River
+- Veyr River
+- Saren River
+- Orin River
+- Khar River
+
+River systems influence agriculture, transport, settlement, trade, political boundaries and historic state formation.
+
+5. Climate and Ecology
+----------------------
+Aurelia contains tropical, subtropical, temperate, arid, semi-arid, alpine, subpolar and polar environments. Climate varies with latitude, elevation, ocean currents, terrain and rain-shadow effects.
+
+Ecological regions include forests, grasslands, savannahs, deserts, wetlands, rainforests, alpine zones, tundra, coastal ecosystems and island ecosystems.
+
+6. Major Resource Geography
+---------------------------
+Resource categories include:
+- energy resources: petroleum, natural gas, coal, uranium, hydropower potential, solar potential, wind potential, geothermal potential
+- metals and minerals: iron, copper, aluminum-bearing ores, nickel, tin, zinc, precious metals, rare industrial minerals
+- construction materials: limestone, clay, sand, gravel, stone, timber
+- biological resources: forests, fisheries, livestock, crops, medicinal plants
+- water resources: rivers, lakes, groundwater, reservoirs and desalination potential
+
+Resources are spatially authoritative. Their availability is not assumed to equal affordability, production capacity or market access.
+
+7. Hazards
+----------
+Major hazards include floods, droughts, storms, wildfires, earthquakes, volcanic activity, landslides, extreme heat, environmental degradation and pollution.
+
+Hazard impact follows the broader model:
+Hazard -> Exposure -> Vulnerability -> Impact -> Response -> Recovery
+
+8. Ocean and Atmospheric Systems
+--------------------------------
+Ocean currents, prevailing winds, elevation, coastlines and rain-shadow effects influence regional climates and agriculture. Coastal and maritime regions are especially shaped by ocean access, fisheries, storms and shipping routes.
+
+9. Islands, Peninsulas and Chokepoints
+--------------------------------------
+Aurelia contains islands, peninsulas, inland seas and strategic geographic bottlenecks. These locations affect maritime trade, migration, defense, culture and regional integration.
+
+10. Geographic Corridors
+------------------------
+Major geographic and economic corridors include:
+- Ardan Corridor
+- Veyran Corridor
+- Saren Corridor
+- Orin Corridor
+- Kharic Corridor
+- Ilyran Maritime Corridor
+
+11. Geographic Authority
+------------------------
+Geography is authoritative simulation state. Maps are presentation layers over that state.
+
+The map must not become the source of truth for terrain, borders, infrastructure or settlements.
+
+12. Geographic Data Model
+-------------------------
+PlanetId
+Continents
+Oceans
+Seas
+MountainSystems
+RiverSystems
+Lakes
+ClimateRegions
+EcologicalRegions
+GeologicalRegions
+ResourceRegions
+HazardRegions
+SpatialHistory
+
+13. Validation Rules
+--------------------
+World geography should preserve:
+- plausible hydrology
+- coherent climate zones
+- plausible settlement locations
+- plausible resource distribution
+- navigable and geographically coherent transport routes
+- meaningful hazard exposure
+- internally consistent boundaries and terrain
+
+14. Design Principle
+--------------------
+Geography is causal, not decorative. It should explain or constrain settlement, agriculture, transport, economics, culture, political history and environmental risk.

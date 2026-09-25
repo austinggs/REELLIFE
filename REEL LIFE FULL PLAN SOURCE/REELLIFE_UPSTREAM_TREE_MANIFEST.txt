@@ -1,0 +1,56 @@
+REELLIFE UPSTREAM TREE MANIFEST — AUDITED MAIN BRANCH
+
+Repository: robert1811/life-simulator
+Branch: main
+Inspected tree SHA: fb04c1047f08d5326cd37a9b5e687c3784454be7
+
+Tracked files observed in the inspected tree:
+README.md
+index.html
+preview.jpg
+styles.css
+js/careers.js
+js/characters.js
+js/countriesData.js
+js/events.js
+js/interface.js
+js/items.js
+js/libs.js
+js/main.js
+js/menu.js
+js/worldEvents.js
+images/job.png
+images/prison.png
+images/relations.png
+images/options/cars.png
+images/options/criminal-record.png
+images/options/criminal.png
+images/options/cv.png
+images/options/drivelicense.png
+images/options/education.png
+images/options/emigrate.png
+images/options/free-time.png
+images/options/health.png
+images/options/identity.png
+images/options/inventory.png
+images/options/love.png
+images/options/plasticSurgery.png
+images/options/real-estate.png
+images/options/sexuality.png
+images/options/shopping.png
+images/options/skills.png
+images/options/university.png
+images/shop/bass.png
+images/shop/guitar.png
+images/shop/handgun.png
+images/shop/knife.png
+images/shop/laptop.png
+images/shop/piano.png
+images/shop/rpg.png
+images/shop/shotgun.png
+images/shop/smartphone.png
+images/shop/violin.png
+
+Note: the original binary/image assets are not redistributed in the stripped ReelLife starter.
+They are intentionally excluded because the old UI/assets are being replaced by the ReelLife
+UI/UX system and world presentation.

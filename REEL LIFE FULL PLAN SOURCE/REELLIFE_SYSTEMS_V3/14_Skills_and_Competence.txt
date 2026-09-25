@@ -1,0 +1,85 @@
+REELLIFE — SYSTEM 14: SKILLS & COMPETENCE
+===========================================
+Status: Approved architecture
+
+ROLE
+----
+Models learned capability, practical performance, experience, proficiency, specialization, and mastery.
+
+OWNS
+-----
+- skill definitions
+- skill state
+- proficiency
+- practice
+- experience
+- familiarity
+- reliability
+- specialization
+- mastery
+- learning/decay
+- demonstrated competence
+
+DOES NOT OWN
+------------
+- aptitude generation
+- education institutions
+- employment contracts
+- legal authorization
+- reputation
+- personality
+- health state
+- NPC decisions
+
+MODEL / STATE
+-------------
+- Skills can be hierarchical with subskills, prerequisites, related skills, learning methods, transferability, decay, mastery, and certification links
+- Competence has practical/theoretical/familiarity/reliability/experience/specialization dimensions
+- Performance is contextual and includes health, mental state, fatigue, equipment, difficulty, preparation, environment, and uncertainty
+
+RULES / BEHAVIOR
+-----------------
+- Learning comes from education, practice, employment, apprenticeship, mentorship, observation, reading, experimentation, hobbies, failure, and teaching
+- Diminishing returns prevent spam-practice exploits
+- Experience and skill are distinct
+- Decay is gradual and relearning can be faster than first learning
+- Certification is recognition, not a synonym for competence
+
+SYSTEM INTERACTIONS
+-------------------
+- Education creates structured learning; Employment supplies performance contexts; Cognition supplies understanding; Personality/Aptitude affect learning; Health/Mental/Needs affect execution
+- Assessment information may update reputation or institutional records without rewriting skill truth
+
+TESTING / QUALITY
+-----------------
+- Test progression, decay, transfer, specialization, context-dependent performance, certification mismatch, and materialization continuity
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Skill is what a person has learned and can demonstrate under conditions—not an abstract destiny score.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

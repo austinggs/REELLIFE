@@ -1,0 +1,21 @@
+WORLD 08 — CULTURES & LANGUAGES
+
+Defines cultures, subcultures, languages, dialects, writing systems, customs, norms, transmission, change, and interaction.
+
+Core:
+- Culture is not personality.
+- Culture influences norms, traditions, language, institutions, exposure, learning, interpretation, beliefs, preferences, behavior.
+- Distributed across people, families, communities, organizations, institutions, media, schools, religion, government.
+- Multiple cultural identities; affiliation distinct from exposure.
+- Exposure via family, schools, friends, neighbors, work, religion, media, travel, migration, online.
+- Cultural transmission, learning, norm strength, variation, subcultures, countercultures.
+- Cultural institutions/artifacts, food, naming, clothing, music/arts, festivals/traditions.
+- Language entities include LanguageId, name, writing system, distribution, speakers, dialects, history, related languages.
+- Language families, change/contact, multilingualism, code-switching, translation, literacy.
+- Official/minority languages, revitalization, language death.
+- Diffusion, hybridization, conflict, accommodation.
+- Stereotypes can exist as beliefs, not objective truth.
+- Technology changes culture; culture interacts with institutions, religion, government, economy, migration, relationships, organizations.
+- Definition/state/history/belief remain distinct; validation and player discovery.
+
+Core principles: Culture is accumulated social knowledge/practice; language is living communication; no culture is personality preset; no language is merely cosmetic; no individual is reducible to background.

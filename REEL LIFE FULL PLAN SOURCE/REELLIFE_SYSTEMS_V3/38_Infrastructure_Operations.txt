@@ -1,0 +1,78 @@
+REELLIFE — SYSTEM 38: INFRASTRUCTURE OPERATIONS
+=================================================
+Status: Approved architecture
+
+ROLE
+----
+Models operational public and private infrastructure networks, capacity, maintenance, outages, dependencies, and recovery.
+
+OWNS
+-----
+- InfrastructureAsset state
+- capacity
+- condition
+- dependencies
+- users
+- maintenance schedules
+- operational status
+- outages
+- repair/recovery
+- operator responsibilities
+
+DOES NOT OWN
+------------
+- geographic topology
+- construction project detail
+- utility pricing rules as a whole
+- individual travel decisions
+
+MODEL / STATE
+-------------
+- InfrastructureAsset includes type, location, operator, capacity, condition, dependencies, users, maintenance, and operational status
+- Capacity states can be underused, normal, congested, overloaded, or failed
+- Network dependencies permit upstream/downstream failures
+
+RULES / BEHAVIOR
+-----------------
+- Maintenance depends on funding, staff, materials, access, age, damage, and organizational choices
+- Outages can arise from equipment failure, disaster, overload, maintenance, conflict, sabotage, supply shortage, or organizational failure
+- Recovery needs workers, equipment, resources, access, authority, and time
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Geography, Organizations, Finance, Employment, Supply Chains, Weather/Disasters, Technology, Transportation, and Government
+- Infrastructure failures generate Events with downstream effects rather than directly scripting every impacted system
+
+TESTING / QUALITY
+-----------------
+- Test cascading outages, capacity thresholds, maintenance backlog, repair constraints, redundancy, and recovery sequencing
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Infrastructure is an operational network with capacity and failure modes, not map decoration.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC

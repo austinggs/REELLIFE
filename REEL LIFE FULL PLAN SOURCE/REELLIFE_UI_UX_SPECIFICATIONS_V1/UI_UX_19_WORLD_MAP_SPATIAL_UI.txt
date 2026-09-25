@@ -1,0 +1,43 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 19 — World Map & Spatial UI
+==============================================================================
+
+Purpose
+Provides the dedicated spatial specification underlying the broader World View, including geographic hierarchy, layers, markers, routes, and spatial interaction.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Authoritative Source
+-----------------------
+System 37 owns geography and System 56 owns its presentation. The map cannot mutate geography directly.
+
+2. Fictional Cartography
+------------------------
+Aurelia is a fully fictional world. The map uses canonical names, boundaries, cities, regions, rivers, mountains, climate zones, transport corridors, and other World Bible content.
+
+3. Geographic Layers
+--------------------
+Political; physical; climate/ecology; resources where discoverable; settlements; transport; infrastructure; properties; institutions; dynamic events.
+
+4. Marker States
+----------------
+Known; approximate; stale; uncertain; restricted; hidden; selected; route-associated; event-associated. Marker state should reflect knowledge and simulation state.
+
+5. Route Visualization
+----------------------
+Show available travel options, expected duration, constraints, border interactions, disruptions, and uncertainty where supported.
+
+6. Spatial History
+------------------
+Places should retain historical context so that renamed or transformed locations can be traced through time.
+
+7. Performance
+--------------
+Use geographic streaming and level-of-detail consistent with System 07. The map should avoid materializing unnecessary entities solely for visual decoration.
+
+8. World-Bible Dependency
+-------------------------
+This dedicated spatial layer is the strongest direct dependency that required building Aurelia as a coherent fictional world instead of treating the map as a generic background.
+
+End of specification.

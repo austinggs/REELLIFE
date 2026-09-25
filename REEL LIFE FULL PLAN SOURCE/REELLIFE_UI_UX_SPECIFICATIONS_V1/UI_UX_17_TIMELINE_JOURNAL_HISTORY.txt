@@ -1,0 +1,39 @@
+REELLIFE — UI/UX SPECIFICATION V1
+UI/UX 17 — Timeline / Journal / History
+==============================================================================
+
+Purpose
+Defines the player historical understanding of life and world events through a unified presentation layer.
+
+Scope
+This document describes presentation, interaction, navigation, information display, and UI boundaries. It does not own simulation truth.
+
+1. Unified History Layer
+------------------------
+Timeline, Journal, and Statistics are presentation views built from event history and derived aggregates. None becomes authoritative simulation state.
+
+2. Timeline
+-----------
+Chronological record of meaningful events with dates, locations, actors, and relationships.
+
+3. Journal
+----------
+Player-perspective record emphasizing what the player experienced, noticed, recorded, or was told.
+
+4. Statistics
+-------------
+Derived analytics such as lifetime earnings, jobs held, moves, education milestones, relationships, health milestones, and other meaningful aggregates.
+
+5. Causal Inspection
+--------------------
+Where supported, a history item can open the event chain that produced a result. Hidden/private portions should remain access-controlled.
+
+6. Filtering
+------------
+By time, person, place, event type, organization, relationship, importance, and knowledge state.
+
+7. Legacy
+---------
+History persists across generations and should allow the player to understand how prior lives affected later ones without erasing private/unknown information boundaries.
+
+End of specification.

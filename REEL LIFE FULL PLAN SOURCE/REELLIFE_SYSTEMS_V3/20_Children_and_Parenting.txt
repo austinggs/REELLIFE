@@ -1,0 +1,84 @@
+REELLIFE — SYSTEM 20: CHILDREN & PARENTING
+============================================
+Status: Approved architecture
+
+ROLE
+----
+Models the ongoing care, supervision, teaching, protection, discipline, support, and autonomy of children.
+
+OWNS
+-----
+- parenting relationships/processes
+- caregiving
+- supervision
+- support
+- guidance
+- discipline
+- protection
+- child autonomy
+- care coordination
+- parent involvement/history
+- parental decisions
+
+DOES NOT OWN
+------------
+- parentage
+- personality/development outcomes
+- education institutions
+- health truth
+- household membership
+- finance ledgers
+- NPC decision architecture
+
+MODEL / STATE
+-------------
+- ParentingRelationship tracks caregiver type, responsibilities, involvement, expectations, knowledge, resources, and autonomy support
+- Caregivers can be parents, guardians, foster caregivers, relatives, institutions, or other configured roles
+- Independence develops across practical, social, financial, emotional, and decision dimensions
+
+RULES / BEHAVIOR
+-----------------
+- Parenting consumes time, money, energy, attention, and resources
+- Care quality depends on child needs, caregiver availability, resources, knowledge, health, household conditions, priorities, and institutions
+- Parents do not know everything and can make mistakes
+- Discipline is modeled broadly and contextually rather than as a single moralized style switch
+- Children increasingly participate in decisions as capacity develops
+
+SYSTEM INTERACTIONS
+-------------------
+- Uses Needs, Aging, Health, Mental State, Education, Family, Employment, Housing, Finance, Schedules, and NPC Decision
+- Childcare activities can be represented with the shared Activity system
+
+TESTING / QUALITY
+-----------------
+- Test caregiver scarcity, conflicting caregiver responsibilities, emergencies, mistakes, changing autonomy, resource deprivation, and multiple caregivers
+
+SHARED ARCHITECTURAL LAWS
+--------------------------
+1. One authoritative owner for every persistent state field.
+2. Commands express intent; events represent occurrences; consequences change state.
+3. UI never directly mutates simulation state.
+4. Information/knowledge is distinct from world truth.
+5. Legal identity is distinct from simulation identity.
+6. Organization and relationship structures are universal, not duplicated per domain.
+7. Time has one authoritative clock.
+8. Authoritative RNG is seeded, serialized, and reproducible.
+9. Derived state remains derived.
+10. Simulation resolution may change detail, never causal truth.
+11. Origin influences conditions/opportunities, not destiny.
+12. Legacy propagates through concrete systems, not arbitrary hidden modifiers.
+13. .reel is the native persistent world/save format.
+
+OUTCOME / CAUSALITY CHECK
+--------------------------
+This system must participate in the governing loop: CONDITIONS -> DECISIONS -> EVENTS -> CONSEQUENCES -> NEW CONDITIONS.
+
+CORE PRINCIPLE
+---------------
+Parents influence children through ongoing conditions and interactions; they do not author children into predetermined outcomes.
+
+IMPLEMENTATION NOTE
+-------------------
+Keep authoritative state single-owned, serializable, deterministic where configured, and separated from UI presentation. Cross-system effects should travel through Commands, Events, and explicit consequence handlers.
+
+END OF SYSTEM SPEC
