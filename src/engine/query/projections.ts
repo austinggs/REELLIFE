@@ -92,7 +92,7 @@ export interface SimulationHealthView {
 }
 
 /** Which visibility labels a viewer is entitled to see. */
-function visibleTo(viewer: EntityId<"person"> | null, visibility: Visibility): boolean {
+export function visibleTo(viewer: EntityId<"person"> | null, visibility: Visibility): boolean {
   if (visibility === "public") return true;
   if (visibility === "unknown") return false;
   if (visibility === "restricted") return viewer !== null;

@@ -61,6 +61,7 @@ export interface LocationRef {
   readonly name: string;
   readonly parentId?: string;
   readonly coordinates?: GeoPoint;
+  readonly historicalNames?: readonly string[];
 }
 
 export function locationRef(init: LocationRef): LocationRef {

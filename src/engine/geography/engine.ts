@@ -54,6 +54,23 @@ export class GeographyEngine {
     return this.state.places.find((place) => place.id === id);
   }
 
+  findByName(name: string): LocationRef | undefined {
+    return this.state.places.find((place) => place.name.toLowerCase() === name.toLowerCase());
+  }
+
+  /** Finds a place by one of its former/historical names (UI/UX 19 section 6). */
+  findByHistoricalName(historicalName: string): LocationRef | undefined {
+    const target = historicalName.toLowerCase();
+    return this.state.places.find(
+      (place) => place.historicalNames?.some((h) => h.toLowerCase() === target),
+    );
+  }
+
+  historicalNamesOf(id: string): readonly string[] {
+    const place = this.get(id);
+    return place?.historicalNames ?? [];
+  }
+
   /**
    * Registers a place. Validates the invariants that make LocationRefs stable
    * and the hierarchy usable: unique IDs, known levels, and a parent that

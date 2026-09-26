@@ -98,6 +98,20 @@ export class ScaleEngine {
     }
     this.state = { ...this.state, residents: [...this.state.residents, resident] };
   }
+  relocateResident(personId: EntityId<"person">, newSettlementId: string): void {
+    this.scope.assertOwner("scale");
+    const current = this.residentFor(personId);
+    if (!current) {
+      throw new Error(`ScaleEngine.relocateResident: person ${personId} is not a resident`);
+    }
+    this.state = {
+      ...this.state,
+      residents: this.state.residents.map((r) =>
+        r.personId === personId ? { ...r, settlementId: newSettlementId } : r,
+      ),
+    };
+  }
+
 
   countMaterialized(settlementId: string): number {
     return this.residentsAt(settlementId).length;

@@ -15,6 +15,7 @@ export * from "./location.ts";
 export * from "./authority.ts";
 export * from "./resolution.ts";
 export * from "./information.ts";
+export * from "./authorityTerms.ts";
 export * from "./relationship.ts";
 export * from "./organization.ts";
 export * from "./ownership.ts";

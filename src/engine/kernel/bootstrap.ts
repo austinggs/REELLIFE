@@ -26,10 +26,15 @@ import {
 } from "../commands/builtin/worldCommands.ts";
 import { bootstrapDomain } from "../commands/domain/index.ts";
 import { createCalendarHeartbeatSystem } from "./heartbeatSystem.ts";
+import { seedPlayableSlice, type SliceSeedOptions } from "./sliceSeed.ts";
 
 export interface KernelBootstrapOptions extends CreateSimulationOptions {
   /** The heartbeat annotation is on by default; tests may disable it. */
   readonly withHeartbeat?: boolean;
+  /** Create the world already lived-in (geography + materialized residents + player). */
+  readonly seedSlice?: boolean;
+  /** Slice population tuning; only meaningful with `seedSlice`. */
+  readonly slice?: SliceSeedOptions;
 }
 
 /** Registers kernel commands and their consequence appliers on a simulation. */
@@ -73,6 +78,8 @@ export function createKernelSimulation(options: KernelBootstrapOptions): Simulat
   if (options.withHeartbeat !== false) {
     sim.registerSystem(createCalendarHeartbeatSystem());
   }
+  // Playable worlds start lived-in; loaded worlds restore instead of re-seeding.
+  if (options.seedSlice) seedPlayableSlice(sim, options.slice);
   return sim;
 }
 

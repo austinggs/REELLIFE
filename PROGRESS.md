@@ -8,17 +8,88 @@
 > Keep `docs/OWNERSHIP_MATRIX.md`, `docs/CONTENT_GAPS.md`,
 > `docs/SOURCE_CONFLICTS.md` in sync when your change affects them.
 
-Last updated: 2026-09-25 (M2 scenario DoD gate: both scenario tests passing;
-typecheck/lint/test all green — 32 files / 264 tests).
+Last updated: 2026-09-26 (M4 in progress — full Aurelia canon + geography + travel + population land; next is weather/environment (46) and countries/world rules (39)).
+Gate: typecheck 0, lint 0, 45 files / 360 tests, `npm run build` OK.
 
 ---
 
 ## Current position
 
-**Phase: M2 COMPLETE — every M2 system, command and DoD scenario in
-`PHASES.md` is implemented and tested. Next: M3 UI shell.**
+**Phase: M4 in progress — the full Aurelia world definition is now canonical
+content, and the spatial systems (geography, travel, population) are landing.
+Next: weather/environment/disaster (System 46) and countries & world rules
+(System 39), then the knowledge-limited map (System 56) to close the M4 DoD.**
 
-M0 and M1 were already done; this session closed the remaining M2 systems:
+M4 landed so far (Systems 37, 45, 47 + full world canon):
+
+- **`src/content/aurelia/canon.ts`** — the complete World Bible content as data:
+  6 continents (with canonical ~6.8B population targets), 5 oceans, 36 regions,
+  48 countries, 34 major settlements, 4 mountain systems, 5 rivers, 6 corridors,
+  8 history eras, 6 language families, 7 religions, 17 active world
+  developments. `tests/content/aureliaCanon.test.ts` pins the M4 DoD counts
+  (6/5/36/48/34), unique IDs, coordinate bounds and referential integrity.
+- **`src/content/aurelia/geography.ts`** — the full `WORLD-AURELIA` hierarchy
+  (`registerAureliaWorldGeography`) with stable `LocationRef`s, districts for
+  Arden, and historical names (`CITY-ARDEN` → "Old Arden" / "Porte-Ardan").
+  `GeographyEngine` gained `findByHistoricalName` / `historicalNamesOf`.
+- **`src/engine/travel/`** (System 45) — `TransportRoute`, `ActiveJourney`,
+  `TravelHistoryEntry`, and `generateCanonicalRoutes()` building the rail/road/
+  maritime/flight network from the six corridors plus intercontinental links.
+  `TravelEngine` owns active journeys and travel history; `ScaleEngine` gained
+  `relocateResident` for cross-settlement movement.
+- **`src/engine/population/`** (System 47) — `PopulationAggregate` per
+  continent/country/region/settlement and `PopulationEngine`. The canonical
+  `distributeAureliaPopulation()` in `src/content/aurelia/population.ts` splits
+  the 6.8B deterministically (stable `fnv1a32` weights, exact integer sums at
+  every additive level, per-country urbanisation in [0.55, 0.85] around the ~70%
+  canon). Provisional — logged in `docs/CONTENT_GAPS.md`.
+- Tests: `tests/kernel/travel.test.ts` (5), `tests/kernel/population.test.ts` (6).
+
+M3 delivered (Systems 55, 56, 57 + UI/UX 01–08, 14, 17–24):
+
+- **`src/app/session/simulationSession.ts` (System 55 boundary)** — the *only*
+  module holding a `Simulation`. Closed public surface (pinned by a test):
+  `snapshot`, `personView`, `search`, `inspect`, `stateHash`, `act`, `setSpeed`,
+  `setPaused`, `advance`, `setAuthority`, `console`, `listSlots`, `save`.
+  Nothing returns the `Simulation`, the world bag or a mutable engine object.
+- **`src/app/shell/`** — `AppShell.tsx` (anchors, `navModel.ts`, ⌥-shortcuts,
+  authority-gated console/debug, pacing loop that advances authoritative time,
+  breadcrumbs, interrupt-only notification banner) and the responsive layout.
+- **Screens (`src/app/screens/`)** — Life (situation, time, location, needs,
+  commitments, current activity, nearby people, events, quick actions), People +
+  Person view with knowledge-state badges, World, History, Search, Settings,
+  Console (System 57), Debug (UI/UX 22, authorized mode only).
+- **`src/app/decision/`** — pure `decisionFlow.ts` walk/commit state machine +
+  `DecisionSurface.tsx` binding (keyboard-only walkthrough, explicit commit step,
+  estimate-vs-deterministic labelling).
+- **Persistence wiring** — `src/platform/localStorageSaveStore.ts` is the
+  browser `.reel` store; saving goes through the `world.save` command;
+  `src/app/session/worldLoad.ts` dispatches `world.load` (audit + engine
+  refusal) and then performs the one platform step a running instance cannot do
+  for itself: swapping the `SimulationSession`. Settings shows per-slot world
+  date/time, context, format/content version, generation and a *checked*
+  integrity state (corrupt slots are listed as unreadable with the engine's own
+  explanation and cannot be loaded); destructive loads require confirmation
+  (UI/UX 20 sections 4–5). An unlistable store is reported instead of showing an
+  empty list (UI/UX 24 section 8).
+- **Boundaries enforced by test** — `tests/invariants/architecture.test.ts`
+  asserts `src/app/**` imports only
+  `@/engine/{query,kernel,commands,primitives,core/simulation,core/ownership,index}`
+  (never `@/engine/console`, never a mutator) and that the engine stays DOM-free.
+- **Tests** — `tests/app/appShell.test.ts` (session surface, pipeline dispatch,
+  pacing, preferences/a11y, decision flow, navigation, knowledge badges, slots
+  and world load) and `tests/app/shellWiring.test.ts`.
+- Deliberate M3 decisions: reduced motion never gates the pacing loop (it would
+  freeze authoritative time); the console is reachable only with non-player
+  authority; presentation state (selection, inspector, pending confirmation) is
+  reset when a load swaps the world.
+
+Two M2/M3 items remain queued and are logged in `docs/CONTENT_GAPS.md`:
+`SaveStore.listSlots()` is not yet tolerant of a slot whose bytes are not a
+`.reel` document (the app reports it as "could not be listed"), and NPC
+initiative (System 17) is still driven by explicit commands.
+
+### M2 — vertical slice complete (previous sessions)
 
 - **07 scale/materialization** — `src/engine/scale/` with deterministic
   `materializeSettlement()` (seeded `population` stream, sequential ownership
@@ -56,15 +127,16 @@ its M2 reach ("organization core" — employers as real orgs) is delivered by
 System 32, and the business/market depth is explicitly M5 work — logged in
 `docs/CONTENT_GAPS.md`.
 
-Proceed to **M3 UI shell** per `PHASES.md` ordering. Do NOT jump to M5/M6
-systems.
+M3 (UI shell) was delivered in `src/app/**` — see the summary at the top of this
+section. Proceed to **M4 (Aurelia content + spatial world)** per `PHASES.md`
+ordering. Do NOT jump to M5/M6 systems.
 
 ## Verification commands (all must be green before you stop)
 
 ```
 npm run typecheck        # tsc --noEmit
 npm run lint             # eslint .
-npm test                 # vitest run — full suite (37 files, 285 tests as of last update)
+npm test                 # vitest run — full suite (42 files, 340 tests as of last update)
 npm run test:scenarios   # the two M2 DoD scenario tests
 npm run build            # tsc + vite build
 npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless determinism
@@ -149,16 +221,63 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   `employment.apply` now enforces employer existence through the hire applier
   (covered by "employment.apply at an unknown organization creates no employment").
 
+### M3 — UI shell (Systems 55, 56, 57 + UI/UX 01–08, 14, 17–24)
+- `src/app/session/simulationSession.ts` — the only `Simulation` holder; closed,
+  test-pinned public surface; projections only (never engine objects).
+- `src/app/session/worldLoad.ts` — `world.load` (audited, refusals from the
+  engine) then the platform session swap; failures leave the running world intact.
+- `src/app/shell/AppShell.tsx` + `navModel.ts` — anchors, ⌥-shortcuts,
+  authority-gated console/debug, pacing loop, breadcrumbs, notification banner.
+- `src/app/screens/` — Life, People (person view with knowledge badges), World,
+  History, Search, Settings (incl. save slots + load), Console, Debug.
+- `src/app/decision/` — `decisionFlow.ts` (commit step, keyboard walkthrough,
+  estimate-vs-deterministic labelling) + `DecisionSurface.tsx`.
+- `src/app/ui/` — knowledge/visibility mappers, preferences (density, motion,
+  notifications, authority).
+- `src/platform/localStorageSaveStore.ts` — browser `.reel` store used by the app.
+- Tests: `tests/app/appShell.test.ts`, `tests/app/shellWiring.test.ts`;
+  boundary pinned by `tests/invariants/architecture.test.ts`.
+- Deferred (logged in `docs/CONTENT_GAPS.md`): `SaveStore.listSlots()` tolerance
+  for bytes that are not a `.reel` document (the app reports "could not be
+  listed" and never shows a false empty list).
+
+### M4 — Aurelia content + spatial world (Systems 37, 38 partial, 45, 47)
+- **Full world canon (`src/content/aurelia/canon.ts`)** — 6/5/36/48/34 counts,
+  4 mountains, 5 rivers, 6 corridors, 8 eras, 6 language families, 7 religions,
+  17 active developments. Pinned by `tests/content/aureliaCanon.test.ts` (the
+  M4 DoD data-validation test: exact counts + unique IDs + referential integrity
+  + coordinate bounds).
+- **Geography (37) full hierarchy** — `registerAureliaWorldGeography` registers
+  world → 6 continents → 5 oceans → 48 countries → 36 regions → 34 settlements →
+  Arden districts with stable `LocationRef`s; `historicalNames` on `LocationRef`
+  + `findByHistoricalName` support spatial history for renamed places.
+- **Travel (45) + Infrastructure routes (38 slice)** — `src/engine/travel/`
+  (`TransportRoute`/`ActiveJourney`/`TravelHistoryEntry`),
+  `generateCanonicalRoutes()` (rail + road per corridor, maritime + flight
+  intercontinental links), `TravelEngine` (journey lifecycle + history).
+  `ScaleEngine.relocateResident` moves a materialized resident between
+  settlements. Tests: `tests/kernel/travel.test.ts`.
+- **Population (47)** — `src/engine/population/` (`PopulationEngine` +
+  `PopulationAggregate`), and the canonical deterministic distribution in
+  `src/content/aurelia/population.ts` (exact integer splits of the 6.8B across
+  countries/regions/settlements; per-country urbanisation; stable
+  `fnv1a32`-derived weights, no RNG consumption). Tests:
+  `tests/kernel/population.test.ts`.
+- Remaining M4: weather/environment/disaster (46), countries & world rules (39),
+  infrastructure operations depth (38), and the knowledge-limited map (56).
+
 ## What is NOT done (next steps, in order)
 
-1. **M3 UI shell** (Systems 55–57 + UI/UX 01–08, 14, 17–24): shell anchors
-   (Life/People/World/History/Search/Settings), Life screen, Person view with
-   knowledge-state badges, decision surface, notification feed, System 57
-   console, debug UI behind authorized mode. `src/app/` currently holds only
-   scaffolds (`App.tsx` is a 12-line placeholder not yet wired to the engine);
-   adapted shadcn components are ready in `src/ui/`.
-2. **M4–M8** per `PHASES.md` (Aurelia content, economy, society/law/info,
-   continuity, hardening).
+1. **M4 remainder** per `PHASES.md`: weather/environment/disaster (46),
+   countries & world rules (39), infrastructure operations (38), and the
+   knowledge-limited map with LOD (56) — the second M4 DoD item ("map renders
+   only player-known markers") is the map work that closes M4.
+2. **M5–M8** per `PHASES.md` (economy, society/law/info, continuity,
+   hardening).
+3. **Deferred M3-adjacent polish** (logged in `docs/CONTENT_GAPS.md`):
+   `SaveStore.listSlots()` tolerance for non-`.reel` bytes, NPC initiative
+   (System 17) autonomous ticking, and command authority requirements
+   (`authorityRequirement` is declared but not yet enforced by domain commands).
 
 ## Architecture invariants (do not break)
 
@@ -198,3 +317,19 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   bag is the baseline. Legal corrections now apply the new value while
   preserving history. Gate: typecheck 0, lint 0, 285/285, build OK,
   determinism PASS. M2 is complete; next is M3.
+- **2026-09-26 (M3 session):** Built the M3 presentation layer. New:
+  `src/app/{shell,decision,ui,session}/`, seven screens, `App.tsx` rewritten to
+  own `SimulationSession` + snapshot + preferences. Persistence is wired end to
+  end: the browser `.reel` store is handed to the session, `world.save` goes
+  through the pipeline, and **load-from-slot now works** —
+  `src/app/session/worldLoad.ts` dispatches `world.load` (audit + engine
+  refusal), then performs the one platform step a running instance cannot do for
+  itself (swapping the session), reporting failure without touching the running
+  world. `SaveSlotView` gained format/content version, generation and a *checked*
+  integrity state; Settings lists slots with two-step load confirmation and an
+  explicit "could not be listed" state instead of a false empty list. Also changed
+  `SimulationSession.listSlots()` to return `{ slots, issue? }` (the store's
+  enumeration can fail on non-`.reel` bytes — the gap is logged in
+  `docs/CONTENT_GAPS.md`). Presentation state is reset when a load swaps the
+  world; reduced motion deliberately does not gate the pacing loop.
+  Gate: typecheck 0, lint 0, 42 files / 340 tests, `npm run build` OK.

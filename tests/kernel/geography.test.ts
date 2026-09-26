@@ -10,6 +10,7 @@ import {
   AURELIA_SLICE_PLACES,
   M2_SETTLEMENT_ID,
   registerAureliaSliceGeography,
+  registerAureliaWorldGeography,
 } from "../../src/content/aurelia/geography.ts";
 import type { Simulation } from "../../src/engine/core/simulation.ts";
 
@@ -121,4 +122,37 @@ describe("geography engine (System 37)", () => {
       "CITY-ARDEN",
     ]);
   });
+
+  it("registers full world geography (M4) and supports spatial history queries", () => {
+    const sim = newWorld();
+    withGeography(sim, (engine) => {
+      registerAureliaWorldGeography(engine);
+      // All places registered
+      expect(engine.all().length).toBeGreaterThan(120);
+
+      // Historical names query works
+      const arden = engine.findByHistoricalName("Porte-Ardan");
+      expect(arden?.id).toBe("CITY-ARDEN");
+      expect(arden?.name).toBe("Arden");
+
+      const veyr = engine.findByHistoricalName("Veyr-on-River");
+      expect(veyr?.id).toBe("CITY-VEYR");
+
+      // Historical names getter
+      expect(engine.historicalNamesOf("CITY-ARDEN")).toContain("Old Arden");
+      expect(engine.historicalNamesOf("CITY-ARDEN")).toContain("Porte-Ardan");
+
+      // Ancestry traces from settlement up to country, continent, and world
+      const selinAncestors = engine.ancestors("CITY-SELIN").map((p) => p.id);
+      expect(selinAncestors).toContain("WORLD-AURELIA");
+      expect(selinAncestors).toContain("CONT-ILYRA");
+      expect(selinAncestors).toContain("COUNTRY-SELIN");
+
+      const westhavenAncestors = engine.ancestors("CITY-WESTHAVEN").map((p) => p.id);
+      expect(westhavenAncestors).toContain("WORLD-AURELIA");
+      expect(westhavenAncestors).toContain("CONT-VEYRA");
+      expect(westhavenAncestors).toContain("COUNTRY-WESTHAVEN");
+    });
+  });
+
 });

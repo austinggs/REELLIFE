@@ -75,6 +75,12 @@ export interface CreateSimulationOptions {
   readonly checkInvariants?: boolean;
   /** Systems to register immediately after creation or load. */
   readonly systems?: readonly SystemDefinition[];
+  /**
+   * Where saves are written. Defaults to an in-memory store, which is right for
+   * tests and headless runs; hosts (browser, desktop) supply their own so
+   * `world.save` reaches real storage. Saving never touches simulation state.
+   */
+  readonly saveStore?: SaveStore;
 }
 
 export interface LoadSimulationOptions extends CreateSimulationOptions {
@@ -257,7 +263,7 @@ export class Simulation {
       trace: new TraceLog(),
       metrics: new MetricsCollector(options.hostClock ?? countingHostClock()),
       checkInvariants: options.checkInvariants ?? true,
-      saveStore: new MemorySaveStore(),
+      saveStore: options.saveStore ?? new MemorySaveStore(),
     });
 
     if (options.systems) simulation.mountSystems(options.systems);

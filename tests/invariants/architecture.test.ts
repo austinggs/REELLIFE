@@ -95,7 +95,8 @@ describe("architecture invariants (System 01 / System 59)", () => {
 
   it("keeps the command surface on the correct side of the boundary", () => {
     const appFiles = [...filesUnder("src/app", ".ts"), ...filesUnder("src/app", ".tsx")];
-    const allowed = /@\/engine\/(query|kernel|commands|primitives|core\/simulation|index|core\/ownership)/;
+    const allowed =
+      /@\/engine\/(query|kernel|commands|primitives|core\/simulation|core\/ownership|index)/;
     const engineImports = appFiles.flatMap((file) =>
       [...read(file).matchAll(/from\s+["'](@\/engine\/[^"']+)["']/g)].map((match) => ({
         file: relative(root, file),
