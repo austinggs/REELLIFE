@@ -15,27 +15,56 @@ typecheck/lint/test all green — 32 files / 264 tests).
 
 ## Current position
 
-**Phase: M2 (vertical slice) — kernel + person systems + domain engines +
-command surface + DoD scenarios COMPLETE. Remaining M2 scope: geography,
-organization core, legal identity, population materialization.**
+**Phase: M2 COMPLETE — every M2 system, command and DoD scenario in
+`PHASES.md` is implemented and tested. Next: M3 UI shell.**
 
-M0 and M1 are fully done. The M2 definition-of-done from `PHASES.md` requires:
-one full causal chain reproducible from seed (✅ `tests/scenarios/jobLossScenario.test.ts`),
-cross-system scenario tests for job loss and relationship shift (✅ both under
-`tests/scenarios/`), and the listed command set (✅ — see below). The remaining
-M2 systems not yet implemented: **37 geography, 40 organization core,
-33 legal identity, 38 population/materialization (~200–2 000 active
-individuals in one city)**.
+M0 and M1 were already done; this session closed the remaining M2 systems:
 
-After the remaining M2 systems: proceed to **M3 UI shell** per `PHASES.md`
-ordering. Do NOT jump to M5/M6 systems before M2 DoD passes.
+- **07 scale/materialization** — `src/engine/scale/` with deterministic
+  `materializeSettlement()` (seeded `population` stream, sequential ownership
+  scopes across identity/family/legalIdentity/scale); 300 residents revealed
+  inside `CITY-ARDEN` (within the ~200–2 000 DoD range), idempotent
+  re-materialization, aggregate never grows.
+- **32 organization core** — `src/engine/organizations/` registry, memberships,
+  lifecycle transitions, parent/subsidiary hierarchy. `employment.apply` now
+  refuses to hire into an organization that does not exist (cross-system
+  precondition in the hire applier); test fixtures register real orgs.
+- **37 geography (M2 slice)** — `src/engine/geography/` + canonical World Bible
+  chain `WORLD-AURELIA → CONT-ELANDRA → COUNTRY-ARDIN → REGION-ARDAN-BASIN →
+  CITY-ARDEN` in `src/content/aurelia/geography.ts`; LocationRefs save/load
+  round-trip verified.
+- **40 legal identity (M2 slice)** — `src/engine/legalIdentity/`:
+  AdministrativeRecord issuance, correction history (previous preserved, value
+  applied), status history, expiry, access rules. New `record`/`REC-` entity
+  kind in `primitives/ids.ts`.
+- **53 partial (life continuity)** — `src/engine/continuity/`: ACTIVE →
+  DECEASED → HISTORICAL registry + `pronounceDeath()` coordinating identity and
+  continuity writes; PersonId survives death. Estate/inheritance remains M7.
+- **Persistence bug fixed (found by the new geography save/load test):**
+  `Simulation.serializedWorld()` used to persist only *mounted* SystemDefinitions
+  (just the calendar heartbeat), silently dropping every domain engine's
+  `world.systems.*` state on save. It now seeds the serialized `systems` from
+  the raw bag and lets mounted definitions override their own entry.
+
+The M2 DoD from `PHASES.md` holds: causal chain reproducible from seed
+(`tests/scenarios/jobLossScenario.test.ts`), relationship-shift scenario
+(`tests/scenarios/relationshipShiftScenario.test.ts`), full command set, and
+materialization of a lived-in population.
+
+Scope note: M2's system list also names **33 (organizations & businesses)**;
+its M2 reach ("organization core" — employers as real orgs) is delivered by
+System 32, and the business/market depth is explicitly M5 work — logged in
+`docs/CONTENT_GAPS.md`.
+
+Proceed to **M3 UI shell** per `PHASES.md` ordering. Do NOT jump to M5/M6
+systems.
 
 ## Verification commands (all must be green before you stop)
 
 ```
 npm run typecheck        # tsc --noEmit
 npm run lint             # eslint .
-npm test                 # vitest run — full suite (32 files, 264 tests as of last update)
+npm test                 # vitest run — full suite (37 files, 285 tests as of last update)
 npm run test:scenarios   # the two M2 DoD scenario tests
 npm run build            # tsc + vite build
 npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless determinism
@@ -112,23 +141,23 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   `["activities","employment","finance","housing","inventory","needs",
   "persistence","relationships","time"]`; `architecture.test.ts` asserts the
   engine stays DOM-free and the UI never imports engine mutators.
+- **M2 systems completed in this session:** geography (37), organization core
+  (32), legal identity (40), scale/materialization (07), continuity partial
+  (53) — engines under `src/engine/{geography,organizations,legalIdentity,scale,continuity}/`,
+  canonical slice content under `src/content/aurelia/`, 20 new unit tests in
+  `tests/kernel/{geography,organizations,legalIdentity,scaleMaterialization,continuity}.test.ts`.
+  `employment.apply` now enforces employer existence through the hire applier
+  (covered by "employment.apply at an unknown organization creates no employment").
 
 ## What is NOT done (next steps, in order)
 
-1. **Rest of M2:** System 37 geography (stable LocationRefs, one city),
-   System 40 organization core (employers as orgs), System 33 legal identity,
-   System 38 population materialization (~200–2 000 individuals, aggregate →
-   materialized), then re-verify the M2 DoD in `PHASES.md`.
-2. **M3 UI shell** (Systems 55–57 + UI/UX 01–08, 14, 17–24): shell anchors
+1. **M3 UI shell** (Systems 55–57 + UI/UX 01–08, 14, 17–24): shell anchors
    (Life/People/World/History/Search/Settings), Life screen, Person view with
    knowledge-state badges, decision surface, notification feed, System 57
    console, debug UI behind authorized mode. `src/app/` currently holds only
    scaffolds (`App.tsx` is a 12-line placeholder not yet wired to the engine);
    adapted shadcn components are ready in `src/ui/`.
-3. **M4–M8** per `PHASES.md` (Aurelia content, economy, society/law/info,
-   continuity, hardening).
-
-3. **M4–M8** per `PHASES.md` (Aurelia content, economy, society/law/info,
+2. **M4–M8** per `PHASES.md` (Aurelia content, economy, society/law/info,
    continuity, hardening).
 
 ## Architecture invariants (do not break)
@@ -158,3 +187,14 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   `parserOptions.tsconfigRootDir = import.meta.dirname` and ignoring `.kilo/**`.
   Full gate re-verified green afterwards: typecheck 0, lint 0, 264/264 tests,
   `npm run build` OK, `npm run sim --check-determinism` PASS.
+- **2026-09-26:** Closed the remaining M2 systems — geography (37),
+  organization core (32), legal identity (40), scale/materialization (07),
+  continuity partial (53) — with engines, canonical slice content
+  (`src/content/aurelia/`), and 20 new unit tests (37 files / 285 tests total).
+  Wired `employment.apply` to real organizations (hire applier precondition;
+  fixtures updated in domainCommands + jobLoss). Found and fixed a
+  **persistence bug**: `serializedWorld()` dropped all domain `world.systems`
+  state on save (only mounted SystemDefinitions were persisted) — now the raw
+  bag is the baseline. Legal corrections now apply the new value while
+  preserving history. Gate: typecheck 0, lint 0, 285/285, build OK,
+  determinism PASS. M2 is complete; next is M3.

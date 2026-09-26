@@ -9,12 +9,15 @@
  * whole run is reproducible: the same seed and the same command sequence must
  * produce the same state hash.
  *
- * Employer and landlord are played by the harness. That is honest rather than a
- * shortcut: organization and contract systems are M5/M6 work, so until they
- * exist there is no system that can *decide* to dismiss a worker or threaten a
- * tenant. The harness emits their decisions as ordinary events, which is exactly
- * what those systems will do once they exist — so none of the chain bypasses the
- * event/consequence pipeline.
+ * Employer and landlord *decisions* (dismissal, rent threat) are played by the
+ * harness. That is honest rather than a shortcut: the decision logic of
+ * organizations and contracts is M5/M6 work, so until then there is no system
+ * that can *decide* to dismiss a worker or threaten a tenant. The harness
+ * emits their decisions as ordinary events, which is exactly what those
+ * systems will do once they exist — so none of the chain bypasses the
+ * event/consequence pipeline. The employers themselves, however, are real
+ * System 32 organizations: employment.apply refuses to hire into a
+ * nonexistent organization, so both are registered at setup.
  */
 
 import { describe, expect, it } from "vitest";
@@ -28,6 +31,7 @@ import { EMPLOYMENT_COMMAND_TYPES } from "../../src/engine/commands/domain/emplo
 import { ASSET_COMMAND_TYPES } from "../../src/engine/commands/domain/assetCommands.ts";
 import { FinanceEngine } from "../../src/engine/finance/engine.ts";
 import { HousingEngine } from "../../src/engine/housing/engine.ts";
+import { OrganizationsEngine } from "../../src/engine/organizations/engine.ts";
 import type { EmploymentSystemState } from "../../src/engine/employment/types.ts";
 import type { FinanceSystemState } from "../../src/engine/finance/types.ts";
 
@@ -94,6 +98,17 @@ function balanceOf(sim: Simulation, accountId: string): Money {
   return account.balance;
 }
 
+/** The employers are real System 32 organizations; employment requires them. */
+function registerEmployer(sim: Simulation, id: string, name: string): void {
+  sim.guard.mutate("organizations", () => {
+    new OrganizationsEngine(sim.scope, sim.world).create(
+      sim.ids,
+      { id: asEntityId<"organization">(id), legalName: name, type: "commercial" },
+      sim.clock.time,
+    );
+  });
+}
+
 function employments(sim: Simulation) {
   return (sim.world.systems.employment as EmploymentSystemState | undefined)?.employments ?? [];
 }
@@ -113,6 +128,8 @@ function runJobLossScenario(seed: string): ScenarioOutcome {
   const sim = createKernelSimulation({ masterSeed: seed, checkInvariants: true });
 
   // -------------------------------------------------------------- fixtures
+  registerEmployer(sim, DOCKS, "Ardin Docks Authority");
+  registerEmployer(sim, CAFE, "Quayside Cafe");
   const employerAccount = openAccount(sim, DOCKS);
   const cafeAccount = openAccount(sim, CAFE);
   const landlordAccount = openAccount(sim, LANDLORD);

@@ -13,6 +13,15 @@ this file is stale — fix whichever is out of date.
   throws if `systemId` does not own the section being written.
 - Nested mutation scopes are rejected; a system may not open a scope inside
   another system's scope.
+- Cross-system work happens through *sequential* scopes or through consequence
+  handlers (each consequence is wrapped in its owner's scope by the dispatcher).
+  `scale/materialize.ts` is the reference example: identity, family,
+  legalIdentity and scale each get their own scope, never nested.
+- Persistence: `Simulation.serializedWorld()` writes the whole `world.systems`
+  bag (every owner's state), with mounted SystemDefinitions overriding their
+  own entry through their serializer. Dropping entries was a real bug — the
+  save/load round-trip tests in `tests/kernel/{geography,scaleMaterialization}.test.ts`
+  guard it.
 - `tests/invariants/ownership.test.ts` asserts that every command's declared
   owner is a real `SystemId`, and pins the set of systems that currently own
   commands.

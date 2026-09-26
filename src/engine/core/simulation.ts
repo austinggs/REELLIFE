@@ -600,7 +600,13 @@ export class Simulation {
    * a second copy of engine-owned state, so the save is built on demand.
    */
   serializedWorld(): SerializedWorld {
-    const systems: Record<string, unknown> = {};
+    // Baseline: the raw per-system bag. Domain engines that are not mounted
+    // SystemDefinitions (identity, relationships, employment, geography, ...)
+    // keep their authoritative state in `world.systems`, and a save that
+    // omitted them would silently lose the world. Mounted systems then
+    // override their own entry with their definition's serializer, because
+    // their live state may have been replaced during stepping.
+    const systems: Record<string, unknown> = { ...this.world.systems };
     const ids = [...this.systems.keys()].sort(
       (a, b) => SYSTEM_IDS.indexOf(a) - SYSTEM_IDS.indexOf(b),
     );

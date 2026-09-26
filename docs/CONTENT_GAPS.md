@@ -26,6 +26,17 @@ in code. Nothing here is canon.
 | Authority | Commands declare no `authorityRequirement` yet; the authority evaluator exists (`primitives/authority.ts`) but domain commands don't gate on it | System 20/48 — M6 |
 | `world.load` hot-swap | A `world.load` command cannot replace the running Simulation mid-dispatch. It validates, emits `world.load_requested`, and the platform performs the swap via `Simulation.load` + `bootstrapLoadedSimulation` | documented on the command; M3 UI is the first consumer |
 
+## Provisional decisions introduced with the M2 closing systems
+
+| Gap | Provisional decision | Where |
+| --- | --- | --- |
+| No canonical name tables (World Bible defines naming *cultures*, not lists) | Neutral international pools of 30 given + 30 family names for materialized residents | `src/content/aurelia/names.ts` (flagged non-canon in-file) |
+| No canonical demographics for Arden | Age structure shares: child .24 / youngAdult .18 / adult .38 / senior .20; slice aggregate 50 000 in tests | `scale/engine.ts` `DEFAULT_AGE_STRUCTURE` |
+| No canonical civil registry (institutions are M6) | Authority slug `AURELIA_CIVIL_REGISTRY`; birth registration identifiers `AUR-<SETTLEMENT>-<seq>` | `scale/materialize.ts` |
+| Only the canonical spine exists in geography | 5 places: world → continent → country → region → city. Districts/neighborhoods and the full 6/5/36/48/34 hierarchy arrive with M4 | `src/content/aurelia/geography.ts` |
+| No canonical organization capacity/policy data | New organizations start with neutral capacity 0.5 on every dimension and empty institutional memory | `organizations/engine.ts` |
+| M2's system list includes **33 (Organizations & Businesses)** while M5 also owns it | M2 scope for 33 is delivered by the System 32 core (employers as real orgs); businesses/markets depth stays M5 | decision logged here per `PHASES.md` wording ("organization core") |
+
 ## Canonical content still waiting for its milestone
 
 - Full Aurelia world data (6 continents / 5 oceans / 36 regions / 48 countries /

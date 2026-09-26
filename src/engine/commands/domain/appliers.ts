@@ -45,6 +45,7 @@ import {
   SOCIAL_CONSEQUENCE_TYPES,
   type InteractionDeltas,
 } from "./socialCommands.ts";
+import type { OrganizationsSystemState } from "../../organizations/types.ts";
 
 /**
  * The slice of `Simulation` the domain wiring needs. Declared structurally so
@@ -92,18 +93,36 @@ export function registerDomainConsequenceAppliers(host: DomainApplierHost): void
     );
   });
 
-  host.registerConsequenceApplier(EMPLOYMENT_CONSEQUENCE_TYPES.hire, (payload, event) => {
-    new EmploymentEngine(host.scope, host.world).hire(
-      host.ids,
-      payload.personId as EntityId<"person">,
-      payload.employerOrgId as string,
-      payload.roleTitle as string,
-      payload.occupationCode as string,
-      payload.wage as Money,
-      payload.weeklyHours as number,
-      event.at,
-    );
-  });
+  host.registerConsequenceApplier(
+    EMPLOYMENT_CONSEQUENCE_TYPES.hire,
+    (payload, event, context) => {
+      // Cross-system precondition: employment exists only at real
+      // organizations (System 32). Unknown IDs are caller-facing input, so
+      // report and change nothing rather than throwing out of the pipeline.
+      const employerOrgId = payload.employerOrgId as string;
+      const organizations = host.world.systems.organizations as
+        | OrganizationsSystemState
+        | undefined;
+      if (
+        !organizations?.organizations.some((organization) => organization.id === employerOrgId)
+      ) {
+        context.log(`employment.hire ignored: unknown organization ${employerOrgId}`, {
+          employerOrgId,
+        });
+        return;
+      }
+      new EmploymentEngine(host.scope, host.world).hire(
+        host.ids,
+        payload.personId as EntityId<"person">,
+        employerOrgId,
+        payload.roleTitle as string,
+        payload.occupationCode as string,
+        payload.wage as Money,
+        payload.weeklyHours as number,
+        event.at,
+      );
+    },
+  );
 
   host.registerConsequenceApplier(EMPLOYMENT_CONSEQUENCE_TYPES.terminate, (payload, event) => {
     new EmploymentEngine(host.scope, host.world).terminate(

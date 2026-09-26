@@ -24,6 +24,7 @@ import {
 import { NeedsEngine } from "../../src/engine/needs/engine.ts";
 import { FinanceEngine } from "../../src/engine/finance/engine.ts";
 import { InventoryEngine } from "../../src/engine/inventory/engine.ts";
+import { OrganizationsEngine } from "../../src/engine/organizations/engine.ts";
 import type { EmploymentSystemState } from "../../src/engine/employment/types.ts";
 import type { HousingSystemState } from "../../src/engine/housing/types.ts";
 import type { FinanceSystemState } from "../../src/engine/finance/types.ts";
@@ -45,6 +46,17 @@ function dispatch(
   actor: EntityId<"person"> = ACTOR,
 ): CommandResult {
   return sim.dispatcher.dispatch(sim.dispatcher.createCommand(type, actor, params, "player"));
+}
+
+/** Employers must exist (System 32) before employment can exist at them. */
+function registerEmployer(sim: Simulation, id: string, name: string): void {
+  sim.guard.mutate("organizations", () => {
+    new OrganizationsEngine(sim.scope, sim.world).create(
+      sim.ids,
+      { id: asEntityId<"organization">(id), legalName: name, type: "commercial" },
+      sim.clock.time,
+    );
+  });
 }
 
 describe("domain commands wired into the dispatcher (M2/M3)", () => {
@@ -84,6 +96,7 @@ describe("domain commands wired into the dispatcher (M2/M3)", () => {
   it("employment.apply and employment.resign drive the EmploymentEngine", () => {
     const sim = newWorld();
     const wage = money(ACR, 180000);
+    registerEmployer(sim, "ORG-ARDIN-DOCKS", "Ardin Docks Authority");
 
     const hired = dispatch(sim, EMPLOYMENT_COMMAND_TYPES.apply, {
       employerOrgId: "ORG-ARDIN-DOCKS",
@@ -109,6 +122,22 @@ describe("domain commands wired into the dispatcher (M2/M3)", () => {
     const after = sim.world.systems.employment as EmploymentSystemState;
     expect(after.employments[0].status).toBe("resigned");
     expect(after.employments[0].endedAt).toBe(sim.clock.time);
+    expect(sim.dispatcher.unhandledConsequenceTypes.size).toBe(0);
+  });
+
+  it("employment.apply at an unknown organization creates no employment", () => {
+    const sim = newWorld();
+    const result = dispatch(sim, EMPLOYMENT_COMMAND_TYPES.apply, {
+      employerOrgId: "ORG-NOWHERE",
+      roleTitle: "Ghost",
+      occupationCode: "OCC-0000",
+      wage: money(ACR, 1000),
+      weeklyHours: 10,
+    });
+    // The command resolves — an occurrence happened — but the consequence is
+    // dropped at the cross-system boundary: no organization, no employment.
+    expect(result.status).toBe("applied");
+    expect(sim.world.systems.employment).toBeUndefined();
     expect(sim.dispatcher.unhandledConsequenceTypes.size).toBe(0);
   });
 
