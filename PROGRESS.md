@@ -8,22 +8,109 @@
 > Keep `docs/OWNERSHIP_MATRIX.md`, `docs/CONTENT_GAPS.md`,
 > `docs/SOURCE_CONFLICTS.md` in sync when your change affects them.
 
-Last updated: 2026-09-27 (M5 COMPLETE — all eight M5 systems landed: 23 (education), 25 (finance, M2), 28 (transport), 31 (insurance), 33 (businesses), 34 (supply chains), 35 (markets), 36 (macro). Both DoD items met. Next: M6 per PHASES.md.)
-Gate: typecheck 0, lint 0, 59 files / 469 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
+Last updated: 2026-09-27 (M6 COMPLETE — all 12 of M6's systems landed, tested and exported, and both DoD scenarios written and passing.)
+Gate: typecheck 0, lint 0, 73 files / 578 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
 
 ---
 
 ## Current position
 
-**Phase: M5 COMPLETE — all eight M5 systems are landed, seeded into the
-playable slice and tested: 33 (Organizations & Businesses), 35 (Markets /
-Prices & Competition), 34 (Supply Chains & B2B), 36 (Macroeconomic Layer),
-28 (Transportation & Vehicles), 31 (Insurance & Risk Management) and 23
-(Education), with 25 (Finance) already delivered in M2. **Both M5 DoD items
-are met**: a reproducible market-shock scenario and a ledger-conservation
-property test over 10 000 transactions. The gate is green (59 files / 469
-tests, typecheck 0, lint 0, build OK, determinism PASS). Next: M6 (society,
-law, information, global, security) per `PHASES.md`.**
+**Phase: M6 COMPLETE. All 12 of M6's systems are landed, tested and exported:
+**41** (laws), **49** (information), **50** (messaging), **22** (reputation),
+**42** (institutions), **43** (government), **44** (culture), **48** (security &
+legal pipeline), **51** (technology), **21** (conflict), **20** (parenting)
+and **52** (international relations). **Both M6 DoD scenarios are written and
+passing.** The gate is green: 73 files / 578 tests, typecheck 0, lint 0, build OK,
+determinism PASS.
+
+**M6's twelve systems: 20, 21, 22, 41, 42, 43, 44, 48, 49, 50, 51, 52.**
+
+### The two DoD scenarios
+
+- **`tests/scenarios/legalPipelineScenario.test.ts`** (41 + 48) — a theft at the
+  mill that nobody noticed and that therefore never becomes a case, and one that
+  runs the whole way to a conviction, its declared sanctions applied and then
+  vacated on appeal. Asserts a cross-jurisdiction charge is refused, that
+  *declaring* a sanction is not *applying* one, and that it reproduces.
+- **`tests/scenarios/rumourPropagationScenario.test.ts`** (49 + 22) — a false
+  claim reaches the neighbourhood, those who heard it form a view about the mill's
+  reliability, and only afterwards is it verified false by a named method and
+  record. Asserts truth and belief diverge and that verifying convinces nobody.
+
+### The last three systems
+
+- **System 21 (conflict)** — `src/engine/conflict/`: conflicts with their stage,
+  parties (position, underlying interest, contextual power, informedness,
+  beliefs), claims with the world's answer, offers, concessions, agreements,
+  apologies and reconciliations. A dispute creates **nothing** but a dispute — the
+  test asserts no `systems.security` slot even exists afterwards. `unresolved` is a
+  terminal state, not a failure: an agreement that meets every stated term but no
+  underlying interest ends `unresolved`, which is the spec's "persistent
+  unresolved tension". `tests/kernel/conflict.test.ts` (10).
+- **System 20 (parenting)** — `src/engine/parenting/`: caregiving relationships
+  across six caregiver kinds, care observations, discipline, mistakes,
+  independence on five dimensions, care events. `careReading` names its binding
+  constraint, so "this child is not doing well" always arrives with "because". There
+  is **no parenting-style enum** — the spec rules one out and any such field would
+  smuggle in a moral judgment; a mistake with no `discoveredAt` stays unnoticed.
+  `tests/kernel/parenting.test.ts` (9).
+- **System 52 (international relations)** — `src/engine/international/`:
+  bilateral standing **per domain per pair** (allies and rivals are the same pair,
+  and the pair key is sorted so A|B and B|A cannot become two records), treaties
+  that stay on the record when suspended, sanctions by scope, declared global
+  shocks with a per-country route, migration pressure, and international
+  organizations as membership lists over System 32. A sanction is a *condition*
+  that names itself; no price is ever touched. `tests/kernel/international.test.ts`
+  (9).
+
+### Content and seeding
+
+Systems **20, 21 and 52** have complete engines and tests but **no Aurelia
+content and no seed**, joining 22, 50, 42 and 43. The World Bible authors no named
+disputes, feuds, wars or local parenting situations, and inventing some to make
+the seed look fuller would be the wrong trade. Systems **41, 44, 48, 49 and 51**
+do have seeded content, each derived from slice content that already exists; every
+provisional decision is recorded in `docs/CONTENT_GAPS.md`.
+
+**M7 is deferred and planned, not started** (see the block at the end of this file).
+The System 26 (ownership/contracts) dependency is still an open question and was
+deliberately not decided.
+
+- **`tests/scenarios/legalPipelineScenario.test.ts`** (41 + 48) — a theft at
+  the mill: one that nobody noticed and that therefore never becomes a case,
+  and one that was noticed and runs the whole way to a conviction, its
+  declared sanctions applied and then vacated on appeal. Asserts that a charge
+  is refused under another jurisdiction's rule, that *declaring* a sanction is
+  not *applying* one, and that the whole run reproduces from its seed.
+- **`tests/scenarios/rumourPropagationScenario.test.ts`** (49 + 22) — a false
+  claim about the mill reaches the neighbourhood, those who heard it form a
+  view about its reliability, and only afterwards is the claim verified false
+  by a named method and evidence. Asserts truth and belief diverge, that
+  verifying changes nobody's mind, and that the views stay per observer.
+
+- **System 48 (security & legal pipeline)** — `src/engine/security/{types,engine,index}.ts`:
+  incidents, detection, cases, evidence, charges, hearings, penalties, appeals,
+  criminal operations and security history. The load-bearing decisions are that
+  **an incident is not a case** (detection may fail, and a case cannot be opened
+  on something nobody noticed), that a **charge is not a conviction** (a charge
+  copies System 41's *declared* sanctions; only a hearing *applies* one), that
+  **evidence cuts both ways** (a charge with nothing admissible is dismissed,
+  and a false accusation reaches acquittal rather than being merely unlikely),
+  that **jurisdiction is checked** (a cross-border charge is refused at the
+  door), and that **an appeal vacates rather than erases**.
+  `tests/kernel/security.test.ts` (14).
+- **System 22 repairs** — four real defects found while writing the rumour
+  DoD, all fixed and now regression-tested: `staleDays` was measured in *years*
+  and then divided by 365 again, so **decay never actually decayed**; decay
+  faded toward 0.5 rather than 0, so a reputation of -1 decayed into +0.5 and
+  the world slowly forgave; `assertPerception` validated a value and then threw
+  it away, so an asserted reputation read as though nobody had said anything;
+  and asserted values were validated 0..1, making it impossible to be talked
+  about badly. Asserting now also *preserves* evidence instead of wiping it.
+
+**M7 is deferred and planned, not started** (see the block at the end of this
+file). The System 26 (ownership/contracts) dependency is still an open question
+and was deliberately not decided while M6 is incomplete.
 
 M5 landed so far (Systems 33, 35, 34 — all uncommitted in git; the user
 commits):
@@ -166,6 +253,93 @@ commits):
   total is asserted unchanged. Self-pairs are re-drawn rather than skipped, so
   the count of entries really is 10 000 — the first version of this test
   silently posted 9 134 and the property was weaker than it looked.
+
+M6 in progress (Systems 41 — laws & regulatory rules; 49 — information / communication / media):
+
+- **System 41 (laws & regulatory rules)** —
+  `src/engine/laws/{types,engine,index}.ts` plus `src/content/aurelia/laws.ts`
+  and `tests/kernel/laws.test.ts` (9). The system holds *rules as data* and
+  is strict about the four things it is not, because each is another
+  system's: **enforcement is not law** (a rule declares sanctions and
+  `assess` quotes them; there is no field in the register in which a fine or
+  a conviction could be recorded — that is System 48's), **belief is not
+  law** (what someone thinks the law says is Systems 15/49's), **jurisdiction
+  is System 39's** (a rule references a country id and never defines
+  territory), and **authority is the shared primitive** — `registerInto`
+  projects the register into the existing `AuthorityEvaluator` rather than
+  inventing a second permission model (architectural law 6).
+  Three design commitments run through it:
+  - **Rules are immutable versions.** `amendRule` closes the predecessor on
+    the amendment date and appends a successor, so the law in force when an
+    act happened stays readable and an older act remains prosecutable.
+  - **An unstated fact is never compliant.** `conditionHolds` returns false
+    for a fact the caller did not supply: silence is missing evidence, not
+    compliance.
+  - **Ambiguity stays ambiguous.** One seeded rule is flagged `ambiguous`
+    because "a temporary stall under threshold" never defines either term;
+    the engine applies the text as written, and the test suite amends it into
+    a defined footprint rather than quietly resolving it.
+  Content authors four rules for `COUNTRY-ARDIN`, each derived from
+  something already written down (the bakery's mill, the docks' 140-strong
+  quay workforce, the market stalls), and **names no enforcement authority**
+  on any rule — System 43 does not exist yet, and pointing at a government
+  that cannot be resolved is worse than omitting it.
+  Four bugs surfaced while landing this, three of them in the engine and all
+  four found by tests rather than by reading:
+  - `assess` matched rules on subject kind alone, so a mill licence governed
+    bread selling. Rules now match on action *and* subject.
+  - `inspection` rules listed their obligation but ignored unmet
+    conditions, so an overdue mill read as "allowed". Inspection and
+    obligation are both "you must comply" rules and now behave alike.
+  - A permit was still "valid" at the very instant it expired, yet could also
+    be marked expired there. Expiry is now exclusive, so the derived reading
+    and the recorded status cannot disagree.
+  - My own first test asserted the mill licence conditioned on the mill
+    being *operational*, which is not a qualification — an idle mill is not
+    thereby unqualified. The rule now conditions on a safety certificate.
+  And one test-side repeat of a mistake already made in the transport suite:
+  re-seeding from inside an open `laws` scope, which the guard correctly
+  rejected.
+- **System 49 (information / communication / media)** —
+  `src/engine/information/{types,engine,index}.ts`, `src/content/aurelia/information.ts`,
+  `tests/kernel/information.test.ts` (8). The system turns on one distinction
+  it is forbidden to collapse: **a claim is not a fact**. Every claim starts
+  `unverified` — including one from an official source — and `verifyClaim`
+  refuses a status change without both a *method* and an *evidence
+  reference*, because "I checked it" is not auditable and a status change
+  with no evidence is how a rumour becomes a fact by decree. **Exposure is
+  not belief**: an `Exposure` records that a node was *reached*, and nothing
+  here stores what anyone concluded — that is System 15's, and the M6 DoD
+  asserts truth-vs-belief divergence by comparing the world's own record
+  with who was reached. **Truth belongs to the world**: a claim points at a
+  subject ref and this system never evaluates it. **Transport is System
+  50's**: a channel here is an audience and a reach, not a queue.
+  Propagation is derived from declared factors (credibility .4, novelty .3,
+  emotional charge .3, channel reach, node openness, hop and retell decay)
+  and consults **no RNG**, so a rumour's spread is reproducible — not how
+  rumours work in life, and the price of being able to assert that one
+  spread. Corrections chain forwards, disputes are recorded on both sides,
+  forgetting is per-listener and keeps the record, and `isPropagatable`
+  deliberately refuses to treat "unverified" as "suppressed": only an
+  explicit removal stops a claim, because conflating the two is how a rumour
+  engine becomes a censorship engine.
+  Two things worth recording:
+  - **The type had to be renamed.** The kernel already has an
+    `InformationClaim` primitive — the *observer-facing* claim a projection
+    hands the UI, with `knownBy` and visibility. System 49's record is the
+    world-side one, so it is `CirculatingClaim`. The two are related but not
+    the same, and shadowing the primitive would have quietly duplicated it.
+  - **I invented an organization id.** The content referenced
+    `ORG-QUAY-TRADER`, which does not exist; the slice's fifth business is
+    `ORG-FENWICK-STALL`. Caught by the test that asserts every seeded node
+    is a real System 32 organization, which is the check that exists for
+    exactly this. Three further test-fixture errors were mine too (an
+    audience with nobody in it, a "correct twice" assertion that would not
+    throw, and `addTime` given a raw number instead of a `Duration`).
+  Content authors two notice boards the slice's content implies and **no
+  claims at all**: a claim needs an author and an audience, and inventing
+  both at seed time would put words in residents' mouths before anyone had
+  spoken.
 
 M4 landed (Systems 37, 38 slice, 39, 45, 46, 47, 56 + full world canon):
 
@@ -666,3 +840,56 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   (`tests/content/aureliaCanon.test.ts` counts 6/5/36/48/34; the map stays
   knowledge-limited at the session boundary). Gate: typecheck 0, lint 0,
   50 files / 411 tests, `npm run build` OK, determinism PASS. Next: M5.
+
+---
+
+## Deferred: M7 plan (written 2026-09-27, NOT started)
+
+M7 is **deferred until M6 is complete**, per the ordering in `PHASES.md` and
+`AGENTS.md`. Recorded here so the next session does not have to re-derive it.
+Nothing below has been implemented.
+
+**Where M7 actually starts from** — M7 looks greenfield but is not; three of
+its systems are partly delivered:
+
+| System | Delivered today | M7 increment |
+| --- | --- | --- |
+| 53 Life Continuity | lifecycle only: `statusOf`/`deathOf`/`registerDeath`/`markHistorical`; a test already proves PersonId survives death | death *determination*, estate, inheritance, descendant continuation, legacy, death records/history |
+| 19 Family/Genealogy | households (members with `role`+`joinedAt`, `dissolvedAt`) and lineages (parent/child/biological/adoptive) | membership **exit** history (the spec wants "entry/exit rather than treating household as timeless"), lineage *queries*, family records |
+| 54 History/Analytics | `HistoryStore` with `forPerson`/`forChain`/`recent`, retention (importance >= 3 permanent), compression, visibility/`knownBy`, `getTimelineView` | statistics aggregation, causal *explanation* queries, filters/summaries, death/estate/legacy mapping |
+
+**Two gaps shape the milestone:** System 26 (Ownership / Contracts / Asset
+Rights) does not exist, and aging has no death wiring.
+
+**Open decision, deliberately not settled:** System 53's estate resolution is
+specified in terms of Ownership, Contracts, wills/beneficiaries, debts,
+jurisdiction and legal rules. With no System 26 there is no title model to
+transfer, though 41 (laws) and 43 (government) are now landed. The two
+candidate approaches are (a) scope the estate to systems that exist, with every
+bequest expressed as a *reference* to the owning system — 25/27/32/33/31/28/23,
+the pattern Systems 31 and 34 already use — which also makes "no arbitrary
+hidden modifiers" checkable; or (b) land a minimal System 26 inside M7 first.
+**Revisit this with fresh eyes once M6 is finished.**
+
+**Build order once unblocked:** (1) 19 genealogy increment — lineage queries,
+membership exit, family records, because nothing else can start without a way
+to find the eldest surviving heir; (2) 53a death determination + records +
+aging-to-continuity wiring; (3) 53b estate/inheritance as references to owning
+systems; (4) 53c an explicit 53-owned `ControlTransfer` and a control handoff
+with no world reset — this changes real code, since `sliceUnderControl` in
+`sliceSeed.ts` currently derives control from `scale.residents[0]` and carries
+a comment saying M7 replaces it; (5) legacy effects naming target system and
+field; (6) 54 statistics / causal queries / mapping; (7) the DoD scenario
+`tests/scenarios/multiGenerationScenario.test.ts`.
+
+**M7 DoD as concrete assertions:** the deceased's PersonId still resolves in
+identity, lineage, ledger history and timeline, and is referenced by the
+transfer, with no system re-keying them; every legacy effect walks back to a
+concrete field it changed, with no `legacyBonus`-style scalar anywhere in
+continuity or estate state; and the ancestor's `causalChainId` still resolves
+after control moves, with other systems' state unchanged except the named
+transfers. Note that `HistoryStore.forChain(causalChainId)` already exists as
+the seed of the causal query, and the PersonId-survival property is already
+asserted once in `continuity.test.ts` — it just needs asserting *across*
+systems after control transfer.
+

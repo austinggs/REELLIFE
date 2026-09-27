@@ -31,6 +31,14 @@ import { registerAureliaEducation, registerAureliaPlayerApplication } from "../.
 import { BusinessesEngine } from "../businesses/engine.ts";
 import { EducationEngine } from "../education/engine.ts";
 import { InsuranceEngine } from "../insurance/engine.ts";
+import { LawsEngine } from "../laws/engine.ts";
+import { registerAureliaLaws } from "../../content/aurelia/laws.ts";
+import { CultureEngine } from "../culture/engine.ts";
+import { registerAureliaCulture } from "../../content/aurelia/culture.ts";
+import { TechnologyEngine } from "../technology/engine.ts";
+import { registerAureliaTechnologies } from "../../content/aurelia/technologies.ts";
+import { InformationEngine } from "../information/engine.ts";
+import { registerAureliaInformation } from "../../content/aurelia/information.ts";
 import { MarketsEngine } from "../markets/engine.ts";
 import { MacroEngine } from "../macro/engine.ts";
 import { SupplyChainsEngine } from "../supplyChains/engine.ts";
@@ -164,6 +172,39 @@ export function seedPlayableSlice(
     registerAureliaInsurance(new InsuranceEngine(sim.scope, sim.world), sim.clock.time);
   });
 
+  // System 41 gives the slice a rule register: four rules derived from what
+  // the slice's own content already implies (the mill, the quay, the market
+  // stalls), one of them deliberately ambiguous. No enforcement authority is
+  // named — System 43 has not been built yet, and pointing at a government
+  // that does not exist would be a reference no one can resolve. Idempotent:
+  // re-seeding never re-issues legislation.
+  sim.guard.mutate("laws", () => {
+    registerAureliaLaws(new LawsEngine(sim.scope, sim.world), sim.clock.time);
+  });
+
+  // System 44 gives the slice its communities: the quay working group, the
+  // bakehouse, the Fenwick quarter, the mutual society and one congregation,
+  // with the traditions each of them holds. Seeded after 41 because the two are
+  // the same kind of content — the norms people are expected to follow — and
+  // side by side the reader can see which of them the world considers rules and
+  // which it merely holds. No participation is seeded: belonging is something
+  // people are recorded as having, not something a world-start grants them.
+  // Idempotent, so re-seeding is a no-op.
+  sim.guard.mutate("culture", () => {
+    registerAureliaCulture(new CultureEngine(sim.scope, sim.world), sim.clock.time);
+  });
+
+  // System 51 gives the slice its technology catalogue — the water wheel, the
+  // millstone, the controlled oven, the berth, the loading gauge and the crane —
+  // registered in dependency order so no technology exists before what it
+  // stands on. Seeded with no adoptions: a technology having been invented is
+  // not the same as anybody having one, and granting the slice's organizations
+  // its whole toolkit at world start would be an assumption dressed as content.
+  // Idempotent, so re-seeding is a no-op.
+  sim.guard.mutate("technology", () => {
+    registerAureliaTechnologies(new TechnologyEngine(sim.scope, sim.world), sim.clock.time);
+  });
+
   // System 38 gives the slice city its operational network: utilities, transit
   // and hospital support with a real dependency order, so capacity, outages and
   // maintenance have something to work on. Idempotent, so re-seeding is a no-op.
@@ -225,6 +266,23 @@ export function seedPlayableSlice(
     // its persisted snapshot, so a fresh allocator here would mint ids that
     // a later command could mint again.
     registerAureliaPlayerApplication(education, sim.ids, playerId, sim.clock.time);
+  });
+
+  // System 49 gives the slice its information substrate: the organizations
+  // and residents as graph nodes, plus the two notice boards the docks and
+  // the mill already keep. Seeded after materialization so the resident
+  // nodes are real people, and deliberately **without** seeding any claim:
+  // a claim needs an author and an audience, and putting words in
+  // residents' mouths at seed time would be fiction, not a rumor. Idempotent.
+  sim.guard.mutate("information", () => {
+    const scale = sim.world.systems.scale as ScaleSystemState | undefined;
+    const residentIds = (scale?.residents ?? [])
+      .filter((resident) => resident.settlementId === M2_SETTLEMENT_ID)
+      .map((resident) => resident.personId);
+    registerAureliaInformation(
+      new InformationEngine(sim.scope, sim.world),
+      residentIds,
+    );
   });
 
   const scale = sim.world.systems.scale as ScaleSystemState | undefined;
