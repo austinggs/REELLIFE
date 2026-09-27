@@ -73,6 +73,7 @@ describe("simulation session (System 55, UI/UX 24)", () => {
       "constructor",
       "snapshot",
       "personView",
+      "mapView",
       "search",
       "inspect",
       "stateHash",

@@ -33,7 +33,13 @@ import type {
 } from "@/app/session/simulationSession.ts";
 import { authorityLabel, motionEnabled, shouldSurfaceNotification, type UiPreferences } from "@/app/ui/prefs.ts";
 import type { ConsoleAuthority } from "@/engine/primitives/index.ts";
-import type { EntityInspectorView, PersonView } from "@/engine/query/index.ts";
+import type {
+  EntityInspectorView,
+  MapCamera,
+  MapLod,
+  MapView,
+  PersonView,
+} from "@/engine/query/index.ts";
 import { Badge } from "@/ui/components/badge.tsx";
 import { Button } from "@/ui/components/button.tsx";
 
@@ -67,6 +73,9 @@ export function AppShell({
   const [view, setView] = useState<ShellView>("life");
   const [selectedPersonId, setSelectedPersonId] = useState<string | null>(null);
   const [inspectorId, setInspectorId] = useState<string | null>(null);
+  // The map camera is presentation state: which zoom and whose subject the
+  // spatial lens is centred on. The engine answers what the viewer may see.
+  const [mapCamera, setMapCamera] = useState<MapCamera>({ lod: "city" });
   const [slots, setSlots] = useState<readonly SaveSlotView[]>([]);
   const [slotsIssue, setSlotsIssue] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -83,6 +92,10 @@ export function AppShell({
   const inspector: EntityInspectorView | null = useMemo(
     () => (inspectorId === null ? null : session.inspect(inspectorId)),
     [session, inspectorId, revision],
+  );
+  const worldMap: MapView = useMemo(
+    () => session.mapView(mapCamera),
+    [session, mapCamera, revision],
   );
 
   const refreshSlots = useCallback(() => {
@@ -102,6 +115,7 @@ export function AppShell({
   useEffect(() => {
     setSelectedPersonId(null);
     setInspectorId(null);
+    setMapCamera({ lod: "city" });
   }, [session]);
 
   // Time flows on its own; the pause command is what stops it. Because this
@@ -291,7 +305,19 @@ export function AppShell({
             onSelect={setSelectedPersonId}
           />
         ) : null}
-        {view === "world" ? <WorldScreen snapshot={snapshot} density={density} /> : null}
+        {view === "world" ? (
+          <WorldScreen
+            snapshot={snapshot}
+            density={density}
+            mapView={worldMap}
+            onSelectLod={(lod: MapLod) => setMapCamera((camera) => ({ ...camera, lod }))}
+            onFocusPlace={(placeId: string | undefined) =>
+              setMapCamera((camera) =>
+                placeId === undefined ? { lod: camera.lod } : { ...camera, focusId: placeId },
+              )
+            }
+          />
+        ) : null}
         {view === "history" ? <HistoryScreen snapshot={snapshot} density={density} /> : null}
         {view === "search" ? (
           <SearchScreen

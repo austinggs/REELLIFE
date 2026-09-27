@@ -54,6 +54,21 @@ A command's *owner* is the system whose rules validate and resolve it. Its
 inside its own scope, by the dispatcher — a command may therefore touch several
 systems without ever violating single ownership.
 
+## Engine-owned state slots (most recently added)
+
+Each domain engine owns exactly one slot inside `world.systems`, asserts
+`scope.assertOwner("<id>")` at every mutating entry point, and is restored by the
+persistence layer from the raw `systems` bag (see the persistence note above).
+
+| System            | Slot                  | Engine                                | Notes                                                                                                                 |
+| ----------------- | --------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `infrastructure` (38) | `systems.infrastructure` | `src/engine/infrastructure/engine.ts` | operational networks: assets (kind, location, optional operator, capacity utilisation, condition, dependencies, redundancy, users served, built date, maintenance record) plus outages and their repair progress. Every write (`defineAsset`, `setDemand`, `setCondition`, `recordMaintenance`, `deferMaintenance`, `raiseOutage`, `meetRequirement`, `advanceRepair`, `propagateOutage`) asserts ownership; capacity state, service status, dependency/dependent/cascade queries, `overloaded()` and `maintenanceDue()` are derived reads with nothing stored twice |
+| `countries` (39)  | `systems.countries`   | `src/engine/countries/engine.ts`      | country identity + time-ordered configurations, jurisdictions, currency references, citizenship/immigration frameworks, bilateral border regimes and the world-rule registry; every write (`define`, `amend`, `rename`, `recordChange`, `defineJurisdiction`, `defineCurrency`, `defineCitizenshipFramework`, `defineImmigrationFramework`, `defineBorder`, `defineRule`) asserts ownership; `borderAccess`/`resolveRule`/`jurisdictionsAt` are reads only |
+| `environment` (46)| `systems.environment` | `src/engine/environment/engine.ts`    | weather, pollution, hazards, disasters; every write (`observeWeather`, `applyPollution`, `declareHazard`, `liftHazard`, `evaluateHazards`, `raiseDisaster`, `advanceDisaster`) asserts ownership; a disaster's source condition is lifted by the same owner, never by a caller |
+| `population` (47) | `systems.population`  | `src/engine/population/engine.ts`     | per-continent/country/region/settlement aggregates                                                                     |
+| `travel` (45)     | `systems.travel`      | `src/engine/travel/engine.ts`         | canonical routes, active journeys, travel history                                                                      |
+| `geography` (37)  | `systems.geography`   | `src/engine/geography/engine.ts`      | canonical `LocationRef` hierarchy                                                                                      |
+
 ## Notes
 
 - The guard is deliberately coarse (per top-level section, not per field). It is

@@ -8,19 +8,21 @@
 > Keep `docs/OWNERSHIP_MATRIX.md`, `docs/CONTENT_GAPS.md`,
 > `docs/SOURCE_CONFLICTS.md` in sync when your change affects them.
 
-Last updated: 2026-09-26 (M4 in progress — full Aurelia canon + geography + travel + population land; next is weather/environment (46) and countries/world rules (39)).
-Gate: typecheck 0, lint 0, 45 files / 360 tests, `npm run build` OK.
+Last updated: 2026-09-27 (M4 complete — System 38 infrastructure closed as the last M4 system, and the two coverage holes the audit found (map history of renamed places, seed wiring) are now tested; next is M5 per PHASES.md).
+Gate: typecheck 0, lint 0, 50 files / 411 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
 
 ---
 
 ## Current position
 
-**Phase: M4 in progress — the full Aurelia world definition is now canonical
-content, and the spatial systems (geography, travel, population) are landing.
-Next: weather/environment/disaster (System 46) and countries & world rules
-(System 39), then the knowledge-limited map (System 56) to close the M4 DoD.**
+**Phase: M4 complete — the full Aurelia world definition is canonical
+content, the spatial systems (geography, travel, population, environment,
+infrastructure, countries/world rules) are landed, and the knowledge-limited
+map (System 56) is tested and wired: the World screen renders it through the
+session boundary. Next: M5 (economy & organizations) per `PHASES.md`. Do NOT
+jump to M6/M7 systems.**
 
-M4 landed so far (Systems 37, 45, 47 + full world canon):
+M4 landed (Systems 37, 38 slice, 39, 45, 46, 47, 56 + full world canon):
 
 - **`src/content/aurelia/canon.ts`** — the complete World Bible content as data:
   6 continents (with canonical ~6.8B population targets), 5 oceans, 36 regions,
@@ -43,7 +45,73 @@ M4 landed so far (Systems 37, 45, 47 + full world canon):
   the 6.8B deterministically (stable `fnv1a32` weights, exact integer sums at
   every additive level, per-country urbanisation in [0.55, 0.85] around the ~70%
   canon). Provisional — logged in `docs/CONTENT_GAPS.md`.
-- Tests: `tests/kernel/travel.test.ts` (5), `tests/kernel/population.test.ts` (6).
+- **`src/engine/environment/`** (System 46) — weather, pollution/degradation,
+  hazard conditions and the disaster pipeline. Weather is *derived*, not rolled:
+  `deriveWeather(climate, latitude, month, place)` is deterministic and
+  location-dependent (no RNG consumption), and hazards emerge from hazard ×
+  exposure × vulnerability instead of a "disaster chance" number. The engine owns
+  `systems.environment`, enforces the six-stage pipeline in order
+  (`hazard → exposure → vulnerability → impact → response → recovery`) and lifts
+  a source condition when it becomes an incident. Canonical climates live in
+  `src/content/aurelia/environment.ts` (the 36 authored region descriptors
+  normalised onto the World Bible's eight zones + 70 weather places). The slice
+  seed now observes Arden's weather at world creation. Tests:
+  `tests/kernel/environment.test.ts` (17).
+- **`src/engine/countries/`** (System 39) — a country as a *rule-and-institution
+  environment*: identity/sovereignty, time-ordered configurations, the
+  jurisdiction hierarchy (national → regional → municipal → special, overlap
+  allowed), currency references, citizenship/immigration frameworks, pairwise
+  border regimes and the data-driven world-rule registry.
+  `src/content/aurelia/countries.ts` registers the canonical environment: the 48
+  canon countries with their canon government type/capital, the one provisional
+  `AUR` currency, the provisional legal-system slug, one shared citizenship and
+  entry framework, 48 national + 34 municipal jurisdictions (nested) and the
+  nine WORLD_BUILD_12 statements as rules. Two laws shape the engine: histories
+  move **forward only** (`amend`/`rename`/`defineBorder`/`defineRule` close the
+  previous window and reject an earlier effective date, so the past is never
+  rewritten), and a border is **one** fact (stored `countryA < countryB`, so A↔B
+  and B↔A are the same regime). `borderAccess` resolves regime → destination
+  immigration framework → world rule and is a pure read; jurisdiction nesting
+  cannot cycle (a parent must already exist, self-parenting is refused, and
+  `jurisdictionChain` reports a corrupted cycle instead of truncating it); and
+  `resolveRule` reports only the scopes actually consulted up to the winner
+  (System 59 explainability). Provisional decisions are logged in
+  `docs/CONTENT_GAPS.md`.
+- **`src/engine/infrastructure/`** (System 38) — operational networks, not map
+  decoration: `InfrastructureAsset` (kind, location, optional operator, capacity
+  utilisation, condition, dependencies, redundancy, users served, maintenance
+  record), `OutageRecord` carrying its repair progress, and
+  `InfrastructureEngine` owning `systems.infrastructure`. Two rules keep it
+  honest: **status is derived, never stored twice** (`capacityStateOf` /
+  `serviceStatusOf` compute from demand, condition and the open outage, so a
+  stored status can never disagree with the numbers), and **failures cascade
+  explicitly** (edges are directional, a `redundant` asset stops the cascade,
+  `cascadeFrom` is deterministic breadth-first in registration order, and
+  `propagateOutage` reuses the source cause instead of inventing one). Repairs
+  climb the spec's own requirement order as a ladder of ceilings, so progress
+  stalls at the first unmet requirement rather than jumping to done.
+  `src/content/aurelia/infrastructure.ts` registers Arden's 10-asset slice
+  network (idempotent, every asset flagged `provisional`; the Bible authors no
+  per-city utility inventory, so nothing was invented for the other 33
+  settlements — see `docs/CONTENT_GAPS.md`), and `seedPlayableSlice` brings the
+  network up at world creation, which `tests/kernel/sliceSeed.test.ts` now pins
+  alongside the countries/environment systems. Derived reads only, so the map's
+  infrastructure layer reports this engine's own count.
+
+- Tests: `tests/kernel/travel.test.ts` (5), `tests/kernel/population.test.ts` (6),
+  `tests/kernel/environment.test.ts` (17), `tests/kernel/countries.test.ts` (16),
+  `tests/kernel/mapView.test.ts` (6), `tests/kernel/infrastructure.test.ts` (7),
+  `tests/app/worldMap.test.ts` (4).
+- **`src/engine/query/mapView.ts` (System 56 lens, M4 DoD closed)** — the map as
+  this viewer may see it: LOD-anchored, knowledge-gated (no knowledge, no
+  marker, no echo on unknown focus), routes copied verbatim from System 45,
+  layers honestly reporting unavailable owners. Wired through the boundary:
+  re-exported from `src/engine/query/index.ts`, exposed as
+  `SimulationSession.mapView(camera?)` (a read like `personView`; the
+  test-pinned surface in `tests/app/appShell.test.ts` now allows it), and
+  rendered by `WorldScreen` (LOD switcher, markers with knowledge/state badges,
+  routes, layers, notes) with the camera held as presentation state in
+  `AppShell` (reset on world swap like all other selection state).
 
 M3 delivered (Systems 55, 56, 57 + UI/UX 01–08, 14, 17–24):
 
@@ -136,7 +204,7 @@ ordering. Do NOT jump to M5/M6 systems.
 ```
 npm run typecheck        # tsc --noEmit
 npm run lint             # eslint .
-npm test                 # vitest run — full suite (42 files, 340 tests as of last update)
+npm test                 # vitest run — full suite (50 files, 409 tests as of last update)
 npm run test:scenarios   # the two M2 DoD scenario tests
 npm run build            # tsc + vite build
 npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless determinism
@@ -241,7 +309,7 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   for bytes that are not a `.reel` document (the app reports "could not be
   listed" and never shows a false empty list).
 
-### M4 — Aurelia content + spatial world (Systems 37, 38 partial, 45, 47)
+### M4 — Aurelia content + spatial world (Systems 37, 38 slice, 39, 45, 46, 47, 56)
 - **Full world canon (`src/content/aurelia/canon.ts`)** — 6/5/36/48/34 counts,
   4 mountains, 5 rivers, 6 corridors, 8 eras, 6 language families, 7 religions,
   17 active developments. Pinned by `tests/content/aureliaCanon.test.ts` (the
@@ -263,15 +331,28 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   countries/regions/settlements; per-country urbanisation; stable
   `fnv1a32`-derived weights, no RNG consumption). Tests:
   `tests/kernel/population.test.ts`.
-- Remaining M4: weather/environment/disaster (46), countries & world rules (39),
-  infrastructure operations depth (38), and the knowledge-limited map (56).
+- **Environment (46)** — `src/engine/environment/` (`WeatherSnapshot`,
+  `PollutionState`, `HazardCondition`, `DisasterIncident` + per-incident stage
+  history) and canonical climate content in `src/content/aurelia/environment.ts`.
+  Weather is a deterministic function of climate + latitude + month + place
+  (no RNG draw), so it is location- and season-dependent without being random;
+  hazards are *implied* by the weather and the slow pollution/degradation state
+  (a place has a drought because it is arid and dry), and impact is computed from
+  hazard × exposure × vulnerability. The disaster pipeline is stage-ordered and
+  refuses skips or revisits; ambient conditions are re-derived on every
+  evaluation (idempotent, keyed `HAZ-<location>-<kind>`), while explicitly
+  declared conditions are never lifted by the engine. Tectonic hazards have no
+  ambient rule (no trigger is owned yet) — logged in `docs/CONTENT_GAPS.md`.
+  Tests: `tests/kernel/environment.test.ts`.
+- Remaining M4: infrastructure operations depth (38) beyond the slice network
+  (other settlements stay unauthored by design — see `docs/CONTENT_GAPS.md).
 
 ## What is NOT done (next steps, in order)
 
-1. **M4 remainder** per `PHASES.md`: weather/environment/disaster (46),
-   countries & world rules (39), infrastructure operations (38), and the
-   knowledge-limited map with LOD (56) — the second M4 DoD item ("map renders
-   only player-known markers") is the map work that closes M4.
+1. **M5** per `PHASES.md`: economy & organizations (Systems 23, 25, 28, 31,
+   33, 34, 35, 36) — markets/prices/competition, businesses, supply chains/B2B,
+   macro layer, education, transport, insurance. DoD: market-shock scenario
+   reproducible; ledger conservation property test over 10 000 transactions.
 2. **M5–M8** per `PHASES.md` (economy, society/law/info, continuity,
    hardening).
 3. **Deferred M3-adjacent polish** (logged in `docs/CONTENT_GAPS.md`):
@@ -333,3 +414,110 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
   `docs/CONTENT_GAPS.md`). Presentation state is reset when a load swaps the
   world; reduced motion deliberately does not gate the pacing loop.
   Gate: typecheck 0, lint 0, 42 files / 340 tests, `npm run build` OK.
+- **2026-09-27 (M4 session):** Closed System 46 (weather / environment /
+  disasters) on top of the M4 spatial systems. New: `src/engine/environment/`
+  (`types.ts`, `dynamics.ts`, `engine.ts`) and
+  `src/content/aurelia/environment.ts`; `seedPlayableSlice` now observes Arden's
+  weather when the world is created. Design choices worth knowing:
+  weather is *derived* from climate + latitude + month + place id rather than
+  drawn from the seeded RNG (so it is reproducible, location-dependent and
+  seasonally correct on Aurelia's own latitudes), and hazard conditions are
+  *implied* by the weather and the slow pollution/degradation state instead of a
+  single "disaster chance" number — the System 46 core principle. Impact is
+  hazard × exposure × vulnerability. The pipeline is enforced in order
+  (`hazard → exposure → vulnerability → impact → response → recovery`): a skipped
+  or repeated stage throws, so the environment's record can never claim an effect
+  without its cause. `evaluateHazards` re-derives a place's ambient conditions
+  (idempotent, `HAZ-<location>-<kind>`) and never lifts explicitly declared
+  conditions; promoting a condition into an incident lifts it. One bug found and
+  fixed while testing: the first draft kept old ambient conditions *and* re-added
+  the derived set, duplicating every condition on re-evaluation. Also corrected
+  the M4 session's truncated `dynamics.ts`/`engine.ts` edits (the ambient-hazard
+  block had landed inside `impactSeverity`). Tests:
+  `tests/kernel/environment.test.ts` (17). Gate: typecheck 0, lint 0,
+  46 files / 377 tests, `npm run build` OK, determinism PASS. Next: System 39
+  (countries & world rules), then the knowledge-limited map (56).
+- **2026-09-27 (M4 session, continued — System 39):** Closed Countries & World
+  Rules on top of the M4 spatial systems. The engine, types and content
+  (`src/engine/countries/`, `src/content/aurelia/countries.ts`) were already in
+  the tree but unverified: `tests/kernel/countries.test.ts` had been written
+  against a *planned* API (`effectiveConfiguration`, `jurisdictionHierarchy`,
+  `jurisdictionsForLocation`, `borderRegimeBetween`, `BorderRegime.countries`,
+  `historicalNames` as `{ name, until }`) that the engine never exposed — 13 of
+  its 16 tests failed and `npm run typecheck` reported 28 errors in that file
+  alone. The engine's API is the one consistent with the rest of the kernel
+  (`configurationAt`, `jurisdictionsAt`, `jurisdictionChain`, `borderBetween`,
+  `historicalNames` as a string list exactly like Geography's `LocationRef`), so
+  the **test was aligned to the engine** rather than the engine renamed to the
+  test. Three genuine gaps the test exposed were fixed in code, all grounded:
+  `constitution` added to `COUNTRY_CHANGE_KINDS` (WORLD_04: a country keeps its
+  "founding date, constitutional history"), `defineJurisdiction` refuses a
+  self-parent explicitly instead of reporting it as its own missing parent, and
+  `jurisdictionChain` now reports a detected cycle rather than silently
+  truncating the ancestry. `resolveRule` records only the scopes actually
+  consulted up to the winner in `consultedScopes` — it previously echoed the
+  whole chain, including scopes it never opened, which is wrong for the
+  System 59 explanation that field exists for. The test also caught an id error
+  in itself (`COUNTRY-VEYR` is not in canon; the country is `COUNTRY-VEYRA`),
+  and now derives expectations from `CANON_COUNTRIES`/`CANON_SETTLEMENTS`
+  instead of hard-coded counts. `docs/OWNERSHIP_MATRIX.md` gained the
+  `systems.countries` slot and `docs/CONTENT_GAPS.md` the five provisional
+  System 39 decisions (currency, legal-system slug, citizenship/entry
+  frameworks, absent border geometry, formal-only jurisdictions).
+   Gate: typecheck 0, lint 0, 47 files / 393 tests, `npm run build` OK,
+   determinism PASS. Next: the knowledge-limited map (56) to close M4.
+- **2026-09-27 (M4 session, continued — System 56 map wiring):** Closed M4. The
+  `mapView.ts` lens and `tests/kernel/mapView.test.ts` existed in the tree but
+  were never green (3/5 failing) and never wired: the query index did not
+  export the lens, the session had no map read, and `WorldScreen` rendered only
+  the residence chain. Fixes, smallest-first: (1) test aligned to the engine's
+  documented anchor rule (the zoom's anchor is always shown — the suite's own
+  country assertion already required it); the stale case now focuses the camera
+  on the visited city (a region zoom only draws its own anchor's subtree, and
+  Westhaven lives under another region); population asserted against System 47's
+  own aggregate instead of the slice's scale register (50 000). (2) Two genuine
+  engine/test bugs fixed: stale outranks route/event association (otherwise a
+  connected settlement could never read as stale — the association survives in
+  the routes list and event counts), the no-countries case now deletes through
+  `guard.mutate("countries")` instead of tripping the ownership guard, and the
+  leak detector compares whole values instead of substrings ("Veyr" is not
+  "Veyra"). (3) Wiring: `query/index.ts` re-exports the lens,
+  `SimulationSession.mapView(camera?)` added (allowed-surface test updated),
+  `WorldScreen` renders LODs/markers/routes/layers/notes with focus control,
+  camera state lives in `AppShell` and resets on world swap. New
+  `tests/app/worldMap.test.ts` (4) pins the second M4 DoD item at the session
+  boundary. Gate: typecheck 0, lint 0, 50 files / 409 tests, `npm run build`
+  OK, determinism PASS. Next: M5.
+- **2026-09-27 (M4 session, continued — System 38 infrastructure):** Closed the
+  last M4 system, **38 (Infrastructure Operations)**, which sits in M4's scope
+  but had no engine in the tree: the rest of the M4 work referenced
+  "infrastructure" (map layer, ownership slot, seed comment) without anything
+  owning it, so it was implemented rather than assumed. New:
+  `src/engine/infrastructure/{types,engine}.ts`,
+  `src/content/aurelia/infrastructure.ts`, registration from
+  `seedPlayableSlice`, `tests/kernel/infrastructure.test.ts` (7). Three design
+  choices worth knowing: status is **derived, never stored twice**
+  (`capacityStateOf` / `serviceStatusOf` from demand, condition and the open
+  outage, so a stored status could never disagree with the numbers); failures
+  **cascade explicitly** (edge direction matters, a `redundant` asset stops the
+  cascade, `cascadeFrom` is deterministic breadth-first in registration order,
+  and `propagateOutage` reuses the source cause instead of inventing one); and
+  repair climbs a **ladder of ceilings** in the spec's own requirement order
+  (workers → equipment → materials → access → authority → funding → time), so
+  progress stalls at the first unmet requirement. Content is deliberately one
+  city — Arden's 10-asset network, every asset flagged `provisional` — because
+  the Bible authors no per-city utility inventory; the absence is logged rather
+  than filled with 33 invented networks. `docs/CONTENT_GAPS.md` gained seven
+  System 38 rows, including the two honest gaps: no operators/funding/staffing
+  wired yet (requirement gates stand in for payroll), and outages are *returned*
+  for a publishing caller but not emitted as Events yet. Also closed the two M4
+  coverage holes this audit found: the map's `formerNames` (M4's "spatial
+  history for renamed places") is now tested — Arden's canon former names are
+  copied from System 37 and a stranger's former name (`Veyr-on-River`) never
+  leaks at any zoom — and `tests/kernel/sliceSeed.test.ts` now pins that world
+  creation stands up the M4 systems (network, first-frame weather, country
+  rules/jurisdiction/currency) idempotently. M4's seven systems are all present
+  (37, 38, 39, 45, 46, 47, 56) and both DoD items remain pinned
+  (`tests/content/aureliaCanon.test.ts` counts 6/5/36/48/34; the map stays
+  knowledge-limited at the session boundary). Gate: typecheck 0, lint 0,
+  50 files / 411 tests, `npm run build` OK, determinism PASS. Next: M5.

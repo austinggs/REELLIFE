@@ -28,6 +28,7 @@ import {
   getEntityInspectorView,
   getEventFeedView,
   getLifeSituation,
+  getMapView,
   getNotificationFeedView,
   getPersonView,
   getSimulationHealthView,
@@ -41,6 +42,8 @@ import {
   type EntityInspectorView,
   type EventFeedItem,
   type LifeSituationView,
+  type MapCamera,
+  type MapView,
   type NotificationFeedView,
   type PersonView,
   type SearchResultView,
@@ -267,6 +270,18 @@ export class SimulationSession {
   personView(subjectId: string): PersonView | null {
     const viewer = this.playerId;
     return viewer === undefined ? null : getPersonView(this.sim, viewer, subjectId);
+  }
+
+  /**
+   * The knowledge-limited map (System 56; UI/UX 09) as this viewer may see it.
+   *
+   * A read like `personView` and `search`: the projection is derived and
+   * thrown away, so a screen can render markers, routes and layers without
+   * ever reaching `world.systems`. The camera is presentation state owned by
+   * the caller; an unknown focus answers with an empty window and no echo.
+   */
+  mapView(camera?: MapCamera): MapView {
+    return getMapView(this.sim, this.playerId ?? null, camera === undefined ? {} : { camera });
   }
 
   search(query: string): readonly SearchResultView[] {

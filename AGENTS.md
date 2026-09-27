@@ -305,3 +305,5 @@ M6 — Society, law, information, global, security (Systems 41–44, 48, 49, 50,
 M7 — Continuity (Systems 53, 54, 19 genealogy, legacy). Death → determination → records → estate/probate → inheritance → descendant control transfer → legacy traced through concrete assets/records/relationships/organizations; Timeline/Journal/Statistics as derived-only presentations. DoD: multi-generation test proving PersonId survives, no arbitrary hidden modifiers, causal history intact after control transfer.
 
 M8 — Hardening. Performance budgets per resolution level, save migrations with fixtures, accessibility pass (UI/UX 21), full cross-system scenario suite (job loss, marriage, disaster, death, rumor, inheritance, migration, market shock), content completeness ledger.
+
+CURRENT PROGRESS: .\PROGRESS.md

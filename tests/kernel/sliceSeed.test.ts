@@ -13,6 +13,11 @@ import { SLICE_RESIDENT_COUNT, seedPlayableSlice } from "../../src/engine/kernel
 import { ScaleEngine } from "../../src/engine/scale/engine.ts";
 import { getLifeSituation } from "../../src/engine/query/lifeViews.ts";
 import { M2_SETTLEMENT_ID } from "../../src/content/aurelia/geography.ts";
+import { aureliaCountryOfSettlement } from "../../src/content/aurelia/countries.ts";
+import { AURELIA_SLICE_ASSET_COUNT } from "../../src/content/aurelia/infrastructure.ts";
+import { CountriesEngine, DEFAULT_BORDER_ACCESS_RULE_KEY } from "../../src/engine/countries/engine.ts";
+import { EnvironmentEngine } from "../../src/engine/environment/engine.ts";
+import { InfrastructureEngine } from "../../src/engine/infrastructure/engine.ts";
 import { asEntityId } from "../../src/engine/primitives/ids.ts";
 import type { Simulation } from "../../src/engine/core/simulation.ts";
 
@@ -105,5 +110,48 @@ describe("playable slice seed (M3)", () => {
     expect(after.householdName).toBe(before.householdName);
     expect(after.needs.map((need) => need.kind)).toEqual(before.needs.map((need) => need.kind));
     expect(after.timeLabel).toBe(before.timeLabel);
+  });
+
+  it("brings up the M4 spatial systems for the seeded world (M4)", () => {
+    const { sim } = newSeededWorld();
+
+    // System 38: the slice city has a real operational network. The seed
+    // registers it through the owning engine; it never becomes the owner.
+    sim.guard.mutate("infrastructure", () => {
+      const infrastructure = new InfrastructureEngine(sim.scope, sim.world);
+      expect(infrastructure.assets()).toHaveLength(AURELIA_SLICE_ASSET_COUNT);
+      expect(infrastructure.assetsAt(M2_SETTLEMENT_ID)).toHaveLength(AURELIA_SLICE_ASSET_COUNT);
+    });
+
+    // System 46: the world has weather for the slice's city from the first frame.
+    sim.guard.mutate("environment", () => {
+      const weather = new EnvironmentEngine(sim.scope, sim.world).weatherAt(M2_SETTLEMENT_ID);
+      expect(weather?.locationId).toBe(M2_SETTLEMENT_ID);
+      expect(weather?.condition).toBeDefined();
+    });
+
+    // System 39: the slice's country is a rule-and-institution environment — the
+    // city sits inside a jurisdiction, inside a country that has a currency, and
+    // the world rules are in force rather than described.
+    const countryId = aureliaCountryOfSettlement(M2_SETTLEMENT_ID);
+    expect(countryId).toBeDefined();
+    if (countryId === undefined) return;
+    sim.guard.mutate("countries", () => {
+      const countries = new CountriesEngine(sim.scope, sim.world);
+      expect(countries.country(countryId)).toBeDefined();
+      expect(countries.jurisdictionsAt(M2_SETTLEMENT_ID, sim.clock.time).length).toBeGreaterThan(0);
+      expect(countries.currencyOfCountry(countryId, sim.clock.time)?.code).toBe("AUR");
+      expect(
+        countries.resolveRule(DEFAULT_BORDER_ACCESS_RULE_KEY, [countries.worldScope()], sim.clock.time),
+      ).toBeDefined();
+    });
+
+    // Re-seeding adds no duplicate network: the M4 systems are idempotent.
+    seedPlayableSlice(sim);
+    sim.guard.mutate("infrastructure", () => {
+      expect(new InfrastructureEngine(sim.scope, sim.world).assets()).toHaveLength(
+        AURELIA_SLICE_ASSET_COUNT,
+      );
+    });
   });
 });

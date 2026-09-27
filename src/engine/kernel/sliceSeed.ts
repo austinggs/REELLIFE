@@ -2,11 +2,11 @@
  * Playable slice seed (M3 kernel composition).
  *
  * Builds the small lived-in world the UI shell runs on: the canonical Aurelia
- * geography spine, a materialized population inside Arden, and a player
- * person with needs registered so the Life screen has something authoritative
- * to show. This is world *setup*, not simulation rules — it runs once at
- * creation (never after load, where state is restored instead) and every
- * write goes through the owning system's scope.
+ * geography spine, the slice's infrastructure network, a materialized
+ * population inside Arden, and a player person with needs registered so the
+ * Life screen has something authoritative to show. This is world *setup*, not
+ * simulation rules — it runs once at creation (never after load, where state
+ * is restored instead) and every write goes through the owning system's scope.
  */
 
 import type { Simulation } from "../core/simulation.ts";
@@ -15,7 +15,13 @@ import {
   M2_SETTLEMENT_ID,
   registerAureliaSliceGeography,
 } from "../../content/aurelia/geography.ts";
+import { aureliaWeatherPlace } from "../../content/aurelia/environment.ts";
+import { registerAureliaCountries } from "../../content/aurelia/countries.ts";
+import { registerAureliaInfrastructure } from "../../content/aurelia/infrastructure.ts";
+import { CountriesEngine } from "../countries/engine.ts";
+import { EnvironmentEngine } from "../environment/engine.ts";
 import { GeographyEngine } from "../geography/engine.ts";
+import { InfrastructureEngine } from "../infrastructure/engine.ts";
 import { materializeSettlement } from "../scale/materialize.ts";
 import { NeedsEngine } from "../needs/engine.ts";
 import type { ScaleSystemState } from "../scale/types.ts";
@@ -50,6 +56,40 @@ export function seedPlayableSlice(
   sim.guard.mutate("geography", () => {
     registerAureliaSliceGeography(new GeographyEngine(sim.scope, sim.world));
   });
+
+  // System 39 gives the playable world its country environment: sovereignty,
+  // the currency reference Money uses, citizenship/entry frameworks, the
+  // national/municipal jurisdictions of the slice's country and city, and the
+  // data-driven world rules. Idempotent, so re-seeding is a no-op.
+  sim.guard.mutate("countries", () => {
+    registerAureliaCountries(new CountriesEngine(sim.scope, sim.world));
+  });
+
+  // System 38 gives the slice city its operational network: utilities, transit
+  // and hospital support with a real dependency order, so capacity, outages and
+  // maintenance have something to work on. Idempotent, so re-seeding is a no-op.
+  sim.guard.mutate("infrastructure", () => {
+    registerAureliaInfrastructure(
+      new InfrastructureEngine(sim.scope, sim.world),
+      M2_SETTLEMENT_ID,
+      sim.clock.time,
+    );
+  });
+
+  // The slice city gets real weather from the first frame, so System 46 takes
+  // part in the playable world's conditions. Idempotent: weather is upserted.
+  const weatherPlace = aureliaWeatherPlace(M2_SETTLEMENT_ID);
+  if (weatherPlace) {
+    sim.guard.mutate("environment", () => {
+      new EnvironmentEngine(sim.scope, sim.world).observeWeather({
+        locationId: weatherPlace.locationId,
+        climate: weatherPlace.climate,
+        latitude: weatherPlace.latitude,
+        monthIndex: sim.calendar.dateFromTime(sim.clock.time).monthIndex,
+        at: sim.clock.time,
+      });
+    });
+  }
 
   const personIds = materializeSettlement(sim, {
     settlementId: M2_SETTLEMENT_ID,
