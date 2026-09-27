@@ -15,7 +15,14 @@ import { getLifeSituation } from "../../src/engine/query/lifeViews.ts";
 import { M2_SETTLEMENT_ID } from "../../src/content/aurelia/geography.ts";
 import { aureliaCountryOfSettlement } from "../../src/content/aurelia/countries.ts";
 import { AURELIA_SLICE_ASSET_COUNT } from "../../src/content/aurelia/infrastructure.ts";
+import { AURELIA_SLICE_BUSINESS_COUNT } from "../../src/content/aurelia/businesses.ts";
 import { CountriesEngine, DEFAULT_BORDER_ACCESS_RULE_KEY } from "../../src/engine/countries/engine.ts";
+import { BusinessesEngine } from "../../src/engine/businesses/engine.ts";
+import { SupplyChainsEngine } from "../../src/engine/supplyChains/engine.ts";
+import {
+  AURELIA_SLICE_DEPENDENCY_COUNT,
+  AURELIA_SLICE_OFFER_COUNT,
+} from "../../src/content/aurelia/supplyChains.ts";
 import { EnvironmentEngine } from "../../src/engine/environment/engine.ts";
 import { InfrastructureEngine } from "../../src/engine/infrastructure/engine.ts";
 import { asEntityId } from "../../src/engine/primitives/ids.ts";
@@ -152,6 +159,53 @@ describe("playable slice seed (M3)", () => {
       expect(new InfrastructureEngine(sim.scope, sim.world).assets()).toHaveLength(
         AURELIA_SLICE_ASSET_COUNT,
       );
+    });
+  });
+
+  it("brings up the M5 commercial slice for the seeded world (M5)", () => {
+    const { sim } = newSeededWorld();
+
+    // System 33 over System 32: the slice's businesses exist, each with the
+    // organization behind it, and the capacity model names the constraint the
+    // content actually authored.
+    sim.guard.mutate("businesses", () => {
+      const businesses = new BusinessesEngine(sim.scope, sim.world);
+      expect(businesses.all()).toHaveLength(AURELIA_SLICE_BUSINESS_COUNT);
+      expect(businesses.trading()).toHaveLength(AURELIA_SLICE_BUSINESS_COUNT);
+      expect(businesses.business("ORG-QUAY-CAFE")?.organizationId).toBe("ORG-QUAY-CAFE");
+      expect(businesses.organizationOf("ORG-QUAY-CAFE")?.type).toBe("commercial");
+      expect(businesses.bindingConstraint("ORG-QUAY-CAFE").dimension).toBe("capital"); // lowest authored dimension (capital 0.55)
+      // Suppliers are real slice businesses, so System 34's graph is not a
+      // list of dangling ids.
+      for (const business of businesses.all()) {
+        for (const supplierId of business.supplierIds) {
+          expect(businesses.business(supplierId)).toBeDefined();
+        }
+      }
+    });
+
+    // System 34 stands the same commerce up as a dependency network: every
+    // supplier offer and standing requirement the slice trades on.
+    sim.guard.mutate("supplyChains", () => {
+      const chains = new SupplyChainsEngine(sim.scope, sim.world);
+      expect(chains.offers()).toHaveLength(AURELIA_SLICE_OFFER_COUNT);
+      expect(chains.dependencies()).toHaveLength(AURELIA_SLICE_DEPENDENCY_COUNT);
+      for (const dependency of chains.dependencies()) {
+        expect(chains.offer(dependency.supplierId, dependency.inputId)).toBeDefined();
+      }
+    });
+
+    // Re-seeding adds no duplicate commerce either.
+    seedPlayableSlice(sim);
+    sim.guard.mutate("businesses", () => {
+      expect(new BusinessesEngine(sim.scope, sim.world).all()).toHaveLength(
+        AURELIA_SLICE_BUSINESS_COUNT,
+      );
+    });
+    sim.guard.mutate("supplyChains", () => {
+      const chains = new SupplyChainsEngine(sim.scope, sim.world);
+      expect(chains.offers()).toHaveLength(AURELIA_SLICE_OFFER_COUNT);
+      expect(chains.dependencies()).toHaveLength(AURELIA_SLICE_DEPENDENCY_COUNT);
     });
   });
 });

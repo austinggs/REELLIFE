@@ -31,6 +31,13 @@ export * from "./employment/index.ts";
 export * from "./housing/index.ts";
 export * from "./inventory/index.ts";
 export * from "./food/index.ts";
+export * from "./businesses/index.ts";
+export * from "./supplyChains/index.ts";
+export * from "./markets/index.ts";
+export * from "./macro/index.ts";
+export * from "./transport/index.ts";
+export * from "./insurance/index.ts";
+export * from "./education/index.ts";
 
 
 

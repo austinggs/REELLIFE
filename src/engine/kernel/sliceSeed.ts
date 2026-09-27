@@ -17,8 +17,27 @@ import {
 } from "../../content/aurelia/geography.ts";
 import { aureliaWeatherPlace } from "../../content/aurelia/environment.ts";
 import { registerAureliaCountries } from "../../content/aurelia/countries.ts";
+import {
+  registerAureliaBusinessOrganizations,
+  registerAureliaBusinesses,
+} from "../../content/aurelia/businesses.ts";
 import { registerAureliaInfrastructure } from "../../content/aurelia/infrastructure.ts";
+import { registerAureliaGoodsAndMarkets } from "../../content/aurelia/markets.ts";
+import { registerAureliaSupplyChains } from "../../content/aurelia/supplyChains.ts";
+import { registerAureliaMacroBaseline } from "../../content/aurelia/macro.ts";
+import { registerAureliaTransport } from "../../content/aurelia/transport.ts";
+import { registerAureliaInsurance } from "../../content/aurelia/insurance.ts";
+import { registerAureliaEducation, registerAureliaPlayerApplication } from "../../content/aurelia/education.ts";
+import { BusinessesEngine } from "../businesses/engine.ts";
+import { EducationEngine } from "../education/engine.ts";
+import { InsuranceEngine } from "../insurance/engine.ts";
+import { MarketsEngine } from "../markets/engine.ts";
+import { MacroEngine } from "../macro/engine.ts";
+import { SupplyChainsEngine } from "../supplyChains/engine.ts";
+import { TravelEngine } from "../travel/engine.ts";
+import { TransportEngine } from "../transport/engine.ts";
 import { CountriesEngine } from "../countries/engine.ts";
+import { OrganizationsEngine } from "../organizations/engine.ts";
 import { EnvironmentEngine } from "../environment/engine.ts";
 import { GeographyEngine } from "../geography/engine.ts";
 import { InfrastructureEngine } from "../infrastructure/engine.ts";
@@ -63,6 +82,86 @@ export function seedPlayableSlice(
   // data-driven world rules. Idempotent, so re-seeding is a no-op.
   sim.guard.mutate("countries", () => {
     registerAureliaCountries(new CountriesEngine(sim.scope, sim.world));
+  });
+
+  // System 33 gives the slice its commerce — but a business is the commercial
+  // side of a System 32 organization, so the organizations come first and in
+  // their own scope. Together they give employment, supply chains and markets
+  // real firms to be about. Both are idempotent, so re-seeding is a no-op.
+  sim.guard.mutate("organizations", () => {
+    registerAureliaBusinessOrganizations(
+      sim.ids,
+      new OrganizationsEngine(sim.scope, sim.world),
+      M2_SETTLEMENT_ID,
+      sim.clock.time,
+    );
+  });
+  sim.guard.mutate("businesses", () => {
+    registerAureliaBusinesses(
+      new BusinessesEngine(sim.scope, sim.world),
+      M2_SETTLEMENT_ID,
+      sim.clock.time,
+    );
+  });
+
+  // System 34 turns those businesses' standing trade into a dependency
+  // network: who can deliver what (capacity, lead times), who depends on
+  // whom, and — derived from that graph — where a single failure would
+  // cascade. Seeded after System 33 because a dependency may not name a
+  // party that is not a registered business. Idempotent.
+  sim.guard.mutate("supplyChains", () => {
+    registerAureliaSupplyChains(new SupplyChainsEngine(sim.scope, sim.world), sim.clock.time);
+  });
+
+  // System 35 gives those businesses somewhere to trade: a goods catalogue and
+  // three local markets whose opening prices are *formed* from cost, stock,
+  // supply, demand, transport, tax and regulation — never typed in. Seeded after
+  // System 33 because a market may not list a seller that does not exist.
+  sim.guard.mutate("markets", () => {
+    registerAureliaGoodsAndMarkets(
+      new MarketsEngine(sim.scope, sim.world),
+      M2_SETTLEMENT_ID,
+      sim.clock.time,
+    );
+  });
+
+  // System 36 gives the slice a macro baseline: a price index anchored at
+  // 100 and a provisional credit environment, so inflation and the interest
+  // context have a first frame. Labour/output/aggregates are deliberately
+  // not seeded — they start when a caller observes them. Idempotent.
+  sim.guard.mutate("macro", () => {
+    registerAureliaMacroBaseline(new MacroEngine(sim.scope, sim.world), sim.clock.time);
+  });
+
+  // System 28 gives the slice its mobility: the businesses' own delivery
+  // vehicles, and a docks works coach on a **real** System 45 route out of
+  // Arden. The route is read from System 45 (never restated here); that
+  // read needs its own scope because the travel engine initializes its own
+  // state on first construction, and scopes never nest. The service is only
+  // authored if such a route exists. Idempotent.
+  let coachRoute: string | undefined;
+  sim.guard.mutate("travel", () => {
+    coachRoute = new TravelEngine(sim.scope, sim.world).findRoute(
+      M2_SETTLEMENT_ID,
+      "CITY-CALDOR",
+      "road",
+    )?.id;
+  });
+  sim.guard.mutate("transport", () => {
+    registerAureliaTransport(
+      new TransportEngine(sim.scope, sim.world),
+      M2_SETTLEMENT_ID,
+      coachRoute,
+      sim.clock.time,
+    );
+  });
+
+  // System 31 gives the slice its cover: two policies underwritten by the
+  // grain cooperative's mutual society, over the vehicles System 28 just
+  // registered. Seeded after 28 so the insured subjects are real, and
+  // idempotent so re-seeding never re-issues a policy.
+  sim.guard.mutate("insurance", () => {
+    registerAureliaInsurance(new InsuranceEngine(sim.scope, sim.world), sim.clock.time);
   });
 
   // System 38 gives the slice city its operational network: utilities, transit
@@ -111,6 +210,22 @@ export function seedPlayableSlice(
       new NeedsEngine(sim.scope, sim.world).registerPerson(playerId, sim.clock.time);
     });
   }
+
+  // System 23 gives the slice its programs — the docks' stevedore
+  // certification and the bakery's milling course, both run by slice
+  // organizations — and leaves the player an *application*, not a seat:
+  // education creates the opportunity, and taking it is System 17's
+  // decision. Seeded after materialization because the applicant is a real
+  // person. Idempotent: re-seeding neither duplicates the application nor
+  // enrolls the player by surprise.
+  sim.guard.mutate("education", () => {
+    const education = new EducationEngine(sim.scope, sim.world);
+    registerAureliaEducation(education);
+    // `sim.ids` is the live allocator — `world.shared.idAllocator` is only
+    // its persisted snapshot, so a fresh allocator here would mint ids that
+    // a later command could mint again.
+    registerAureliaPlayerApplication(education, sim.ids, playerId, sim.clock.time);
+  });
 
   const scale = sim.world.systems.scale as ScaleSystemState | undefined;
   return {

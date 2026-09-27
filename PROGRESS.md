@@ -8,19 +8,164 @@
 > Keep `docs/OWNERSHIP_MATRIX.md`, `docs/CONTENT_GAPS.md`,
 > `docs/SOURCE_CONFLICTS.md` in sync when your change affects them.
 
-Last updated: 2026-09-27 (M4 complete — System 38 infrastructure closed as the last M4 system, and the two coverage holes the audit found (map history of renamed places, seed wiring) are now tested; next is M5 per PHASES.md).
-Gate: typecheck 0, lint 0, 50 files / 411 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
+Last updated: 2026-09-27 (M5 COMPLETE — all eight M5 systems landed: 23 (education), 25 (finance, M2), 28 (transport), 31 (insurance), 33 (businesses), 34 (supply chains), 35 (markets), 36 (macro). Both DoD items met. Next: M6 per PHASES.md.)
+Gate: typecheck 0, lint 0, 59 files / 469 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
 
 ---
 
 ## Current position
 
-**Phase: M4 complete — the full Aurelia world definition is canonical
-content, the spatial systems (geography, travel, population, environment,
-infrastructure, countries/world rules) are landed, and the knowledge-limited
-map (System 56) is tested and wired: the World screen renders it through the
-session boundary. Next: M5 (economy & organizations) per `PHASES.md`. Do NOT
-jump to M6/M7 systems.**
+**Phase: M5 COMPLETE — all eight M5 systems are landed, seeded into the
+playable slice and tested: 33 (Organizations & Businesses), 35 (Markets /
+Prices & Competition), 34 (Supply Chains & B2B), 36 (Macroeconomic Layer),
+28 (Transportation & Vehicles), 31 (Insurance & Risk Management) and 23
+(Education), with 25 (Finance) already delivered in M2. **Both M5 DoD items
+are met**: a reproducible market-shock scenario and a ledger-conservation
+property test over 10 000 transactions. The gate is green (59 files / 469
+tests, typecheck 0, lint 0, build OK, determinism PASS). Next: M6 (society,
+law, information, global, security) per `PHASES.md`.**
+
+M5 landed so far (Systems 33, 35, 34 — all uncommitted in git; the user
+commits):
+
+- **System 33 (businesses)** — `src/engine/businesses/{types,engine,index}.ts`:
+  commercial side of System 32 orgs (forms, lifecycle transitions, offerings,
+  seven capacity dimensions with a computed binding constraint, derived roster
+  from System 24, derived cash flow from System 25, failure signals that refuse
+  to infer `poor_management`). Content: five provisional Arden businesses in
+  `src/content/aurelia/businesses.ts` (grain cooperative, mill bakery, docks,
+  quay cafe, quay trader), seeded from `sliceSeed` in dependency order so the
+  supplier graph is acyclic by construction. `tests/kernel/businesses.test.ts` (4).
+- **System 35 (markets)** — `src/engine/markets/{types,pricing,engine,index}.ts`:
+  prices are *formed*, never authored: `formPrice` applies landed cost +
+  transport → scarcity → structure → tax → expectation → cost floor →
+  regulated ceiling, and returns the driver list that accounts for the quote
+  to the minor unit. The engine owns the goods catalogue, three local Arden
+  markets, participants/entry/exit, demand/supply observation, stock
+  receive/withdraw and recorded transactions (money stays System 25's,
+  referenced by `ledgerEntryId`). Content: seven goods + three markets in
+  `src/content/aurelia/markets.ts`. `tests/kernel/markets.test.ts` (9).
+- **System 34 (supply chains & B2B)** — `src/engine/supplyChains/{types,engine,index}.ts`:
+  supplier offers (unit price, lead time, capacity, provisional assessments,
+  suspension), supply dependencies, purchase orders with the lifecycle
+  `issued → accepted → in_transit → received/cancelled/breached`, and
+  append-only supply-chain history. Cascades are **derived from the graph**:
+  `cascadeFrom` walks dependents breadth-first in registration order (a
+  suspension propagates nothing by fiat — `shortages`/`supplyGap` read it off
+  capacity + suspension state), `concentration` quantifies correlated-disruption
+  exposure, `reliability` is computed from completed orders (late counts
+  against), `substitutionCandidates` ranks every other source for the input on
+  the declared `SUBSTITUTION_WEIGHTS` with unavailable sources visible and
+  zeroed, and `switchSupplier` records the switch with its cost. Lead times put
+  logistics lag inside the agreement (`dueAt = placedAt + leadTime`), and
+  `breachExpiredOrders` turns a passed due date into a breach deterministically.
+  Content: five offers + five dependencies mirroring the System 33
+  supplier/customer links, in `src/content/aurelia/supplyChains.ts`, seeded
+  after businesses. `tests/kernel/supplyChains.test.ts` (8).
+  Gaps logged in `docs/CONTENT_GAPS.md` (M5 section): no delivery/breach Events
+  emitted yet, PO settlement/landing is by reference (caller posts the System 25
+  ledger entry and System 35 `receiveStock`), substitution weights and supplier
+  assessments provisional, lead times authored from the Bible's operations.
+  `docs/OWNERSHIP_MATRIX.md` gained the `businesses`/`supplyChains`/`markets`
+  slot rows. Also fixed two stale test expectations found while closing the
+  markets suite (tax assertion was below the cost floor; the cafe's binding
+  constraint is `capital` at 0.55, not `staffing`) — both were wrong
+  assumptions in the tests, not engine bugs.
+- **System 36 (macroeconomic layer)** — `src/engine/macro/{types,engine,index}.ts`:
+  the system *samples* lower-level activity and derives the indicators over
+  stated windows. `observePriceIndex`/`observeLaborMarket`/`observeOutput`/
+  `observeAggregates` store timestamped samples (upserted per instant, so
+  re-seeding cannot duplicate), and `inflation`, `unemployment`, `outputGrowth`,
+  `productivity`, `productivityGrowth`, `aggregateGap`, `purchasingPowerChange`
+  answer from them — returning **`undefined` when no sample spans the window**
+  rather than a guessed number, which is what makes lag visible. `raiseShock`/
+  `liftShock` are explicit conditions that never edit an observation, and
+  `downturnSignals()` returns named facts in a fixed order instead of
+  collapsing them into a "recession" verdict nobody defined. Content seeds only
+  two first-frame facts (price index 100, a provisional credit environment) —
+  no invented labour force for the slice. `tests/kernel/macro.test.ts` (7).
+- **System 28 (transportation & vehicles)** —
+  `src/engine/transport/{types,engine,index}.ts`: vehicle instances with
+  condition, energy, capacity, owner/operator/location, registration history
+  and maintenance state; public transit services with fares and real seat
+  capacity; and named disruptions (breakdown, road closure, accident,
+  cancellation, fuel shortage, weather). Three boundaries are enforced rather
+  than assumed: **routes stay System 45's** (a service references a
+  `TransportRoute.id`; the seed resolves a real road route out of Arden, so
+  28 cannot disagree with the network), **"broken" is derived** from the
+  condition number through `dispatchable` (no stored flag can contradict it),
+  and **weather/traffic are caller-supplied** conditions that move
+  `estimateTrip`'s duration and risk without changing what the vehicle is.
+  `estimateTrip` layers condition over System 45's route baseline and names
+  every reason it refuses a trip (dry tank, worn, in the workshop).
+  `boardService` refuses to overbook. Content authors four vehicles owned by
+  real slice organizations and one docks works coach (the docks are authored
+  with 140 shift workers — a works coach is what that implies), and
+  **deliberately no municipal transit system**, because the slice has no civic
+  organization and inventing one to own a bus would be fiction wearing a
+  schema; that gap is logged rather than filled. `tests/kernel/transport.test.ts` (6).
+  One real wiring bug fixed on the way: the seed read System 45 outside a
+  scope, but the `TravelEngine` constructor initializes its own state on first
+  construction, so that read needs its own `travel` scope (scopes never nest).
+- **System 31 (insurance & risk management)** —
+  `src/engine/insurance/{types,engine,index}.ts`: policies (insurer, holder,
+  subject, coverage, limit, deductible, premium, risk score, exclusions,
+  beneficiaries, dates, status, history) and claims on the spec's own
+  lifecycle graph, with `disputed` / `fraud_suspected` / `appealed` as
+  first-class reviewable states. The discipline is what the system *does
+  not* own: incidents stay with the system that witnessed them (a claim
+  keeps their reference verbatim), and **payouts are arithmetic** —
+  `payoutOf(assessed, deductible, remainingCover)` is written once, and
+  approval, pre-approval quotes, deductible application and limit capping
+  all read from it, so partial coverage cannot be a decision someone makes.
+  Money stays System 25's: a paid claim stores the caller's `ledgerEntryId`.
+  `quotePremium` rates from the spec's own inputs (probability, severity,
+  exposure, claims history, competition, regulation) and returns each
+  component separately, so a dear market is never confused with a risky
+  subject. `claimsHistoryScore` derives the holder's rating input from their
+  own claims. Content: the **grain cooperative's mutual assurance society**
+  underwrites two vehicle policies over slice vehicles — a mutual society is
+  what the co-op's authored "member_share_payouts" policy implies, and it
+  keeps every party a real System 32 organization. `tests/kernel/insurance.test.ts` (8).
+- **System 23 (education)** — `src/engine/education/{types,engine,index}.ts`:
+  programs run by System 32 organizations, enrollments on the spec's full
+  state graph (applied/admitted/enrolled/active/suspended/leave/withdrawn/
+  dropped/completed/expelled/transferred/deferred), attendance kept as its
+  own fact (**attendance is not enrollment** — a student can hold a seat and
+  never attend), institutional assessments, and credentials carrying named
+  recognising authorities. The spec's warnings are enforced rather than
+  assumed: `assessAccess` weighs the spec's own list of dependencies
+  (affordability, legal eligibility, distance, transport, accommodation,
+  resources, language, family duties, employment, childcare, safety) with
+  burdens inverted, and names every blocker below the floor, so access
+  inequality is a record rather than a mystery. Grades are stored as the
+  institution's scored opinion with a named assessor and never feed System
+  14 — "credentials are formal recognition, competence is not". Capacity
+  bites at admission (`classSize`/`availableSeats`), transfers keep both ends
+  of the move, and `retentionRate` is derived from the enrollments. Content:
+  the **docks' stevedore certification** and the **bakery's flour-milling
+  course** — both run by slice organizations that already need the work, so
+  no school was invented — and the player is seeded with an *application*,
+  never a seat, because taking it is System 17's decision. Seeded after
+  materialization (the applicant is a real person) and uses `sim.ids`, the
+  live allocator, not the persisted snapshot. `tests/kernel/education.test.ts` (8).
+- **M5 DoD, item 1 — reproducible market-shock scenario**
+  (`tests/scenarios/marketShockScenario.test.ts`): one grain-cooperative
+  failure carried through four systems in causal order, each in its own
+  ownership scope (the guard rejects nested mutation): the gap and cascade come
+  off the System 34 graph, the bakery stops so the cafe has no substitute, the
+  mill market re-forms a higher bread price with a positive scarcity driver,
+  and System 36 shows the level jump in a stated window — then, a year on, the
+  same level is no longer inflation, because a one-off supply shock raises
+  prices once. The test also asserts the *whole world* is reproducible: two
+  runs from the same seed produce the same `stateHash()`.
+- **M5 DoD, item 2 — ledger conservation as a property**
+  (`tests/invariants/ledgerConservation.test.ts`): 10 000 transfers driven by a
+  local LCG (never `Math.random`) through System 25, then every balance is
+  re-derived independently from the opening deposits plus the ledger, and the
+  total is asserted unchanged. Self-pairs are re-drawn rather than skipped, so
+  the count of entries really is 10 000 — the first version of this test
+  silently posted 9 134 and the property was weaker than it looked.
 
 M4 landed (Systems 37, 38 slice, 39, 45, 46, 47, 56 + full world canon):
 
