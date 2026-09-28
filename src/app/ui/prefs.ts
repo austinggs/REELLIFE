@@ -17,6 +17,17 @@ import type { NotificationView } from "@/engine/query/index.ts";
 export const UI_DENSITIES = ["comfortable", "compact"] as const;
 export type UiDensity = (typeof UI_DENSITIES)[number];
 
+/**
+ * Text scale (UI/UX 21 section 1, "adjustable text size").
+ *
+ * Steps rather than a percentage, so the scale is a small closed set a player
+ * can cycle through, and so a screen reader or zoom setting is never *disabled*
+ * by choosing one: every step is an adjustment on top of the platform's own
+ * text sizing, not a replacement for it.
+ */
+export const TEXT_SCALES = ["small", "default", "large", "x-large"] as const;
+export type TextScale = (typeof TEXT_SCALES)[number];
+
 /** How loudly notifications may interrupt (UI/UX 08 section 3). */
 export const NOTIFICATION_MODES = ["all", "actionable", "urgent"] as const;
 export type NotificationMode = (typeof NOTIFICATION_MODES)[number];
@@ -24,6 +35,7 @@ export type NotificationMode = (typeof NOTIFICATION_MODES)[number];
 export interface UiPreferences {
   readonly reducedMotion: boolean;
   readonly density: UiDensity;
+  readonly textScale: TextScale;
   readonly notificationMode: NotificationMode;
   /**
    * Console authority. Defaults to `player`: debug tools must be *granted*
@@ -35,6 +47,7 @@ export interface UiPreferences {
 export const DEFAULT_UI_PREFERENCES: UiPreferences = {
   reducedMotion: false,
   density: "comfortable",
+  textScale: "default",
   notificationMode: "actionable",
   authority: "player",
 };
@@ -45,6 +58,10 @@ function isDensity(value: unknown): value is UiDensity {
   return typeof value === "string" && (UI_DENSITIES as readonly string[]).includes(value);
 }
 
+function isTextScale(value: unknown): value is TextScale {
+  return typeof value === "string" && (TEXT_SCALES as readonly string[]).includes(value);
+}
+
 function isNotificationMode(value: unknown): value is NotificationMode {
   return typeof value === "string" && (NOTIFICATION_MODES as readonly string[]).includes(value);
 }
@@ -53,7 +70,13 @@ function isAuthority(value: unknown): value is ConsoleAuthority {
   return value === "player" || value === "debug" || value === "system";
 }
 
-/** Defensive load: a corrupt or stale value falls back per field, never throws. */
+/**
+ * Defensive load: a corrupt or stale value falls back per field, never throws.
+ *
+ * Per field, deliberately — a preferences blob written by an older build that
+ * has no `textScale` must still restore the player's density and authority
+ * rather than being discarded wholesale.
+ */
 export function resolveUiPreferences(raw: unknown): UiPreferences {
   if (raw === null || typeof raw !== "object" || Array.isArray(raw)) {
     return DEFAULT_UI_PREFERENCES;
@@ -64,12 +87,16 @@ export function resolveUiPreferences(raw: unknown): UiPreferences {
       ? record.reducedMotion
       : DEFAULT_UI_PREFERENCES.reducedMotion,
     density: isDensity(record.density) ? record.density : DEFAULT_UI_PREFERENCES.density,
+    textScale: isTextScale(record.textScale)
+      ? record.textScale
+      : DEFAULT_UI_PREFERENCES.textScale,
     notificationMode: isNotificationMode(record.notificationMode)
       ? record.notificationMode
       : DEFAULT_UI_PREFERENCES.notificationMode,
     authority: isAuthority(record.authority) ? record.authority : DEFAULT_UI_PREFERENCES.authority,
   };
 }
+
 
 export function parseUiPreferences(serialized: string | null): UiPreferences {
   if (serialized === null || serialized.length === 0) return DEFAULT_UI_PREFERENCES;

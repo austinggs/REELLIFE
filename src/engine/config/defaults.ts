@@ -25,8 +25,16 @@ import { DIFFICULTY_IDS, type DifficultyId } from "./types.ts";
 
 /** Bumped whenever authoritative serialization changes incompatibly. */
 export const SCHEMA_VERSION = 1;
-/** Bumped whenever simulation semantics change in a save-visible way. */
-export const SIMULATION_VERSION = 1;
+/**
+ * Bumped whenever simulation semantics change in a save-visible way.
+ *
+ * 2 (M8) — M7 extended `systems.continuity` from `{ statuses, deaths }` to also
+ * carry determinations, records, controlTransfers, testaments and estates. That
+ * is save-visible, so the version moved; the shape itself is unchanged for
+ * existing fields, which is why the v1 -> v2 migration backfills rather than
+ * rewrites. See `V1_TO_V2_CONTINUITY_LIFECYCLE`.
+ */
+export const SIMULATION_VERSION = 2;
 /** Bumped whenever engine-owned content definitions change. */
 export const CONTENT_VERSION = "0.1.0-kernel";
 

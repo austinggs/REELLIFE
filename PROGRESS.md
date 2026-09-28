@@ -1009,4 +1009,115 @@ force. A player's own death is played by the harness, not by System 17's
 autonomy — that system does not get to decide a player dies — but every
 consequence the death causes is real engine work in each owner's scope.
 
+---
+
+## M8 — Hardening (landed 2026-09-27)
+
+M8 is **done**: 82 files / 686 tests, typecheck 0, lint 0, `npm run build` OK,
+`npm run sim` clean (0 invariant failures, 0 ownership violations). All five
+deliverables landed, and two of them found real defects rather than confirming
+what I expected.
+
+### 1. Performance budgets per resolution level
+
+**`src/engine/observability/budgets.ts`** — five resolution levels
+(`abstract -> regional -> settlement -> street -> household`), each with a
+budget for resolved persons, events, work units and save bytes. `judgeStep`
+returns *every* breach rather than the first, and `BudgetLedger` tracks the
+**worst** step rather than the average, because a simulation that is fast except
+for one pathological step is not fast and an average would hide exactly the case
+worth finding.
+
+The unit is **work units, not wall-clock**: clock assertions are flaky on shared
+CI and say more about the machine than about the code. The numbers are round and
+marked provisional — tightening them is a decision made against real profiling,
+not guessed at here. Tests (11) prove a budget *can* be broken before they prove
+one is met, because a budget nobody has ever failed is not a budget.
+
+### 2. Save migrations with fixtures
+
+`MigrationRegistry` existed with **zero registered migrations and zero tests** —
+the machinery was never exercised. M8 adds the first real one,
+`V1_TO_V2_CONTINUITY_LIFECYCLE`, written from the *actual* v1 shape (verified
+against git history: v1's `systems.continuity` was exactly `{ statuses, deaths }`).
+The added collections are backfilled **empty**: a v1 world genuinely had no
+determinations and no estates, and manufacturing them would be the most
+dangerous kind of save bug — invisible, and a lie the engine would treat as
+canon. `tests/fixtures/reel/v1Save.ts` is hand-authored rather than generated,
+because a fixture produced by the current engine can only ever agree with the
+current engine. Tests (13) cover the happy path, the refusal path, idempotence,
+and a world with no continuity slot at all.
+
+### 3. The UI/UX 21 accessibility pass
+
+M3 had satisfied three of the spec's six sections structurally. The three the
+spec *named* with nothing behind them are now real, as **testable policy** in
+`src/app/ui/accessibility.ts` rather than as JSX — a rule that only exists inside
+a render function cannot be asserted and will quietly regress:
+
+- **Visual** — a four-step `textScale` applied at the root (so every existing
+  `text-sm` moves with it), and every meaningful tone carries a text label, so
+  nothing is distinguished by colour alone.
+- **Motor** — a 44px minimum target, an explicit focus order matching the reading
+  order, and `decisionDeadline`, which returns *no deadline ever*: a life
+  simulation is not a reaction game, and a surface that closes itself is a
+  decision the player did not get to make.
+- **Localisation** — formatting as data, plus an `isLocalizationReady` check that
+  flags a bare number interpolated into prose, which cannot be reordered into
+  another language.
+- Plus a terminology table (one name per concept) and `playerMessage`, which
+  requires an error to name a remedy. Tests (22).
+
+### 4. Full cross-system scenario suite
+
+Three scenarios added, completing the list M8 named:
+
+- **`marriageScenario.test.ts`** (5) — courtship to marriage, asserting that
+  **status is not quality**: `spouse` is a relationship *context*, and a
+  strained couple can marry with the strain intact and the quarrel still on the
+  turning-point record. Also asserts no system holds a private `isMarried` flag.
+- **`disasterScenario.test.ts`** (5) — a flood from hazard through all six
+  stages, asserting the pipeline cannot be skipped and an incident must cite a
+  hazard that exists. It also asserts the flood caused **no damage**: nothing
+  was invented to look dramatic.
+- **`migrationScenario.test.ts`** (6) — pressure, framework, crossing, and the
+  property that **pressure moves nobody**: a `MigrationPressure` record leaves
+  the identity bag byte-identical, and arrival is not citizenship.
+
+### 5. Content completeness ledger
+
+**`src/engine/config/contentLedger.ts`**, generated into
+**`docs/CONTENT_LEDGER.md`**. Reports all 59 approved systems as `complete` /
+`partial` / `absent` with a reason for each, plus canon counts. The key design
+choice is that `partial` is a first-class value: several systems have complete,
+tested engines and deliberately no content because the World Bible authors no
+local feuds or parenting situations to fill them with, and inventing canon to
+make a report look tidy would be the wrong trade. Counts the World Bible does
+not state are recorded as `"not stated"` rather than guessed. Tests (12).
+
+### Five more real defects found and fixed
+
+1. **Migrated saves would have failed validation.** `MigrationRegistry.migrate`
+   changed the body but kept the *old* checksum in the header, so every migrated
+   save would be *correct* and read as corrupt — the most confusing failure that
+   file could have had.
+2. **M7 changed a save-visible shape without bumping `SIMULATION_VERSION`.** The
+   migration silently became a no-op, because the registry saw the save as
+   already current. The version is now 2, with the reason recorded at the
+   constant. This was M7's omission, found by M8's fixture.
+3. **A read was a write — in two more engines.** `TravelEngine` and
+   `InternationalEngine` had the same lazy-initialising constructor that
+   `LifeContinuityEngine` and `AgingEngine` had. All four now expose
+   `Engine.peek(scope, world)`, a read-only handle that does not claim the state
+   slot and throws if anything writes through it.
+4. **The content ledger's own `SEEDED_SYSTEMS` list was wrong** — four systems
+   (`finance`, `continuity`, `history`, `relationships`) that the seed does not
+   populate. The test that checks the list against a real seeded slice is what
+   caught it; the list is now verified rather than trusted.
+5. **Infrastructure was being reported as incomplete content.** `core`, `time`
+   and `persistence` are code, not content, and asking whether the clock has
+   "content" is a category error that padded the ledger with noise. The type
+   checker also caught four entries (`primitives`, `kernel`, `query`, `commands`)
+   that are directories of code but not approved *systems* at all.
+
 

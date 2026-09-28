@@ -14,11 +14,14 @@ import type { ActiveJourney, TransportMode, TransportRoute, TravelHistoryEntry, 
 export class TravelEngine {
   private readonly scope: SystemScope;
   private readonly world: WorldState;
+  /** False for read-only handles, which must not claim the state slot. */
+  private readonly claimsState: boolean;
 
-  constructor(scope: SystemScope, world: WorldState) {
+  constructor(scope: SystemScope, world: WorldState, options?: { readonly readOnly?: boolean }) {
     this.scope = scope;
     this.world = world;
-    if (!this.world.systems.travel) {
+    this.claimsState = options?.readOnly !== true;
+    if (this.claimsState && !this.world.systems.travel) {
       this.scope.assertOwner("travel");
       this.world.systems.travel = {
         routes: generateCanonicalRoutes(),
@@ -28,11 +31,34 @@ export class TravelEngine {
     }
   }
 
+  /**
+   * A handle for reading travel state without the right to claim it.
+   *
+   * Constructing the engine normally initializes `systems.travel` — including
+   * generating the canonical route set — which is a *write*. Read paths ("is this
+   * person travelling?", "what routes exist?") must not need a mutation scope,
+   * and must not fail loudly on a world that has never moved anyone.
+   */
+  static peek(scope: SystemScope, world: WorldState): TravelEngine {
+    return new TravelEngine(scope, world, { readOnly: true });
+  }
+
   private get state(): TravelSystemState {
-    return this.world.systems.travel as TravelSystemState;
+    const raw = this.world.systems.travel as Partial<TravelSystemState> | undefined;
+    return {
+      routes: raw?.routes ?? [],
+      activeJourneys: raw?.activeJourneys ?? [],
+      history: raw?.history ?? [],
+    };
   }
 
   private set state(value: TravelSystemState) {
+    if (!this.claimsState) {
+      throw new Error(
+        "TravelEngine: this is a read-only handle (TravelEngine.peek); " +
+          "open a travel mutation scope and construct the engine normally to write.",
+      );
+    }
     this.world.systems.travel = value;
   }
 

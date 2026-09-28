@@ -61,20 +61,56 @@ export class InternationalEngine {
   private readonly scope: SystemScope;
   private readonly world: WorldState;
 
-  constructor(scope: SystemScope, world: WorldState) {
+  /** False for read-only handles, which must not claim the state slot. */
+  private readonly claimsState: boolean;
+
+  constructor(
+    scope: SystemScope,
+    world: WorldState,
+    options?: { readonly readOnly?: boolean },
+  ) {
     this.scope = scope;
     this.world = world;
-    if (!this.world.systems.international) {
+    this.claimsState = options?.readOnly !== true;
+    if (this.claimsState && !this.world.systems.international) {
       this.scope.assertOwner("international");
       this.world.systems.international = emptyInternationalState();
     }
   }
 
+  /**
+   * A handle for reading international state without the right to claim it.
+   *
+   * Constructing the engine normally initializes `systems.international`, which
+   * is a *write*. Read paths ("is there pressure on this country?", "what
+   * sanctions are in force?") must not need a mutation scope, and must not fail
+   * loudly on a world where nothing has ever been signed.
+   */
+  static peek(scope: SystemScope, world: WorldState): InternationalEngine {
+    return new InternationalEngine(scope, world, { readOnly: true });
+  }
+
   private get state(): InternationalSystemState {
-    return this.world.systems.international as InternationalSystemState;
+    const raw = this.world.systems.international as Partial<InternationalSystemState> | undefined;
+    if (raw === undefined) return emptyInternationalState();
+    return {
+      standings: raw.standings ?? [],
+      treaties: raw.treaties ?? [],
+      sanctions: raw.sanctions ?? [],
+      shocks: raw.shocks ?? [],
+      migration: raw.migration ?? [],
+      organizations: raw.organizations ?? [],
+      history: raw.history ?? [],
+    };
   }
 
   private set state(value: InternationalSystemState) {
+    if (!this.claimsState) {
+      throw new Error(
+        "InternationalEngine: this is a read-only handle (InternationalEngine.peek); " +
+          "open an international mutation scope and construct the engine normally to write.",
+      );
+    }
     this.world.systems.international = value;
   }
 
