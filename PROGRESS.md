@@ -72,9 +72,7 @@ the seed look fuller would be the wrong trade. Systems **41, 44, 48, 49 and 51**
 do have seeded content, each derived from slice content that already exists; every
 provisional decision is recorded in `docs/CONTENT_GAPS.md`.
 
-**M7 is deferred and planned, not started** (see the block at the end of this file).
-The System 26 (ownership/contracts) dependency is still an open question and was
-deliberately not decided.
+**M7 is now landed** (see the block at the end of this file).
 
 - **`tests/scenarios/legalPipelineScenario.test.ts`** (41 + 48) — a theft at
   the mill: one that nobody noticed and that therefore never becomes a case,
@@ -108,9 +106,9 @@ deliberately not decided.
   and asserted values were validated 0..1, making it impossible to be talked
   about badly. Asserting now also *preserves* evidence instead of wiping it.
 
-**M7 is deferred and planned, not started** (see the block at the end of this
-file). The System 26 (ownership/contracts) dependency is still an open question
-and was deliberately not decided while M6 is incomplete.
+**M7 is now landed** (see the block at the end of this
+file). The System 26 (ownership/contracts) dependency was settled in favour of
+expressing every bequest as a reference to an existing owner.
 
 M5 landed so far (Systems 33, 35, 34 — all uncommitted in git; the user
 commits):
@@ -843,11 +841,14 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
 
 ---
 
-## Deferred: M7 plan (written 2026-09-27, NOT started)
+## Superseded: M7 plan (written 2026-09-27, kept as the record it was)
 
-M7 is **deferred until M6 is complete**, per the ordering in `PHASES.md` and
+**This block is kept for history. M7 has since landed — see the block at the
+end of this file.** Nothing below was implemented as written; where the plan
+turned out to be wrong, the landing notes say so.
+
+M7 was **deferred until M6 is complete**, per the ordering in `PHASES.md` and
 `AGENTS.md`. Recorded here so the next session does not have to re-derive it.
-Nothing below has been implemented.
 
 **Where M7 actually starts from** — M7 looks greenfield but is not; three of
 its systems are partly delivered:
@@ -870,6 +871,8 @@ bequest expressed as a *reference* to the owning system — 25/27/32/33/31/28/23
 the pattern Systems 31 and 34 already use — which also makes "no arbitrary
 hidden modifiers" checkable; or (b) land a minimal System 26 inside M7 first.
 **Revisit this with fresh eyes once M6 is finished.**
+*(Settled when M7 landed: option (a) was taken. See the M7 block at the end of
+this file.)*
 
 **Build order once unblocked:** (1) 19 genealogy increment — lineage queries,
 membership exit, family records, because nothing else can start without a way
@@ -892,4 +895,118 @@ transfers. Note that `HistoryStore.forChain(causalChainId)` already exists as
 the seed of the causal query, and the PersonId-survival property is already
 asserted once in `continuity.test.ts` — it just needs asserting *across*
 systems after control transfer.
+
+---
+
+## M7 — Continuity (landed 2026-09-27)
+
+M7 is **done**: Systems 53, 19's genealogy increment and 54's causal-history
+queries are implemented, and the DoD scenario exists. 75 files / 612 tests,
+typecheck 0, lint 0, `npm run build` OK, `npm run sim` runs clean (0 invariant
+failures, 0 ownership violations).
+
+**The System 26 decision is settled, by choosing (a).** Option (a) — scope the
+estate to the systems that exist and express every bequest as a *reference* —
+was taken, and it is the approach Systems 31 and 34 already use. The proof that
+it was the right call is in the code: `SUCCESSION_TARGETS` in
+`src/engine/continuity/estate.ts` is a table of `{ system, field, settable }`,
+so a legacy effect can only ever name a real system and a real field. That is
+what makes "no arbitrary hidden modifiers" *checkable* rather than aspirational,
+and a second ownership record beside `AccountRecord.ownerId` / `ItemInstance
+.ownerId` / `Vehicle.ownerId` would have been the duplicate implementation
+System 53's own spec warns against. A minimal System 26 is still worth landing
+for contracts and shared ownership, but nothing in M7 was waiting on it.
+
+### System 53 (life continuity)
+
+- **`src/engine/continuity/{types,engine}.ts`** — the lifecycle registry plus
+  determinations, records, wills, estates and control transfers. A determination
+  cites its evidence as `FactRef`s and never copies the facts, so it cannot
+  drift from the System 11 condition it rests on; a determination with nothing
+  to cite is recorded as `presumed` rather than dressed up as witnessed. Wills
+  are validated on the way in (shares must sum to 1) and revocation is a
+  separate write, never a deletion.
+- **`death.ts`** — the pipeline, as an *orchestrator*: cause -> determination ->
+  identity -> health -> continuity -> System 40 civil registration -> household
+  exit -> employment exit -> history, one write per owner inside that owner's
+  scope. `archiveLife` refuses to archive while an estate is still open, because
+  an unsettled estate is active matter.
+- **`mortality.ts`** — age mortality wired to System 09, on a per-person named
+  stream (`continuity:mortality:<personId>`). Eligibility is evaluated
+  separately from probability, and **a zero hazard takes no draw**, so a
+  population of young people consumes no randomness at all.
+- **`estate.ts`** — `gatherEstate` / `determineBeneficiaries` / `openEstate` /
+  `settleEstate`. A will outranks intestacy; intestacy walks descendants ->
+  household -> parents -> siblings and stops at the first tier with a survivor,
+  naming the relationship. Money moves through System 25 as balanced ledger
+  entries; items and vehicles move through Systems 29 and 28. **Residences,
+  leases, employment and policies are deliberately not settled** and say so: a
+  tenancy is an agreement, a job is an obligation, a policy is a contract.
+- **`control.ts`** — `successionCandidates` (eligibility, separate from the
+  decision) and `handOverControl` (one appended record, one history entry, no
+  other system touched). `sliceUnderControl` in `sliceSeed.ts` now reads the
+  last `ControlTransfer` and only falls back to the slice's first resident when
+  no transfer exists — so the answer is *derived*, and a load cannot disagree
+  with the history that produced it.
+- Tests: `tests/kernel/continuity.test.ts` (9), `tests/kernel/continuityEstate.test.ts` (18).
+
+### System 19 (genealogy increment)
+
+`HouseholdMember` gained `leftAt` / `leftReason`, so membership is a record of
+*stints* and leaving never deletes; rejoining appends a second stint.
+`descendantsOf` / `ancestorsOf` / `siblingsOf` walk explicit lineage links and
+never infer kinship from co-residence. `recordParentChild` refuses a link that
+would make a person their own ancestor, because an inconsistent lineage graph
+cannot be walked. Tests: `tests/kernel/family.test.ts` (8).
+
+### System 54 (causal history)
+
+The `forChain(causalChainId)` query already existed and is now exercised across
+systems by the DoD. Estate settlement and control handoff each write an
+importance-5 timeline entry, so retention cannot drop them.
+
+### Four real defects found and fixed while writing the DoD
+
+1. **A read was a write.** `new LifeContinuityEngine(...)` and
+   `new AgingEngine(...)` initialize their state slot in the constructor, so
+   every *read* of continuity or aging demanded a mutation scope — a read path
+   was asserting ownership it did not have, and any read on a world where
+   nothing had happened yet threw `MissingWriterContextError`. Both engines now
+   have `Engine.peek(scope, world)`, a read-only handle that does not claim the
+   slot and throws if anything tries to write through it.
+2. **The first beneficiary was paid twice.** The remainder logic gave the first
+   heir `total - placed` *and* their own floored share, because `placed` did not
+   yet include their share. Floors are now computed up front and only the
+   indivisible remainder is added — so 101 minor units across two heirs place
+   51 and 50, and the remainder is named in the application note.
+3. **The household tier of intestacy was silently dead.** The tier looked for an
+   *open* stint of the deceased's, but the death pipeline had already stamped
+   `leftAt` on it, so the tier always resolved empty and inheritance fell
+   through to parents. It now reads the deceased's **last** stint, which is
+   answerable precisely because stints are never deleted.
+4. **Re-settling a settled estate reported the whole application list again**,
+   so a caller counting what it had just applied could pay twice on a retry. It
+   is now a no-op reporting *no new* applications; the case still carries the
+   full history.
+
+A fifth was a documentation defect: `mortality.ts` claimed a person below the
+minimum age "is not assessed at all", while the code reported an assessment with
+a zero hazard. The code is the better behaviour — "not eligible at this age" is
+a finding, and a sweep that silently omitted people would look like a complete
+one — so the comment was corrected rather than the code.
+
+### The DoD scenario
+
+**`tests/scenarios/multiGenerationScenario.test.ts`** (5) runs a whole life and
+the next one, asserting the DoD as properties rather than describing it: the
+estate settles into concrete fields in the owning systems; no `legacyBonus`
+scalar exists anywhere in continuity state; the deceased's PersonId still
+resolves in identity, lineage, continuity and timeline and is *named* by the
+transfer; the ancestor's `causalChainId` still walks after control moves; the
+heir's own life is intact and un-rekeyed; the run reproduces from its seed
+(same `stateHash()`); and it survives a save/load with the transfer still in
+force. A player's own death is played by the harness, not by System 17's
+autonomy — that system does not get to decide a player dies — but every
+consequence the death causes is real engine work in each owner's scope.
+
 

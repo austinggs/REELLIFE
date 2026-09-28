@@ -43,6 +43,7 @@ export const DEFAULT_LIFE_STAGES: readonly LifeStageConfig[] = [
   { stage: "later_life", minAgeYears: 65 },
 ] as const;
 
+/** Minutes in a mean Gregorian year; the basis `computeAgeYears` divides by. */
 const MINUTES_PER_YEAR = 365.2425 * MINUTES_PER_DAY;
 
 export function computeAgeYears(birthTimestamp: WorldTime, now: WorldTime): number {
@@ -87,21 +88,49 @@ export function resolvePhysicalGrowthFactor(ageYears: number): number {
 export class AgingEngine {
   private readonly scope: SystemScope;
   private readonly world: WorldState;
+  /** False for read-only handles, which must not claim the state slot. */
+  private readonly claimsState: boolean;
 
-  constructor(scope: SystemScope, world: WorldState) {
+  constructor(scope: SystemScope, world: WorldState, options?: { readonly readOnly?: boolean }) {
     this.scope = scope;
     this.world = world;
-    if (!this.world.systems.aging) {
+    this.claimsState = options?.readOnly !== true;
+    if (this.claimsState && !this.world.systems.aging) {
       this.scope.assertOwner("aging");
       this.world.systems.aging = { development: [] } satisfies AgingState;
     }
   }
 
+  /**
+   * A handle for reading development state without the right to claim it.
+   *
+   * Constructing the engine normally initializes `systems.aging` on first use,
+   * which is a *write*. Read paths — "how old is this person?", "does System 09
+   * know them at all?" — must not need a mutation scope, and must not fail
+   * loudly on a world where nobody has been born yet. The state getter already
+   * tolerates a missing slot.
+   */
+  static peek(scope: SystemScope, world: WorldState): AgingEngine {
+    return new AgingEngine(scope, world, { readOnly: true });
+  }
+
+  /**
+   * The authoritative state, with any absent slot read as its empty value, so a
+   * read on a world where nobody has been born yet answers "no record" rather
+   * than throwing.
+   */
   private get state(): AgingState {
-    return this.world.systems.aging as AgingState;
+    const raw = this.world.systems.aging as Partial<AgingState> | undefined;
+    return { development: raw?.development ?? [] };
   }
 
   private set state(value: AgingState) {
+    if (!this.claimsState) {
+      throw new Error(
+        "AgingEngine: this is a read-only handle (AgingEngine.peek); " +
+          "open an aging mutation scope and construct the engine normally to write.",
+      );
+    }
     this.world.systems.aging = value;
   }
 

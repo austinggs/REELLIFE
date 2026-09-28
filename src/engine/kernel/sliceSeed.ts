@@ -51,6 +51,7 @@ import { GeographyEngine } from "../geography/engine.ts";
 import { InfrastructureEngine } from "../infrastructure/engine.ts";
 import { materializeSettlement } from "../scale/materialize.ts";
 import { NeedsEngine } from "../needs/engine.ts";
+import { LifeContinuityEngine } from "../continuity/engine.ts";
 import type { ScaleSystemState } from "../scale/types.ts";
 
 /** Provisional abstract population of the slice city (see docs/CONTENT_GAPS.md). */
@@ -293,13 +294,21 @@ export function seedPlayableSlice(
   };
 }
 /**
- * The person the shell currently controls: the slice's first resident.
+ * The person the shell currently controls.
  *
- * Deliberately derived from restored state rather than persisted as a flag, so
- * a load re-derives the same person instead of trusting a stored pointer.
- * Control *transfer* (descendants, M7) will replace this selection properly.
+ * A handoff outranks the default: if System 53 has recorded a control transfer,
+ * the last one names who is controlled now, and that is the answer — on a fresh
+ * world, after a save/load, and across a generation. Nothing is re-keyed and
+ * nothing is re-seeded to make it so; the answer is *derived* from the transfer
+ * record that already exists, so a load cannot disagree with the history that
+ * produced it.
+ *
+ * With no transfer on record the slice's first resident is the default, which is
+ * a seed-order fact and not a stored pointer.
  */
 export function sliceUnderControl(sim: Simulation): EntityId<"person"> | undefined {
+  const handedOver = LifeContinuityEngine.peek(sim.scope, sim.world).currentControllerId();
+  if (handedOver !== undefined) return handedOver;
   const scale = sim.world.systems.scale as ScaleSystemState | undefined;
   return scale?.residents.find((resident) => resident.settlementId === M2_SETTLEMENT_ID)?.personId;
 }

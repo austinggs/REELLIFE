@@ -76,6 +76,25 @@ export class InventoryEngine {
     }
   }
 
+  /**
+   * Changes *ownership* (distinct from possession, which stays where it is).
+   * Used when an item is handed on rather than merely carried — an inheritance,
+   * a sale, a repossession. Callers name the reason; the engine does not judge it.
+   */
+  transferOwnership(itemId: string, newOwnerId: EntityId<"person"> | string): ItemInstance {
+    this.scope.assertOwner("inventory");
+    const existing = this.getItem(itemId);
+    if (!existing) {
+      throw new Error(`InventoryEngine.transferOwnership: unknown item ${itemId}`);
+    }
+    const updated: ItemInstance = { ...existing, ownerId: newOwnerId };
+    this.state = {
+      ...this.state,
+      items: this.state.items.map((i) => (i.id === itemId ? updated : i)),
+    };
+    return updated;
+  }
+
   transferPossession(itemId: string, newPossessorId: EntityId<"person"> | string): void {
     this.scope.assertOwner("inventory");
     this.state = {
