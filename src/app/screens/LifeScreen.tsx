@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { DecisionSurface } from "@/app/decision/DecisionSurface.tsx";
 import type { DecisionOption } from "@/app/decision/decisionFlow.ts";
+import { EmptyState } from "@/app/ui/EmptyState.tsx";
 import type {
   SessionCommandOutcome,
   SessionSnapshot,
@@ -51,7 +52,7 @@ export function LifeScreenView({
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3 pb-3">
           <div>
-            <CardTitle className="text-2xl font-bold">
+            <CardTitle className="font-display text-2xl font-bold">
               {situation.displayName}
               <Badge variant={knowledgeTone(situation.nameKnowledge)} className="ml-2 align-middle text-[10px] uppercase">
                 {knowledgeLabel(situation.nameKnowledge)}
@@ -123,7 +124,10 @@ export function LifeScreenView({
         </CardHeader>
         <CardContent>
           {situation.commitments.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nothing committed right now.</p>
+            <EmptyState
+              title="Nothing committed right now"
+              body="A commitment is a window of time you have already promised to something — a shift, an appointment, a class. None is scheduled for you at the moment, so nothing here needs your attention."
+            />
           ) : (
             <ul className="space-y-2">
               {situation.commitments.map((commitment) => (
@@ -206,7 +210,10 @@ export function LifeScreenView({
         </CardHeader>
         <CardContent>
           {events.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nothing notable yet.</p>
+            <EmptyState
+              title="Nothing notable yet"
+              body="Events appear here once something the world considers notable has happened to you. Early in a life there is often nothing to report, and that is an honest answer rather than a missing record."
+            />
           ) : (
             <ul className="space-y-2">
               {events.map((event) => (

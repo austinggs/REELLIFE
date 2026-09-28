@@ -3,6 +3,19 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
+ * Typeface roles (UI/UX 01 §10, UI/UX 21 §1; provisional — revisit in U7).
+ * `--font-display` is the atmospheric/editorial voice for identity moments
+ * (app title, character name); `--font-body` is the reading voice. Both are
+ * font *stacks* that degrade gracefully — no webfont dependency is added, so
+ * the game stays self-contained and offline-friendly.
+ */
+@theme {
+  --font-display: ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+/*
  * ReelLife design tokens.
  *
  * The bundled shadcn/ui components (src/ui/components) expect the standard
@@ -152,8 +165,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family:
-      ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-body);
   }
 
   :focus-visible {

@@ -8,8 +8,8 @@
 > Keep `docs/OWNERSHIP_MATRIX.md`, `docs/CONTENT_GAPS.md`,
 > `docs/SOURCE_CONFLICTS.md` in sync when your change affects them.
 
-Last updated: 2026-09-28 (UI build: U0 audit + U1-a/b design-system foundations done — text-scale wired, shared primitives landed.)
-Gate: typecheck 0, lint 0, 83 files / 691 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
+Last updated: 2026-09-28 (UI build: U0 audit + U1 (a/b/c) design system done; `docs/UI_REBUILD.md` created.)
+Gate: typecheck 0, lint 0, 84 files / 695 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
 
 ---
 
@@ -29,7 +29,11 @@ missing: the new surfaces (Law & Records, Economy, Information, Community,
 Continuity/Legacy), a spatial SVG map (markers are currently a flat list), list
 virtualisation, genealogy and supply-chain graphs, and the chart/moment layers.
 
-Gate now: typecheck 0, lint 0, 83 files / 691 tests, build OK, determinism PASS.
+Gate now: typecheck 0, lint 0, 84 files / 695 tests, build OK, determinism PASS.
+
+**The full UI rebuild plan lives in `docs/UI_REBUILD.md`** (audit, design system,
+architecture rules, guardrails, U0–U7 plan, open decisions). Read it before
+starting UI work; this file remains the session handoff.
 
 _Historical milestone detail (M6 and earlier) follows, kept for the record._
 
@@ -1167,5 +1171,22 @@ not state are recorded as `"not stated"` rather than guessed. Tests (12).
   components; `tests/app/coverage.test.ts` (5). Gate: 83 files / 691 tests,
   typecheck 0, lint 0, build OK, determinism PASS. Next: U1 typeface/token
   refinement and Tier-1/2/3 motion, then U2 core loop.
+
+- **2026-09-28 (UI build, third pass):** U1-c closes the design system, and the
+  rebuild is now documented. **Motion-tier policy** — `src/app/ui/motion.ts`
+  (`MOTION_TIERS` = response/moment/ambient, `motionAllowed`) plus
+  `tests/app/motion.test.ts` (4); ambient is opt-in and never runs by default,
+  and reduced motion disables every tier. **Typeface roles** —
+  `--font-display` (serif stack) and `--font-body` in `@theme`, applied to the
+  app title and the character name; no webfont dependency. **U2 increment** —
+  `EmptyState` wired into the Life screen's "Committed to" and "What has
+  happened" panels, replacing bare one-line placeholders with honest copy that
+  says what is missing and why. **`docs/UI_REBUILD.md` created** (205 lines,
+  9 sections): audit, dependency reality, design system, architecture rules,
+  semantic guardrails, U0–U7 plan, open decisions, gate, change log. Gate: 84
+  files / 695 tests, typecheck 0, lint 0, build OK, determinism PASS.
+  Audit note: the engine's resolution levels in `observability/budgets.ts` are
+  *telemetry* (a static taxonomy + `judgeStep`), not a runtime field, so the UI
+  must not fabricate a live "current level" — the document records this.
 
 
