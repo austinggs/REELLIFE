@@ -14,6 +14,7 @@ import {
   type UiPreferences,
 } from "@/app/ui/prefs.ts";
 import { UI_PREFERENCES_STORAGE_KEY } from "@/app/ui/prefs.ts";
+import { textScaleClass } from "@/app/ui/accessibility.ts";
 import { LocalStorageSaveStore } from "@/platform/localStorageSaveStore.ts";
 
 /**
@@ -87,6 +88,17 @@ export default function App() {
     const next = session?.snapshot() ?? null;
     if (next !== null) setSnapshot(next);
   }, [prefs.authority, session]);
+
+  // Text scale is applied to the <html> root, not to a component: every Tailwind
+  // text-* token is a rem value, and rem is relative to the root font size, so
+  // one class moves every screen's text with the player's setting (UI/UX 21 §1).
+  useEffect(() => {
+    const root = globalThis.document?.documentElement;
+    if (root === undefined) return;
+    root.classList.remove("reellife-text-small", "reellife-text-large", "reellife-text-x-large");
+    const className = textScaleClass(prefs.textScale);
+    if (className !== "") root.classList.add(className);
+  }, [prefs.textScale]);
 
   const refresh = useCallback(() => {
     if (session === null) return;

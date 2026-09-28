@@ -192,6 +192,23 @@
   }
 }
 
+/*
+ * Text scale (UI/UX 21 §1). One class on the <html> root scales every rem-based
+ * token: Tailwind v4 sizes text in rem, and rem is relative to the root font
+ * size, so a single class moves every `text-*` utility across every screen —
+ * without threading a prop through the component tree. The class is applied in
+ * `src/app/App.tsx` from the player's `textScale` preference.
+ */
+html.reellife-text-small {
+  font-size: 87.5%;
+}
+html.reellife-text-large {
+  font-size: 112.5%;
+}
+html.reellife-text-x-large {
+  font-size: 125%;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

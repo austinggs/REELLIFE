@@ -8,22 +8,30 @@
 > Keep `docs/OWNERSHIP_MATRIX.md`, `docs/CONTENT_GAPS.md`,
 > `docs/SOURCE_CONFLICTS.md` in sync when your change affects them.
 
-Last updated: 2026-09-27 (M6 COMPLETE — all 12 of M6's systems landed, tested and exported, and both DoD scenarios written and passing.)
-Gate: typecheck 0, lint 0, 73 files / 578 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
+Last updated: 2026-09-28 (UI build: U0 audit + U1-a/b design-system foundations done — text-scale wired, shared primitives landed.)
+Gate: typecheck 0, lint 0, 83 files / 691 tests, `npm run build` OK, `npm run sim -- --check-determinism` PASS.
 
 ---
 
 ## Current position
 
-**Phase: M6 COMPLETE. All 12 of M6's systems are landed, tested and exported:
-**41** (laws), **49** (information), **50** (messaging), **22** (reputation),
-**42** (institutions), **43** (government), **44** (culture), **48** (security &
-legal pipeline), **51** (technology), **21** (conflict), **20** (parenting)
-and **52** (international relations). **Both M6 DoD scenarios are written and
-passing.** The gate is green: 73 files / 578 tests, typecheck 0, lint 0, build OK,
-determinism PASS.
+**Phase: M8 COMPLETE (engine). All 59 approved systems are implemented** — 31
+complete with canon-seeded content, 28 partial (engine built and tested, but the
+playable slice does not populate them). `SIMULATION_VERSION = 2`; headless
+determinism, save/load migrations with fixtures, performance budgets, the
+accessibility policy and the content ledger all landed in M8.
 
-**M6's twelve systems: 20, 21, 22, 41, 42, 43, 44, 48, 49, 50, 51, 52.**
+**Current work: the UI build.** The M3 shell (8 screens, decision surface,
+knowledge-filtered projections, accessibility policy) is the foundation, but the
+engine is far ahead of it. U0 (audit) and U1-a/b (design-system foundations) are
+complete. Visual direction is **atmospheric / game-like** (owner-approved). Still
+missing: the new surfaces (Law & Records, Economy, Information, Community,
+Continuity/Legacy), a spatial SVG map (markers are currently a flat list), list
+virtualisation, genealogy and supply-chain graphs, and the chart/moment layers.
+
+Gate now: typecheck 0, lint 0, 83 files / 691 tests, build OK, determinism PASS.
+
+_Historical milestone detail (M6 and earlier) follows, kept for the record._
 
 ### The two DoD scenarios
 
@@ -664,18 +672,33 @@ npm run sim -- --seed 0123456789 --days 30 --check-determinism   # headless dete
 - Remaining M4: infrastructure operations depth (38) beyond the slice network
   (other settlements stay unauthored by design — see `docs/CONTENT_GAPS.md).
 
-## What is NOT done (next steps, in order)
+## Next steps (UI build, brief phases U0–U7)
 
-1. **M5** per `PHASES.md`: economy & organizations (Systems 23, 25, 28, 31,
-   33, 34, 35, 36) — markets/prices/competition, businesses, supply chains/B2B,
-   macro layer, education, transport, insurance. DoD: market-shock scenario
-   reproducible; ledger conservation property test over 10 000 transactions.
-2. **M5–M8** per `PHASES.md` (economy, society/law/info, continuity,
-   hardening).
-3. **Deferred M3-adjacent polish** (logged in `docs/CONTENT_GAPS.md`):
-   `SaveStore.listSlots()` tolerance for non-`.reel` bytes, NPC initiative
-   (System 17) autonomous ticking, and command authority requirements
-   (`authorityRequirement` is declared but not yet enforced by domain commands).
+Engine milestones M0–M8 are complete; the remaining work is presentation.
+
+- **U1 — Design system (atmospheric).** Tokens, typeface roles, tone/status
+  components, `<EmptyState>`/`<Basis>`/`<Coverage>`, motion tiers; wire the
+  existing `--state-*` / `.knowledge-*` semantics consistently.
+- **U2 — Core loop.** Needs readings, schedule/commitments + conflict surfacing,
+  resolution-level indicator, Tier-1 motion.
+- **U3 — People + Genealogy.** Virtualised directory, per-observer perceptions,
+  React Flow genealogy, household stints; honest empty states for the 28
+  partial systems.
+- **U4 — World.** Spatial SVG map from the coordinates already in `MapView`
+  (+ d3-zoom), knowledge fog-of-war, LOD↔resolution mapping; place detail,
+  travel/border, weather, infrastructure ladder, international.
+- **U5 — Society.** Law & Records, Information, Community, Economy tabs;
+  Recharts + supply-chain graph.
+- **U6 — Continuity/Legacy.** Death determination, estate report, succession
+  and control-handoff; the Tier-2 "moment layer" (React Bits, free tier).
+- **U7 — Polish/hardening.** axe audit, performance pass vs budgets, keyboard
+  walkthrough, responsive pass, save-slot UX, guardrail regression tests (no
+  `isMarried`/`legacyBonus`/single reputation score in UI models).
+
+Still-deferred (logged in `docs/CONTENT_GAPS.md`): `SaveStore.listSlots()`
+tolerance for non-`.reel` bytes, NPC initiative (System 17) ticking, command
+authority enforcement, and a minimal System 26 (contracts/shared ownership)
+before the Economy/Law screens.
 
 ## Architecture invariants (do not break)
 
@@ -1119,5 +1142,30 @@ not state are recorded as `"not stated"` rather than guessed. Tests (12).
    "content" is a category error that padded the ledger with noise. The type
    checker also caught four entries (`primitives`, `kernel`, `query`, `commands`)
    that are directories of code but not approved *systems* at all.
+
+- **2026-09-28 (UI build, this session):** U0 audit complete. Verified the
+  gate green (82 files / 686 tests, typecheck 0, lint 0). Confirmed dependency
+  reality (React 19.3, Vite 8.3, TS 6.0, Tailwind 4.3, `radix-ui` 1.6.7 unified
+  package; no React Flow / Motion / Recharts / d3 / TanStack installed yet).
+  Audited all 8 shell views and the query projection surface; confirmed the
+  engine/UI boundary is enforced three ways (ESLint, `architecture.test.ts`,
+  session layer). Findings: the World "map" is a flat marker list even though
+  `MapView` already ships `position` (lat/long) — a spatial SVG map is a pure
+  UI-rendering change; `CharacterView.tsx` was orphaned dead code whose
+  `KnowledgeBadge` tone map conflicted with `knowledge.ts` (removed);
+  `PROGRESS.md` header/position were stale at M6 (corrected here). Visual
+  direction chosen: **atmospheric / game-like**. Next: U1 design system.
+
+- **2026-09-28 (UI build, follow-up):** U1-a/b design-system foundations. Fixed a
+  real accessibility gap: `textScaleClass` existed and was tested but was never
+  wired — the `reellife-text-*` classes were undefined in CSS, applied nowhere,
+  and had no Settings control. Now `index.css` defines the three root font-size
+  steps, `App.tsx` applies the class to `<html>` (so rem-based Tailwind tokens
+  scale), and Settings gained a "Text size" control. Added shared presentation
+  primitives: pure `coverage.ts` (`complete`/`partial`/`not-stated` labels +
+  tones) plus thin `KnowledgeBadge`, `CoverageBadge`, `EmptyState`, `Basis`
+  components; `tests/app/coverage.test.ts` (5). Gate: 83 files / 691 tests,
+  typecheck 0, lint 0, build OK, determinism PASS. Next: U1 typeface/token
+  refinement and Tier-1/2/3 motion, then U2 core loop.
 
 

@@ -9,6 +9,7 @@ import {
   densityClasses,
   motionEnabled,
   NOTIFICATION_MODES,
+  TEXT_SCALES,
   UI_DENSITIES,
   type NotificationMode,
   type UiDensity,
@@ -121,6 +122,21 @@ export function SettingsScreen({
                   onClick={() => onPrefsChange({ ...prefs, density: option })}
                 >
                   {option}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="text-muted-foreground">Text size</span>
+            <div className="flex gap-2">
+              {TEXT_SCALES.map((scale) => (
+                <Button
+                  key={scale}
+                  size="sm"
+                  variant={prefs.textScale === scale ? "default" : "outline"}
+                  onClick={() => onPrefsChange({ ...prefs, textScale: scale })}
+                >
+                  {scale}
                 </Button>
               ))}
             </div>
