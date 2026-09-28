@@ -19,6 +19,7 @@ import {
 } from "../../src/engine/query/lifeViews.ts";
 import { KNOWLEDGE_STATES, VISIBILITY_LEVELS } from "../../src/engine/primitives/information.ts";
 import { asEntityId } from "../../src/engine/primitives/ids.ts";
+import { durationOf, type WorldTime } from "../../src/engine/primitives/time.ts";
 import type { Simulation } from "../../src/engine/core/simulation.ts";
 
 const SEED = "reellife-m3-lifeviews";
@@ -152,6 +153,105 @@ describe("notification feed (UI/UX 08)", () => {
   });
 });
 
+
+describe("committed time and clashes (UI/UX 04, System 05)", () => {
+  /** Two of the viewer's own plans that genuinely overlap, plus one that does not. */
+  function twoOverlappingPlans(): {
+    sim: Simulation;
+    actor: ReturnType<typeof asEntityId<"person">>;
+    workId: string;
+    errandId: string;
+    laterId: string;
+  } {
+    const { sim, playerId } = seededWorld();
+    const actor = asEntityId<"person">(playerId);
+    const at = sim.clock.time;
+    const later = ((at as number) + 600) as WorldTime;
+
+    const ids = sim.guard.mutate("activities", () => {
+      const work = sim.activities.create(
+        { ids: sim.ids, calendar: sim.calendar },
+        { actor, kind: "workShift", start: at, duration: durationOf(120), createdBy: "system" },
+      );
+      // Starts inside the shift, so exactly one hour of the two windows collide.
+      const errand = sim.activities.create(
+        { ids: sim.ids, calendar: sim.calendar },
+        {
+          actor,
+          kind: "errand",
+          start: ((at as number) + 60) as WorldTime,
+          duration: durationOf(120),
+          createdBy: "system",
+        },
+      );
+      const laterPlan = sim.activities.create(
+        { ids: sim.ids, calendar: sim.calendar },
+        { actor, kind: "leisure", start: later, duration: durationOf(30), createdBy: "system" },
+      );
+      return { workId: work.id, errandId: errand.id, laterId: laterPlan.id };
+    });
+
+    return { sim, actor, ...ids };
+  }
+
+  it("reports a real overlap instead of hiding or resolving it", () => {
+    const { sim, actor, workId, errandId } = twoOverlappingPlans();
+    const life = getLifeSituation(sim, actor);
+
+    const work = life.commitments.find((commitment) => commitment.activityId === workId);
+    expect(work).toBeDefined();
+    expect(work?.conflicts).toHaveLength(1);
+    expect(work?.conflicts[0].activityId).toBe(errandId);
+    expect(work?.conflicts[0].overlapMinutes).toBe(60);
+    // Formatted for prose, never a bare figure the screen has to interpolate.
+    expect(work?.conflicts[0].overlapLabel).toBe("1 hour");
+  });
+
+  it("reports the clash from both sides, since neither plan is privileged", () => {
+    const { sim, actor, workId, errandId } = twoOverlappingPlans();
+    const life = getLifeSituation(sim, actor);
+
+    const errand = life.commitments.find((commitment) => commitment.activityId === errandId);
+    expect(errand?.conflicts).toHaveLength(1);
+    expect(errand?.conflicts[0].activityId).toBe(workId);
+    expect(errand?.conflicts[0].overlapMinutes).toBe(60);
+  });
+
+  it("leaves a plan that collides with nothing alone", () => {
+    const { sim, actor, laterId } = twoOverlappingPlans();
+    const life = getLifeSituation(sim, actor);
+
+    const later = life.commitments.find((commitment) => commitment.activityId === laterId);
+    expect(later).toBeDefined();
+    expect(later?.conflicts).toHaveLength(0);
+  });
+
+  it("counts an overlap once per pair, never against the plan itself", () => {
+    const { sim, actor, workId } = twoOverlappingPlans();
+    const life = getLifeSituation(sim, actor);
+    const work = life.commitments.find((commitment) => commitment.activityId === workId);
+    const conflictedIds = work?.conflicts.map((conflict) => conflict.activityId) ?? [];
+    expect(conflictedIds).not.toContain(workId);
+    expect(new Set(conflictedIds).size).toBe(conflictedIds.length);
+  });
+
+  it("carries the engine's own urgency word for every need", () => {
+    const { sim, playerId } = seededWorld();
+    const life = getLifeSituation(sim, asEntityId<"person">(playerId));
+
+    const engineState = sim.world.systems.needs as {
+      readonly persons: readonly {
+        readonly personId: string;
+        readonly needs: readonly { readonly kind: string; readonly urgency: string }[];
+      }[];
+    };
+    const mine = engineState.persons.find((entry) => entry.personId === playerId);
+    for (const need of life.needs) {
+      const engineNeed = mine?.needs.find((candidate) => candidate.kind === need.kind);
+      expect(need.urgency).toBe(engineNeed?.urgency);
+    }
+  });
+});
 
 describe("knowledge-filtered search (UI/UX 03 section 6, UI/UX 18)", () => {
   it("finds the viewer, their household and the places around them", () => {

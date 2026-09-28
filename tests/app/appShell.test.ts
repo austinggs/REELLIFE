@@ -73,6 +73,19 @@ describe("simulation session (System 55, UI/UX 24)", () => {
       "constructor",
       "snapshot",
       "personView",
+      // U3 reads. Each is a projection like `personView`: derived, knowledge
+      // filtered, and thrown away, so a screen never reaches `world.systems`.
+      "peopleDirectory",
+      "familyView",
+      "perceptionView",
+      // U5 reads. The economy read takes no viewer on purpose: it describes a
+      // place, not a person, and asking it for a viewpoint would imply one.
+      "lawView",
+      "informationView",
+      "communityView",
+      "economyView",
+      // U6 read: how lives ended and what was left behind (System 53).
+      "legacyView",
       "mapView",
       "search",
       "inspect",
@@ -361,7 +374,9 @@ describe("shell navigation (UI/UX 03)", () => {
     expect(viewForShortcut("1")).toBe("life");
     expect(viewForShortcut(String(SHELL_VIEWS.length))).toBe(SHELL_VIEWS[SHELL_VIEWS.length - 1]);
     expect(viewForShortcut("0")).toBeUndefined();
-    expect(viewForShortcut("9")).toBeUndefined();
+    // Derived rather than hardcoded: adding an anchor must not silently turn
+    // this from "one past the end" into a valid shortcut.
+    expect(viewForShortcut(String(SHELL_VIEWS.length + 1))).toBeUndefined();
     expect(viewForShortcut("l")).toBeUndefined();
   });
 });

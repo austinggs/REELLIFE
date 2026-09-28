@@ -17,19 +17,28 @@
  */
 
 import type { EntityId } from "../primitives/ids.ts";
-import type { KnowledgeState, Visibility } from "../primitives/information.ts";
-import type { WorldTime } from "../primitives/time.ts";
+import type { KnowledgeState } from "../primitives/information.ts";
 import { TERMINAL_ACTIVITY_STATES, type Activity } from "../primitives/activity.ts";
+import type { Duration, WorldTime } from "../primitives/time.ts";
 import type { NeedKind } from "../needs/types.ts";
 import type { NeedsState } from "../needs/types.ts";
-import type { IdentityState, PersonIdentity } from "../identity/types.ts";
+import type { IdentityState } from "../identity/types.ts";
 import type { ScaleSystemState } from "../scale/types.ts";
 import type { GeographySystemState } from "../geography/types.ts";
 import type { FamilySystemState, HouseholdRecord } from "../family/types.ts";
 import type { MentationSystemState } from "../mentation/types.ts";
 import type { RelationshipsSystemState } from "../relationships/types.ts";
 import type { Simulation } from "../core/simulation.ts";
-import { getEventFeedView, getWorldSummaryView, visibleTo, type EventFeedItem } from "./projections.ts";
+import {
+  bag,
+  displayNameOf,
+  getEventFeedView,
+  getWorldSummaryView,
+  knowledgeFromVisibility,
+  lifeStageOf,
+  visibleTo,
+  type EventFeedItem,
+} from "./projections.ts";
 
 /** Human labels for needs; presentation formatting, not simulation rules. */
 export const NEED_LABELS: Readonly<Record<NeedKind, string>> = {
@@ -69,43 +78,20 @@ export const ACTIVITY_LABELS: Readonly<Record<string, string>> = {
   shopping: "Shopping",
 };
 
-function bag<T>(sim: Simulation, key: string): T | undefined {
-  return sim.world.systems[key] as T | undefined;
-}
-
-function displayNameOf(person: PersonIdentity | undefined): string {
-  if (!person) return "Unknown person";
-  const name = person.name;
-  const middle = name.middle === undefined ? "" : ` ${name.middle}`;
-  return `${name.first}${middle} ${name.last}`.trim();
-}
-
-function lifeStageOf(ageYears: number): string {
-  if (ageYears < 13) return "child";
-  if (ageYears < 18) return "adolescent";
-  if (ageYears < 30) return "young adult";
-  if (ageYears < 60) return "adult";
-  if (ageYears < 80) return "senior";
-  return "elder";
-}
-
-/** Renders a stored `Visibility` as the viewer's knowledge relationship. */
-function knowledgeFromVisibility(
-  viewer: EntityId<"person"> | null,
-  entry: { readonly visibility: Visibility; readonly personId?: EntityId<"person"> },
-): KnowledgeState {
-  switch (entry.visibility) {
-    case "public":
-      return "known";
-    case "restricted":
-      return viewer !== null ? "inference" : "unknown";
-    case "private":
-      return viewer !== null && entry.personId === viewer ? "known" : "hidden";
-    case "secret":
-      return entry.personId === viewer ? "known" : "hidden";
-    default:
-      return "unknown";
-  }
+/**
+ * Renders a span of minutes as words.
+ *
+ * Kept beside the projections rather than in a screen because every view that
+ * reports a duration must phrase it the same way, and because a bare number
+ * interpolated into prose is exactly what the presentation rules forbid.
+ */
+function formatDuration(minutes: number): string {
+  const total = Math.max(0, Math.round(minutes));
+  const hours = Math.floor(total / 60);
+  const rest = total % 60;
+  if (hours === 0) return `${rest} min`;
+  if (rest === 0) return hours === 1 ? "1 hour" : `${hours} hours`;
+  return `${hours} h ${rest} min`;
 }
 
 
@@ -130,9 +116,27 @@ export interface ActivityView {
   readonly endsAtLabel: string;
 }
 
+/**
+ * One genuine overlap between two of the viewer's own open plans.
+ *
+ * A conflict is a *derived reading*, never stored truth: the engine reports
+ * overlaps through `ActivitiesEngine.conflictsFor` (System 05) and the decision
+ * system decides which plan wins. The UI must not invent a conflict, and must
+ * not resolve one either — it reports the overlap and the minutes involved.
+ */
+export interface ScheduleConflictView {
+  readonly activityId: string;
+  readonly label: string;
+  readonly overlapMinutes: number;
+  /** Pre-formatted so the screen never interpolates a bare number into prose. */
+  readonly overlapLabel: string;
+}
+
 export interface CommitmentView extends ActivityView {
   /** True while the committed window covers the current authoritative time. */
   readonly isNow: boolean;
+  /** Real overlaps with this actor's other open plans, in the engine's own terms. */
+  readonly conflicts: readonly ScheduleConflictView[];
 }
 
 export interface NearbyPersonView {
@@ -280,6 +284,29 @@ export function getLifeSituation(
       );
 
   const current = sim.activities.currentActivity(viewer, now);
+
+  // Conflicts are read, never recomputed: the engine owns the overlap rule, so
+  // the projection re-asks `conflictsFor` with the existing activity as the
+  // proposal and drops the self-match. A duplicate engine rule in the UI is the
+  // "second source of truth" the boundary test exists to prevent.
+  const conflictsFor = (activity: Activity): readonly ScheduleConflictView[] =>
+    sim.activities
+      .conflictsFor({
+        actor: activity.actor,
+        kind: activity.kind,
+        start: activity.scheduledStart,
+        duration: ((activity.scheduledEnd as number) -
+          (activity.scheduledStart as number)) as Duration,
+        createdBy: activity.createdBy,
+      })
+      .filter((conflict) => conflict.existing.id !== activity.id && conflict.overlapMinutes > 0)
+      .map((conflict) => ({
+        activityId: conflict.existing.id,
+        label: ACTIVITY_LABELS[conflict.existing.kind] ?? conflict.existing.kind,
+        overlapMinutes: conflict.overlapMinutes,
+        overlapLabel: formatDuration(conflict.overlapMinutes),
+      }));
+
   const commitments: CommitmentView[] = sim.activities
     .forActor(viewer)
     .filter(
@@ -294,6 +321,7 @@ export function getLifeSituation(
       isNow:
         (activity.scheduledStart as number) <= (now as number) &&
         (activity.scheduledEnd as number) > (now as number),
+      conflicts: conflictsFor(activity),
     }));
 
   const relationships = bag<RelationshipsSystemState>(sim, "relationships");

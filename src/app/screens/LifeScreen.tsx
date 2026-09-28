@@ -7,7 +7,7 @@ import type {
   SessionSnapshot,
 } from "@/app/session/simulationSession.ts";
 import { densityClasses, type UiDensity } from "@/app/ui/prefs.ts";
-import { knowledgeLabel, knowledgeTone, visibilityLabel } from "@/app/ui/knowledge.ts";
+import { knowledgeLabel, knowledgeTone, urgencyTone, visibilityLabel } from "@/app/ui/knowledge.ts";
 import { Badge } from "@/ui/components/badge.tsx";
 import { Button } from "@/ui/components/button.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/components/card.tsx";
@@ -103,16 +103,19 @@ export function LifeScreenView({
         {situation.needs.slice(0, 6).map((need) => (
           <Card key={need.kind}>
             <CardContent className="pt-6">
-              <div className="mb-2 flex justify-between text-sm font-medium">
-                <span className="flex items-center gap-2">
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm font-medium">
+                <span className="flex flex-wrap items-center gap-2">
                   {need.label}
+                  <Badge variant={urgencyTone(need.urgency)} className="text-[10px] uppercase">
+                    {need.urgency}
+                  </Badge>
                   <Badge variant={knowledgeTone(need.knowledge)} className="text-[10px] uppercase">
                     {knowledgeLabel(need.knowledge)}
                   </Badge>
                 </span>
                 <span>{Math.round(need.level * 100)}%</span>
               </div>
-              <Progress value={need.level * 100} />
+              <Progress value={need.level * 100} aria-label={`${need.label} need: ${need.urgency}`} />
             </CardContent>
           </Card>
         ))}
@@ -131,17 +134,30 @@ export function LifeScreenView({
           ) : (
             <ul className="space-y-2">
               {situation.commitments.map((commitment) => (
-                <li
-                  key={commitment.activityId}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm"
-                >
-                  <span className="flex items-center gap-2 font-medium">
-                    {commitment.label}
-                    {commitment.isNow ? <Badge variant="default">Now</Badge> : null}
-                  </span>
-                  <span className="text-muted-foreground">
-                    {commitment.startsAtLabel} → {commitment.endsAtLabel} · {commitment.state}
-                  </span>
+                <li key={commitment.activityId} className="rounded-md border p-3 text-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="flex flex-wrap items-center gap-2 font-medium">
+                      {commitment.label}
+                      {commitment.isNow ? <Badge variant="default">Now</Badge> : null}
+                      {commitment.conflicts.length === 0 ? null : (
+                        <Badge variant="destructive">Time clash</Badge>
+                      )}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {commitment.startsAtLabel} → {commitment.endsAtLabel} · {commitment.state}
+                    </span>
+                  </div>
+                  {commitment.conflicts.length === 0 ? null : (
+                    <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+                      {commitment.conflicts.map((conflict) => (
+                        <li key={conflict.activityId}>
+                          Overlaps {conflict.label} by {conflict.overlapLabel}. Choosing between
+                          them is a decision the simulation makes; this screen only reports that
+                          the two cannot both happen.
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
@@ -234,6 +250,19 @@ export function LifeScreenView({
           )}
         </CardContent>
       </Card>
+
+      {/*
+        Resolution reporting, honestly (U2). There is no runtime "level" the
+        engine can be asked for — `observability/budgets.ts` is a static
+        taxonomy plus a step judge, not a live reading. So the screen states the
+        one thing it can measure: how many people here are simulated life by
+        life, and that everyone else is aggregate.
+      */}
+      <p className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+        Detail level: {snapshot.worldView.materializedResidents} people in this settlement are
+        simulated life by life. The rest of Aurelia exists as aggregate population, so the world
+        stays large without pretending to know every life in it.
+      </p>
     </div>
   );
 }

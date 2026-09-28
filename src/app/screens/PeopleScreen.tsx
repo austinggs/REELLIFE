@@ -1,7 +1,14 @@
+import { LineageTree } from "@/app/people/LineageTree.tsx";
+import { EmptyState } from "@/app/ui/EmptyState.tsx";
 import { knowledgeLabel, knowledgeTone } from "@/app/ui/knowledge.ts";
 import { densityClasses, type UiDensity } from "@/app/ui/prefs.ts";
 import type { SessionSnapshot } from "@/app/session/simulationSession.ts";
-import type { PersonView } from "@/engine/query/index.ts";
+import type {
+  FamilyView,
+  PeopleDirectoryView,
+  PerceptionView,
+  PersonView,
+} from "@/engine/query/index.ts";
 import { Badge } from "@/ui/components/badge.tsx";
 import { Button } from "@/ui/components/button.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/components/card.tsx";
@@ -12,22 +19,33 @@ export interface PeopleScreenProps {
   readonly selectedPersonId: string | null;
   /** The viewer's picture of the selected person, computed by the session. */
   readonly personView: PersonView | null;
+  /** Everyone the viewer can name (System 18/19), or a count of the rest. */
+  readonly directory: PeopleDirectoryView | null;
+  /** The viewer's own recorded family structure (System 19). */
+  readonly family: FamilyView | null;
+  /** What is believed about the selected person (System 22). */
+  readonly perceptions: PerceptionView | null;
   readonly onSelect: (personId: string | null) => void;
 }
 
 /**
  * People screen (UI/UX 02).
  *
- * The list is not a directory of the world: it is everyone the viewer can
- * actually identify — themselves, the people they live with, and the people they
- * know. Someone the viewer has never met is shown as a stranger with no name,
- * because naming them would be inventing knowledge the viewer does not have.
+ * Four honest reads, in order: who you can name, what a person's own record
+ * says, who you are related to, and what anyone actually believes about them.
+ * None of it is inferred here. The directory counts the people you have not met
+ * instead of listing them, the lineage shows only links System 19 recorded, and
+ * perceptions arrive observer by observer because this world has no single
+ * reputation score to show.
  */
 export function PeopleScreen({
   snapshot,
   density,
   selectedPersonId,
   personView,
+  directory,
+  family,
+  perceptions,
   onSelect,
 }: PeopleScreenProps) {
   const situation = snapshot.situation;
@@ -37,65 +55,151 @@ export function PeopleScreen({
     return <p className="p-4 text-sm text-muted-foreground">No one to live as yet.</p>;
   }
 
+  const canName = (directory?.entries.length ?? 0) > 1;
+
   return (
     <div className={`${gap} mx-auto max-w-5xl p-4`}>
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">People you can name</CardTitle>
         </CardHeader>
-        <CardContent>
-          <ul className="space-y-2">
-            <li className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-muted/40 p-3 text-sm">
-              <span className="flex items-center gap-2">
-                <span className="font-medium">{situation.displayName}</span>
-                <Badge
-                  variant={knowledgeTone(situation.nameKnowledge)}
-                  className="text-[10px] uppercase"
+        <CardContent className={gap}>
+          {!canName ? (
+            <EmptyState
+              title="Nobody is on record yet"
+              body="You have not met anyone outside yourself in this world yet. System 18 writes a tie once two people actually interact, and System 19 records a household when one is formed, so this list grows out of what has happened rather than from a roster."
+            />
+          ) : (
+            <ul className="space-y-2">
+              {(directory?.entries ?? []).map((entry) => (
+                <li
+                  key={entry.personId}
+                  className={`flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm${
+                    entry.relation === "self" ? " bg-muted/40" : ""
+                  }`}
                 >
-                  {knowledgeLabel(situation.nameKnowledge)}
-                </Badge>
-              </span>
-              <span className="flex items-center gap-2 text-muted-foreground">
-                yourself
-                <Button
-                  size="sm"
-                  variant={selectedPersonId === situation.viewerId ? "default" : "ghost"}
-                  onClick={() => onSelect(situation.viewerId)}
-                >
-                  View
-                </Button>
-              </span>
-            </li>
-            {situation.nearbyPeople.map((person) => (
-              <li
-                key={person.personId}
-                className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm"
-              >
-                <span className="flex items-center gap-2">
-                  <span className="font-medium">{person.displayName}</span>
-                  <Badge
-                    variant={knowledgeTone(person.knowledge)}
-                    className="text-[10px] uppercase"
-                  >
-                    {knowledgeLabel(person.knowledge)}
-                  </Badge>
-                </span>
-                <span className="flex items-center gap-2 text-muted-foreground">
-                  {person.context}
-                  <Button
-                    size="sm"
-                    variant={selectedPersonId === person.personId ? "default" : "ghost"}
-                    disabled={person.knowledge === "unknown"}
-                    onClick={() => onSelect(person.personId)}
-                  >
-                    {person.knowledge === "unknown" ? "Unnamed" : "View"}
-                  </Button>
-                </span>
-              </li>
-            ))}
-          </ul>
+                  <span className="flex flex-wrap items-center gap-2">
+                    <span className="font-medium">{entry.displayName}</span>
+                    <Badge variant={knowledgeTone(entry.knowledge)} className="text-[10px] uppercase">
+                      {knowledgeLabel(entry.knowledge)}
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      {entry.relationLabel}
+                    </Badge>
+                    {entry.householdRole === undefined ? null : (
+                      <Badge variant="outline" className="text-[10px]">
+                        {entry.householdRole}
+                      </Badge>
+                    )}
+                  </span>
+                  <span className="flex flex-wrap items-center gap-2 text-muted-foreground">
+                    {entry.ageLabel === undefined ? null : <span>{entry.ageLabel}</span>}
+                    {entry.locationName === undefined ? null : <span>{entry.locationName}</span>}
+                    <Button
+                      size="sm"
+                      variant={selectedPersonId === entry.personId ? "default" : "ghost"}
+                      disabled={!entry.canOpen}
+                      onClick={() => onSelect(entry.personId)}
+                    >
+                      View
+                    </Button>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {(directory?.notes ?? []).length === 0 ? null : (
+            <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">
+              {(directory?.notes ?? []).map((note) => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+          )}
         </CardContent>
       </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Your household</CardTitle>
+        </CardHeader>
+        <CardContent className={gap}>
+          {family === null ? (
+            <EmptyState
+              title="No family record to read"
+              body="System 19 has not recorded a household for you in this world, so there is nothing to show rather than something missing."
+            />
+          ) : (
+            <>
+              {family.householdName === undefined ? null : (
+                <p className="text-sm">
+                  <span className="font-medium">{family.householdName}</span>
+                  {family.householdRole === undefined ? null : (
+                    <span className="text-muted-foreground">
+                      : you are recorded here as {family.householdRole}
+                    </span>
+                  )}
+                </p>
+              )}
+              {family.stints.length === 0 ? (
+                <EmptyState
+                  title="No stints recorded"
+                  body="You have not been recorded joining a household yet, so there is no stint to list."
+                />
+              ) : (
+                <ol className="space-y-2">
+                  {family.stints.map((stint, index) => (
+                    <li
+                      key={`${stint.joinedAtLabel}-${index}`}
+                      className="rounded-md border p-3 text-sm"
+                    >
+                      <span className="font-medium capitalize">{stint.role}</span>
+                      <span className="ml-2 text-muted-foreground">
+                        joined {stint.joinedAtLabel}
+                        {stint.ended
+                          ? `, left ${stint.leftAtLabel ?? "on a date not recorded"}`
+                          : ", still a member"}
+                        {stint.leftReason === undefined ? "" : ` (${stint.leftReason})`}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </>
+          )}
+          {(family?.notes ?? []).length === 0 ? null : (
+            <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">
+              {(family?.notes ?? []).map((note) => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Who you are related to</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {family === null ? (
+            <EmptyState
+              title="No lineage to read"
+              body="System 19 holds no kinship record for you, so no diagram is drawn."
+            />
+          ) : (
+            <LineageTree
+              subjectId={family.personId}
+              subjectLabel={family.displayName}
+              subjectParentIds={family.parents.map((person) => person.personId)}
+              ancestors={family.ancestors}
+              descendants={family.descendants}
+              emptyTitle="No kin on record"
+              emptyBody="No parents or children have been recorded for you. System 19 writes a link when a birth actually happens in this world, and a founding household has none behind it yet."
+            />
+          )}
+        </CardContent>
+      </Card>
+
 
       {personView === null ? (
         <Card>
@@ -174,6 +278,69 @@ export function PeopleScreen({
           </CardContent>
         </Card>
       )}
+
+
+      {personView === null ? null : (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">
+              What people believe about {personView.displayName}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className={gap}>
+            {perceptions === null || !perceptions.recorded ? (
+              <EmptyState
+                title="Nothing is believed about this person yet"
+                body={
+                  perceptions?.notes[0] ??
+                  "System 22 records a belief once somebody has actually observed something. No observer has recorded a view of this person."
+                }
+              />
+            ) : (
+              <ul className="space-y-3">
+                {perceptions.domains.map((domain) => (
+                  <li key={domain.domain} className="rounded-md border p-3 text-sm">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="font-medium">{domain.domainLabel}</span>
+                      <span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                        {domain.collectiveValueLabel === undefined ? null : (
+                          <span>held on balance: {domain.collectiveValueLabel}</span>
+                        )}
+                        {domain.disagreementLabel === undefined ? null : (
+                          <Badge variant="outline">{domain.disagreementLabel}</Badge>
+                        )}
+                      </span>
+                    </div>
+                    <ul className="mt-2 space-y-1">
+                      {domain.readings.map((reading) => (
+                        <li
+                          key={reading.observerId}
+                          className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"
+                        >
+                          <span className="text-foreground">{reading.observerLabel}</span>
+                          <span className="flex flex-wrap items-center gap-2">
+                            <span>{reading.valueLabel ?? "no evidence recorded"}</span>
+                            <Badge variant="outline">evidence {reading.evidenceCount}</Badge>
+                            <Badge variant="outline">{reading.staleLabel}</Badge>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {(perceptions?.notes ?? []).length === 0 ? null : (
+              <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">
+                {(perceptions?.notes ?? []).map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
+

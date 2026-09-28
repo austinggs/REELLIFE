@@ -23,6 +23,7 @@ import { HistoryScreen } from "@/app/screens/HistoryScreen.tsx";
 import { LifeScreenView } from "@/app/screens/LifeScreen.tsx";
 import { PeopleScreen } from "@/app/screens/PeopleScreen.tsx";
 import { SearchScreen } from "@/app/screens/SearchScreen.tsx";
+import { SocietyScreen } from "@/app/society/SocietyScreen.tsx";
 import { SettingsScreen } from "@/app/screens/SettingsScreen.tsx";
 import { WorldScreen } from "@/app/screens/WorldScreen.tsx";
 import type {
@@ -34,10 +35,18 @@ import type {
 import { authorityLabel, motionEnabled, shouldSurfaceNotification, type UiPreferences } from "@/app/ui/prefs.ts";
 import type { ConsoleAuthority } from "@/engine/primitives/index.ts";
 import type {
+  CommunityView,
+  EconomyView,
   EntityInspectorView,
+  FamilyView,
+  InformationView,
+  LawView,
+  LegacyView,
   MapCamera,
   MapLod,
   MapView,
+  PeopleDirectoryView,
+  PerceptionView,
   PersonView,
 } from "@/engine/query/index.ts";
 import { Badge } from "@/ui/components/badge.tsx";
@@ -87,6 +96,30 @@ export function AppShell({
   const navItems = useMemo(() => visibleNavItems(authority), [authority]);
   const personView: PersonView | null = useMemo(
     () => (selectedPersonId === null ? null : session.personView(selectedPersonId)),
+    [session, selectedPersonId, revision],
+  );
+  // U3 reads. The directory and the viewer's own lineage are not selection
+  // dependent; what is *believed* about a person is, so it follows the selection.
+  const directory: PeopleDirectoryView | null = useMemo(
+    () => session.peopleDirectory(),
+    [session, revision],
+  );
+  const family: FamilyView | null = useMemo(() => session.familyView(), [session, revision]);
+  // U5 reads. None of them depend on a selection — they describe the world the
+  // viewer is standing in, not a chosen subject.
+  const law: LawView | null = useMemo(() => session.lawView(), [session, revision]);
+  const information: InformationView | null = useMemo(
+    () => session.informationView(),
+    [session, revision],
+  );
+  const community: CommunityView | null = useMemo(
+    () => session.communityView(),
+    [session, revision],
+  );
+  const economy: EconomyView = useMemo(() => session.economyView(), [session, revision]);
+  const legacy: LegacyView | null = useMemo(() => session.legacyView(), [session, revision]);
+  const perceptions: PerceptionView | null = useMemo(
+    () => (selectedPersonId === null ? null : session.perceptionView(selectedPersonId)),
     [session, selectedPersonId, revision],
   );
   const inspector: EntityInspectorView | null = useMemo(
@@ -302,7 +335,20 @@ export function AppShell({
             density={density}
             selectedPersonId={selectedPersonId}
             personView={personView}
+            directory={directory}
+            family={family}
+            perceptions={perceptions}
             onSelect={setSelectedPersonId}
+          />
+        ) : null}
+        {view === "society" ? (
+          <SocietyScreen
+            density={density}
+            law={law}
+            information={information}
+            community={community}
+            economy={economy}
+            legacy={legacy}
           />
         ) : null}
         {view === "world" ? (

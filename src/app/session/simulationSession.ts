@@ -25,11 +25,19 @@ import type { EntityId } from "@/engine/primitives/index.ts";
 import {
   getClockView,
   getCommandLogView,
+  getCommunityView,
+  getEconomyView,
   getEntityInspectorView,
   getEventFeedView,
+  getFamilyView,
+  getInformationView,
+  getLawView,
+  getLegacyView,
   getLifeSituation,
   getMapView,
   getNotificationFeedView,
+  getPeopleDirectory,
+  getPerceptionView,
   getPersonView,
   getSimulationHealthView,
   getTimelineView,
@@ -39,12 +47,20 @@ import {
   searchKnownEntities,
   type ClockView,
   type CommandLogViewItem,
+  type CommunityView,
+  type EconomyView,
   type EntityInspectorView,
   type EventFeedItem,
+  type FamilyView,
+  type InformationView,
+  type LawView,
+  type LegacyView,
   type LifeSituationView,
   type MapCamera,
   type MapView,
   type NotificationFeedView,
+  type PeopleDirectoryView,
+  type PerceptionView,
   type PersonView,
   type SearchResultView,
   type SimulationHealthView,
@@ -270,6 +286,61 @@ export class SimulationSession {
   personView(subjectId: string): PersonView | null {
     const viewer = this.playerId;
     return viewer === undefined ? null : getPersonView(this.sim, viewer, subjectId);
+  }
+
+  /**
+   * Everyone the viewer can name (UI/UX 02). Someone they have not met is
+   * counted rather than listed, so the People screen never renders a stranger
+   * as though they were an acquaintance.
+   */
+  peopleDirectory(): PeopleDirectoryView | null {
+    const viewer = this.playerId;
+    return viewer === undefined ? null : getPeopleDirectory(this.sim, viewer);
+  }
+
+  /** The viewer's own recorded family structure, read through System 19. */
+  familyView(subjectId?: string): FamilyView | null {
+    const viewer = this.playerId;
+    return viewer === undefined
+      ? null
+      : getFamilyView(this.sim, viewer, subjectId ?? viewer);
+  }
+
+  /** What is believed about a person, observer by observer (System 22). */
+  perceptionView(subjectId: string): PerceptionView | null {
+    const viewer = this.playerId;
+    return viewer === undefined ? null : getPerceptionView(this.sim, viewer, subjectId);
+  }
+
+  // ------------------------------------------------------------- U5 reads ---
+
+  /** The law in force around the viewer (System 41), as written. */
+  lawView(): LawView | null {
+    const viewer = this.playerId;
+    return viewer === undefined ? null : getLawView(this.sim, viewer);
+  }
+
+  /** What is being said and who it reached (System 49). */
+  informationView(): InformationView | null {
+    const viewer = this.playerId;
+    return viewer === undefined ? null : getInformationView(this.sim, viewer);
+  }
+
+  /** Communities and traditions available where the viewer is (System 44). */
+  communityView(): CommunityView | null {
+    const viewer = this.playerId;
+    return viewer === undefined ? null : getCommunityView(this.sim, viewer);
+  }
+
+  /** Markets, prices and supply (Systems 33-36). Needs no viewer: it is a place. */
+  economyView(): EconomyView {
+    return getEconomyView(this.sim);
+  }
+
+  /** How lives ended and what was left behind (System 53). */
+  legacyView(): LegacyView | null {
+    const viewer = this.playerId;
+    return viewer === undefined ? null : getLegacyView(this.sim, viewer);
   }
 
   /**

@@ -39,6 +39,27 @@ export function knowledgeTone(state: KnowledgeState): KnowledgeTone {
 }
 
 /**
+ * Need urgency tones (System 10).
+ *
+ * Urgency is the engine's own verdict on how pressing a need is — the UI maps it
+ * to a badge and never computes it from the 0..1 level, because that threshold
+ * is an engine rule. The projection widens the field to `string`, so this map is
+ * total over the engine's five words and falls back to the quietest tone rather
+ * than inventing a colour for a state the engine does not have.
+ */
+const URGENCY_TONES: Readonly<Record<string, KnowledgeTone>> = {
+  satisfied: "outline",
+  low: "outline",
+  moderate: "secondary",
+  high: "default",
+  critical: "destructive",
+};
+
+export function urgencyTone(urgency: string): KnowledgeTone {
+  return URGENCY_TONES[urgency] ?? "outline";
+}
+
+/**
  * Entitlement, not confidence. A `secret` fact is not "unlikely"; it is one the
  * viewer is not entitled to see at all, so the label says so.
  */

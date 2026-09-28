@@ -1,12 +1,8 @@
+import { SpatialMap } from "@/app/world/SpatialMap.tsx";
 import { densityClasses, type UiDensity } from "@/app/ui/prefs.ts";
 import { knowledgeLabel, knowledgeTone } from "@/app/ui/knowledge.ts";
 import type { SessionSnapshot } from "@/app/session/simulationSession.ts";
-import {
-  MAP_MARKER_STATE_LABELS,
-  type MapLod,
-  type MapMarkerView,
-  type MapView,
-} from "@/engine/query/index.ts";
+import { type MapLod, type MapView } from "@/engine/query/index.ts";
 import { Badge } from "@/ui/components/badge.tsx";
 import { Button } from "@/ui/components/button.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/components/card.tsx";
@@ -144,15 +140,7 @@ export function WorldScreen({ snapshot, density, mapView, onSelectLod, onFocusPl
             </p>
           )}
 
-          {mapView.markers.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No known places at this level.</p>
-          ) : (
-            <ul className="space-y-2">
-              {mapView.markers.map((marker) => (
-                <MapMarkerItem key={marker.id} marker={marker} onFocusPlace={onFocusPlace} />
-              ))}
-            </ul>
-          )}
+          <SpatialMap view={mapView} onFocusPlace={onFocusPlace} />
 
           {mapView.routes.length > 0 ? (
             <div className="space-y-1">
@@ -229,60 +217,5 @@ export function WorldScreen({ snapshot, density, mapView, onSelectLod, onFocusPl
         </CardContent>
       </Card>
     </div>
-  );
-}
-
-function MapMarkerItem({
-  marker,
-  onFocusPlace,
-}: {
-  readonly marker: MapMarkerView;
-  readonly onFocusPlace: (placeId: string) => void;
-}) {
-  const detail: string[] = [];
-  if (marker.population !== undefined) detail.push(`~${marker.population.value} people (estimate)`);
-  if (marker.weather !== undefined) {
-    detail.push(`${marker.weather.conditionLabel}, ${marker.weather.temperatureCelsius}°C`);
-  }
-  for (const hazard of marker.hazards) {
-    detail.push(`${hazard.kindLabel} (${Math.round(hazard.intensity * 100)}%)`);
-  }
-  for (const disaster of marker.disasters) {
-    detail.push(`${disaster.kind} — ${disaster.stage}`);
-  }
-  if (marker.political !== undefined) detail.push(marker.political.countryName);
-  if (marker.visibleEventCount > 0) {
-    detail.push(
-      `${marker.visibleEventCount} recorded ${marker.visibleEventCount === 1 ? "event" : "events"}`,
-    );
-  }
-  if (marker.formerNames.length > 0) detail.push(`formerly ${marker.formerNames.join(", ")}`);
-  if (marker.position !== undefined && marker.position.confidence === "approximate") {
-    detail.push("position approximate");
-  }
-
-  return (
-    <li className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm">
-      <span className="flex flex-wrap items-center gap-2">
-        <span className="font-medium">{marker.name}</span>
-        <Badge variant="outline" className="text-[10px] uppercase">
-          {marker.level}
-        </Badge>
-        <Badge variant={knowledgeTone(marker.knowledge)} className="text-[10px] uppercase">
-          {knowledgeLabel(marker.knowledge)}
-        </Badge>
-        <Badge variant="secondary" className="text-[10px] uppercase">
-          {MAP_MARKER_STATE_LABELS[marker.state]}
-        </Badge>
-      </span>
-      <span className="flex flex-wrap items-center gap-2">
-        {detail.length > 0 ? (
-          <span className="text-muted-foreground">{detail.join(" · ")}</span>
-        ) : null}
-        <Button variant="ghost" size="sm" onClick={() => onFocusPlace(marker.id)}>
-          Focus
-        </Button>
-      </span>
-    </li>
   );
 }

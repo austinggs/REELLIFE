@@ -11,11 +11,14 @@
  */
 
 import type { EntityId } from "../primitives/ids.ts";
-import type { Visibility } from "../primitives/information.ts";
+import type { KnowledgeState, Visibility } from "../primitives/information.ts";
 import type { WorldTime } from "../primitives/time.ts";
 import { SIMULATION_SPEEDS, type SimulationSpeed } from "../time/clock.ts";
 import type { DayPhase } from "../time/calendar.ts";
 import type { TimelineEntry } from "../history/types.ts";
+import type { PersonIdentity } from "../identity/types.ts";
+import type { CurrencyDefinition, Money } from "../primitives/money.ts";
+import { currencyId, formatMoney } from "../primitives/money.ts";
 import type { Simulation } from "../core/simulation.ts";
 
 export interface ClockView {
@@ -243,4 +246,84 @@ export function getSimulationHealthView(sim: Simulation): SimulationHealthView {
     metricCounters: snapshot.counters,
     metricGauges: snapshot.gauges,
   };
+}
+
+/**
+ * Shared projection helpers, used by every view module under `query/`.
+ *
+ * These live beside the projections rather than inside one screen's module
+ * because a name, an age band or a knowledge state has to be phrased the same
+ * way wherever it is rendered. None of them mutate, and none of them own state.
+ */
+
+/** One system's slice of authoritative state, or `undefined` when unmounted. */
+export function bag<T>(sim: Simulation, key: string): T | undefined {
+  return sim.world.systems[key] as T | undefined;
+}
+
+/** A person's name as it would be written out in full. */
+export function displayNameOf(person: PersonIdentity | undefined): string {
+  if (!person) return "Unknown person";
+  const name = person.name;
+  const middle = name.middle === undefined ? "" : ` ${name.middle}`;
+  return `${name.first}${middle} ${name.last}`.trim();
+}
+
+/** The broad life stage of an age in years (presentation vocabulary only). */
+export function lifeStageOf(ageYears: number): string {
+  if (ageYears < 13) return "child";
+  if (ageYears < 18) return "adolescent";
+  if (ageYears < 30) return "young adult";
+  if (ageYears < 60) return "adult";
+  if (ageYears < 80) return "senior";
+  return "elder";
+}
+
+/** Renders a stored `Visibility` as the viewer's knowledge relationship. */
+export function knowledgeFromVisibility(
+  viewer: EntityId<"person"> | null,
+  entry: { readonly visibility: Visibility; readonly personId?: EntityId<"person"> },
+): KnowledgeState {
+  switch (entry.visibility) {
+    case "public":
+      return "known";
+    case "restricted":
+      return viewer !== null ? "inference" : "unknown";
+    case "private":
+      return viewer !== null && entry.personId === viewer ? "known" : "hidden";
+    case "secret":
+      return entry.personId === viewer ? "known" : "hidden";
+    default:
+      return "unknown";
+  }
+}
+
+/**
+ * Money as a word, for two or more views that must phrase it identically.
+ *
+ * `Money` deliberately carries only minor units; the scale lives on the currency
+ * definition, and the world's `CurrencyReference` is a lighter shape
+ * (`code`, `name`, `minorUnitScale`, `provisional`, `note`). So a definition is
+ * synthesised to reach `formatMoney`. When no scale is on record the fallback
+ * says the scale was *assumed* rather than silently guessing one.
+ */
+export function moneyLabel(
+  amount: Money | undefined,
+  minorUnitScale: number | undefined,
+  fallbackCode?: string,
+): string | undefined {
+  if (amount === undefined) return undefined;
+  const code = fallbackCode ?? amount.currency;
+  if (minorUnitScale === undefined) {
+    return `${(amount.minorUnits / 100).toFixed(2)} ${code} (scale assumed)`;
+  }
+  const definition: CurrencyDefinition = {
+    id: currencyId(code),
+    code,
+    name: code,
+    symbol: code,
+    minorUnitsPerMajor: 10 ** minorUnitScale,
+    decimalPlaces: minorUnitScale,
+  };
+  return formatMoney(amount, definition);
 }

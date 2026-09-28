@@ -4,9 +4,11 @@
 > (`src/engine/`) is complete through M8; this document covers only the
 > presentation layer (`src/app/`, `src/ui/`, `src/index.css`).
 >
-> **Status:** in progress. U0 audit + U1-a/b/c done.
+> **Status:** U0–U7 complete. Every planned phase has landed; the deferred
+> items and the reasons are recorded in `docs/CONTENT_GAPS.md`.
 > **Last updated:** 2026-09-28.
-> **Gate at last update:** typecheck 0, lint 0, tests green, build OK, determinism PASS.
+> **Gate at last update:** typecheck 0, lint 0, 92 files / 793 tests, build OK,
+> determinism PASS.
 
 ---
 
@@ -60,15 +62,19 @@ jsdom.
 
 ### 2.3 What is missing
 
-- **Spatial map**: the World "map" is a flat marker list. `MapView` already ships
-  `position { latitude, longitude, confidence }`, and `canon.ts` has a `GeoPoint`
-  for every continent/ocean/country/region/settlement/mountain/river (plus
-  corridors as settlement chains). **No polygon boundary geometry exists** — a
-  filled political map would need provisional boundary invention (log in
-  `CONTENT_GAPS.md`); a point + route map is fully canon-grounded.
-- **New surfaces** (brief section 9): Law & Records, Economy, Information,
-  Community, Continuity/Legacy. None exist yet.
-- **No virtualisation**, no genealogy graph, no charts, no supply-chain graph.
+- **Spatial map**: landed in U4 as a **point-and-route SVG plot**. `MapView`
+  already shipped `position { latitude, longitude, confidence }`, and `canon.ts`
+  has a `GeoPoint` for every continent/ocean/country/region/settlement/mountain/
+  river. **No polygon boundary geometry exists** — a filled political map would
+  need provisional boundary invention, so it stays a deliberate "not drawn" and
+  the map says so in words.
+- **New surfaces** (brief section 9): three of the four landed in U5 as the
+  **Society** anchor (Alt+4) with tabs for Law & Records, Information, Community
+  and Economy. **Continuity/Legacy remains.** The organising rule of that phase
+  is *a catalogue is not an experience* — see the U5 notes.
+- **No virtualisation**, no charts, no supply-chain graph. Genealogy exists as of
+  U3, but as generational rows plus a native-SVG pedigree rather than a node-link
+  canvas (see the U3 phase notes and `docs/CONTENT_GAPS.md`).
 
 ### 2.4 Defects found and fixed
 
@@ -178,6 +184,15 @@ architecture invariant test fails if a component reaches past the session.
   single item goes whole; no heir -> `unclaimed`; residences, leases, jobs and
   policies are `settable: false`.
 - **No `legacyBonus` scalar**; legacy is concrete owning-system fields only.
+- Canon counts the Bible does not state are shown as "not stated" (GDP, named
+  firms, exact city populations, religious shares, named wars).
+- Settlements: the source says both 34 and 30; all 34 are encoded and the
+  contradiction is carried, not "fixed" in the UI.
+- A count the viewer cannot act on is a count, not a list: the People directory
+  reports the people the player has not met as a figure and never as rows.
+- **There is no single reputation score anywhere in the UI**, not even as a
+  convenience total. Perceptions are shown observer by observer, and the only
+  aggregate offered is explicitly labelled a mean of the views actually held.
 
 ## 6. Phase plan and definition-of-done
 
@@ -188,19 +203,143 @@ architecture invariant test fails if a component reaches past the session.
     `EmptyState`, `Basis`, with `tests/app/coverage.test.ts`.
   - U1-c motion-tier policy (`motion.ts` + `tests/app/motion.test.ts`) and
     typeface roles.
-- **U2 — Core loop.** Needs readings, schedule/commitments + conflict surfacing,
-  honest resolution reporting (telemetry, not a fabricated live level), honest
-  empty states throughout. DoD: keyboard walkthrough, reduced-motion verified.
-- **U3 — People + Genealogy.** Virtualised directory; per-observer perceptions;
-  React Flow genealogy; household stints; honest empty states for the 28 partial
-  systems.
-- **U4 — World.** Spatial SVG map (point + route, fog-of-war, LOD tied to zoom);
-  place detail, travel/border access, weather, infrastructure ladder, international.
-- **U5 — Society.** Law & Records, Information, Community, Economy tabs.
-- **U6 — Continuity/Legacy.** Death determination, estate report, succession and
-  control handoff, archived lives; the Tier-2 moment layer.
-- **U7 — Polish/hardening.** axe audit, performance pass against budgets,
-  keyboard walkthrough, responsive pass, save-slot UX, guardrail regression tests.
+  - U1-b primitives, all thin components over pure tested helpers
+    (`knowledge.ts`, `coverage.ts`) — the point being that the rule is a
+    function that can be asserted, not a branch inside a render:
+
+    | Primitive | Purpose |
+    | --- | --- |
+    | `KnowledgeBadge` | the one known/estimate/rumour/... badge (label + tone) |
+    | `CoverageBadge` | complete / partial / not-stated badge |
+    | `EmptyState` | honest "nothing recorded yet" with what is missing and why |
+    | `Basis` | the named binding constraint / "why this is shown" annotation |
+- **U2 — Core loop** — done. `CommitmentView.conflicts` from
+  `ActivitiesEngine.conflictsFor` (System 05): a clash is reported, never
+  resolved, and overlapping minutes are prose (`overlapLabel`). Needs carry the
+  engine's own urgency word into `urgencyTone` (System 10) rather than the UI
+  thresholding a level. Resolution is reported as the measurable fact (how many
+  people here are simulated life by life) because `observability/budgets.ts` is a
+  static taxonomy, not a live level. `EmptyState` on every empty panel, including
+  the new "detail level" note.
+- **U3 — People + Genealogy** — done, with two deliberate deviations:
+  - `getPeopleDirectory` — self + household + recorded ties (Systems 18/19).
+    Everyone the viewer has not met is returned as a **count**, so a stranger is
+    never rendered as an acquaintance.
+  - `getFamilyView` — System 19's household, membership *stints*,
+    parents/partners/children/siblings, and the ancestor/descendant walks.
+  - `getPerceptionView` — System 22 observer by observer, with the observer's
+    name knowledge-filtered and the aggregate explicitly labelled a mean.
+  - **Deviation 1: no React Flow.** Lineage is a native SVG from the pure
+    `src/app/people/lineageLayout.ts`, with edges only where a parent was
+    recorded. Rationale in `docs/CONTENT_GAPS.md`.
+  - **Deviation 2: no list virtualisation.** The directory is bounded by what
+    the systems have recorded, so a virtualiser would be an unmeasured
+    dependency.
+  - DoD note: the keyboard walkthrough is satisfied structurally (no new
+    interactive primitive was introduced — the only new controls are the existing
+    `Button`), and reduced motion is untouched because the diagram has no
+    animation.
+- **U4 — World** — done. The World screen's flat marker list is now a spatial
+  SVG plot, and every claim below is asserted rather than asserted-in-prose:
+  - `src/app/world/mapProjection.ts` is **pure geometry** — bounds, the
+    equirectangular projection, the camera, and the layout — so the arithmetic is
+    testable without a DOM, which the project has no jsdom for.
+  - **The layout accounts for everything.** Every marker and route the
+    projection returned is either drawn or returned in `undrawnMarkers` /
+    `undrawnRoutes` with a reason. A place with no position is *listed and
+    explained*, not dropped.
+  - **Fog of war survives drawing.** A test runs the real knowledge-limited
+    `MapView` through the layout at every LOD and both zoom levels, proving the
+    drawn set is exactly the permitted set — the picture cannot reveal a place
+    the projection withheld.
+  - **Zoom is a lens, not a claim.** Radius and state are identical at every
+    magnification; only position changes. A settlement does not become a
+    continent by being magnified.
+  - **The picture is decorative.** The SVG is `aria-hidden` and the roster under
+    it is complete — the old `MapMarkerItem` detail (population, weather,
+    hazards, disasters, political, former names, event count, approximate
+    position) moved into it rather than being lost to a dot.
+  - Keyboard-first interaction: zoom buttons, arrow-key pan and `+`/`-` zoom
+    from a focusable labelled viewport. No wheel-zoom, no drag — logged as a
+    deliberate deferral, not an oversight.
+  - Not done, and deliberately: coastlines, borders, and any filled political
+    geometry. The content does not contain them.
+- **U5 — Society** — done, as the ninth nav anchor (Alt+4; History…Debug shift to
+  Alt+5…9) with four tabs. Phase rule: **a catalogue is not an experience.**
+  - Measured the seeded slice before designing anything: 4 law rules / 0 permits;
+    5 cultural groups + 11 traditions / 0 participation; 307 information nodes /
+    0 claims, 0 exposures, 0 links; 3 markets + 7 goods / 0 transactions. All four
+    systems ship a catalogue and no lived activity, so every tab reports "what
+    exists" and "what has happened to you" separately.
+  - `getLawView` — rules as written, with sanction amounts, required credentials,
+    whether the viewer holds one, and any ambiguity the engine flagged. It never
+    interprets a rule into "what you may do": permission is decided through the
+    command pipeline.
+  - `getInformationView` — keeps three things apart that are easy to collapse:
+    whether a claim is **true**, whether someone was **reached** by it, and what
+    anyone **believed** (which System 49 does not model). A reached claim is
+    labelled "which is not the same as being believed".
+  - `getCommunityView` — the menu of traditions available where you are, kept
+    explicitly apart from your membership of it.
+  - `getEconomyView` — the market's own prices, costs and tax, copied; the
+    concentration figure is the largest recorded share, not an invented index;
+    and the tab says outright that no price has been tested against a buyer.
+  - The World Bible's own gap notes ("authors no statute book", "authors no
+    currencies") ride on the affected rows via `CoverageBadge`.
+  - Not done: charts (Recharts), the supply-chain graph, and anything System 26
+    (contracts) would own. Logged in `docs/CONTENT_GAPS.md`.
+- **U6 — Continuity/Legacy** — done, as a fifth tab on the Society anchor
+  (deliberately *not* a tenth nav entry: that would shift every keyboard
+  shortcut a second time in two phases).
+  - Measured first: `systems.continuity` is **not mounted** in the playable
+    slice, and 0 of 300 residents are non-`active`. Every death, estate and
+    succession row is therefore empty on a fresh world.
+  - **Not seeded.** The repository has already settled this: *"a v1 world
+    genuinely had no determinations, no estates and no heirs; manufacturing them
+    would be invisible and would become canon"* (`CONTENT_GAPS.md`, M8). So the
+    surface is a live empty state that says why, and it is **not a blank page**
+    because the household roster (System 19) is real data.
+  - Reads through `LifeContinuityEngine.peek` — the read-only handle M8 added so
+    reading continuity cannot claim a state slot.
+  - Faithfulness, asserted: `probable` is never shown as certain, an inference is
+    never shown as a witness, evidence is referenced by count and owning system
+    rather than restated, estate items each name the system that holds them,
+    beneficiaries name their basis, and a control handoff never rewrites the
+    person it came from.
+  - No score for a life: a test asserts the serialised view contains no
+    `legacyBonus`, `legacyScore` or reputation field.
+  - The engine corrected one of my tests: `determineDeath` refuses a
+    determination citing no fact, so "at least one referenced fact" is the
+    invariant.
+  - Not done: the Tier-2 "moment layer" (React Bits) — see U7.
+- **U7 — Polish/hardening** — done. Two new test files, no new dependency.
+  - **`tests/invariants/guardrails.test.ts`** (17) — the guardrails the brief names
+    by name, plus the invariants that make the UI reviewable: no `isMarried`, no
+    `legacyBonus`/`legacyScore`, no `reputationScore`, no `guard.mutate` anywhere
+    in `src/app`; no click handler on a non-interactive element; every custom
+    focusable region carries a role *and* a name; no `aria-hidden` on a focusable
+    control; the Society tabs use the real ARIA tab pattern; no screen pins a
+    pixel width, and any multi-column grid declares a single-column base. Plus a
+    **projection-purity** block: all 17 read-path projections are called, the
+    state hash must not move, no ownership violation may be recorded, and each
+    must return the identical value twice — a read that mutated, or that drifted,
+    would break determinism silently.
+  - **`tests/app/keyboardWalkthrough.test.ts`** (5) — the walkthrough as data, not
+    prose: six steps each naming the file and literal that proves the control
+    still exists, plus focus order, per-anchor shortcuts and the 44px policy.
+  - Performance is asserted in **work units, not wall clock** — the engine's own
+    `MAP_MARKER_BUDGET`/`MAP_ROUTE_BUDGET` hold at every LOD, and the resolution
+    taxonomy is still declared. The project already rejected wall-clock budgets
+    as flaky on shared CI, and that stance is kept.
+  - **Honest limits, recorded in `CONTENT_GAPS.md`:** the a11y audit is static,
+    not `axe` (the project has no DOM); the bundle is 712 kB raw / **200 kB gzip**
+    and stays one chunk, because the engine is held synchronously by the session
+    and splitting it would create a second way for the UI to be incomplete; and
+    the Tier-2 moment layer, charts and System 26 are **deferred with reasons**
+    rather than bolted on during a hardening phase.
+  - Save-slot UX was already complete from M3 (two-step load confirmation and an
+    explicit "could not be listed" state instead of a false empty list) and is
+    re-verified by the existing suite rather than rebuilt.
 
 **Definition-of-done for every phase:** gate green; `PROGRESS.md` updated;
 provisional decisions in `CONTENT_GAPS.md`; contradictions carried in
@@ -236,19 +375,55 @@ no `legacyBonus`, and no single reputation score in any UI model.
   `CharacterView` removal) + U1-a text-scale wiring + U1-b primitives.
 - **2026-09-28** — U1-c motion-tier policy + typeface roles; `EmptyState` wired
   into the Life screen; this document created.
-
-- Canon counts the Bible does not state are shown as "not stated" (GDP, named
-  firms, exact city populations, religious shares, named wars).
-- Settlements: the source says both 34 and 30; all 34 are encoded and the
-  contradiction is carried, not "fixed" in the UI.
-
-
-| Primitive | Purpose |
-| --- | --- |
-| `KnowledgeBadge` | the one known/estimate/rumour/... badge (label + tone) |
-| `CoverageBadge` | complete / partial / not-stated badge |
-| `EmptyState` | honest "nothing recorded yet" with what is missing and why |
-| `Basis` | the named binding constraint / "why this is shown" annotation |
-
-All are thin components over pure, tested helpers (`knowledge.ts`, `coverage.ts`).
+- **2026-09-28 — U2 + U3 landed.** The dislocated fragment that used to trail
+  this file (the primitives table and two guardrail notes) was moved back into
+  sections 4 and 5 where it belonged.
+  - **U2.** `CommitmentView.conflicts` from `ActivitiesEngine.conflictsFor`;
+    `formatDuration`/`overlapLabel` in the projection; `urgencyTone` in
+    `knowledge.ts`; needs urgency + clash surface on the Life screen; the
+    honest "detail level" note reporting measured residents. New helper exports
+    for the shared projection helpers, and tests for clashes and urgency.
+  - **U3.** New `src/engine/query/socialViews.ts` (directory, family, perceptions),
+    `src/app/people/lineageLayout.ts` + `LineageTree.tsx`, rewritten
+    `PeopleScreen`, three new session reads, and four new/updated test files.
+  - The session's closed-surface guard (`tests/app/appShell.test.ts`) failed on
+    the three new session methods exactly as intended; they were added to the
+    boundary allowlist with a comment rather than the guard being loosened.
+- **2026-09-28 — U4 landed.** The spatial map. New `mapProjection.ts` (pure) and
+  `SpatialMap.tsx`; the World screen's `MapMarkerItem` became the map's
+  accessible roster. `tests/app/mapProjection.test.ts` (22) plus 4 integration
+  assertions in `worldMap.test.ts` that prove the drawing step cannot resurrect a
+  withheld place at any zoom. Two findings from those tests are worth keeping in
+  mind: a `NaN` zoom used to blank the whole canvas (now clamped), and a lone
+  marker correctly does not move when you zoom about the centre — a test that
+  assumed otherwise was wrong, not the code.
+- **2026-09-28 — U5 landed.** The Society anchor with four tabs. The design was
+  set by measurement rather than assumption: all four systems ship a catalogue
+  and no lived activity, so the phase's rule became *a catalogue is not an
+  experience* and every tab keeps "what exists" apart from "what happened to
+  you". Two guards caught real mistakes — a hardcoded `viewForShortcut("9")` that
+  had become a valid shortcut when the anchor list grew to nine, and the
+  closed-surface test on the four new session reads. Both were fixed at the
+  cause, and the shortcut assertion is now derived from `SHELL_VIEWS.length`.
+- **2026-09-28 — U6 landed.** Continuity & Legacy, as a fifth Society tab. The
+  phase turned on a measurement: System 53 is unmounted in the playable slice and
+  nobody in it is dead, so every death/estate/succession row is empty. Seeding a
+  death to fill the screen was declined on the project's own recorded reasoning
+  (manufactured records "would become canon"), and the surface ships as a live
+  empty state that is still useful because the household roster is real data.
+  The engine corrected one of my tests along the way: a determination must cite
+  at least one fact.
+- **2026-09-28 — U7 landed; the rebuild is complete.** Two new test files and no
+  new dependency. `tests/invariants/guardrails.test.ts` enforces the semantic
+  guardrails by name (no marriage flag, no legacy/life score, no scalar
+  reputation, no `guard.mutate` in the app) and the structural accessibility and
+  responsive rules, then proves the read path is pure by calling all 17
+  projections and asserting the state hash does not move. `tests/app/
+  keyboardWalkthrough.test.ts` holds the walkthrough as data so it fails when a
+  control is renamed. Two of my own assertions were wrong and were rewritten
+  rather than the code: demanding a breakpoint on surfaces that are legitimately
+  fluid single-column, and a focus-order rule that wrongly assumed
+  `notificationFeed` precedes the main region. Three deferrals are recorded with
+  reasons in `CONTENT_GAPS.md` — the static (non-`axe`) audit, the single 200 kB
+  gzip chunk, and the Tier-2 moment layer, charts and System 26.
 

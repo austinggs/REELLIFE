@@ -1,0 +1,663 @@
+# REEL LIFE — UI BUILD BRIEF FOR AN AI CODING AGENT
+
+Generated: 2026-09-28
+Repo: https://github.com/austinggs/REELLIFE
+Latest commit reviewed: 694c7da60e8b1b110d791a355295d2374ef9c3e6 ("Completed milestone M8")
+
+---------------------------------------------------------------------
+0. HOW TO USE THIS FILE (READ FIRST)
+---------------------------------------------------------------------
+
+This brief was written from GitHub commit pages, diffs and the project's own
+progress documents. THE AUTHOR OF THIS BRIEF DID NOT SEE THE UI SOURCE CODE
+RENDERED OR RUN, and did not read package.json. Treat every statement about
+"what the UI currently does" as a lead to verify, not a fact.
+
+Your first job is therefore an AUDIT, not a build:
+
+1. Read, in this order, inside the repo:
+   - AGENTS.md            (mandatory working rules)
+   - PROGRESS.md          (mandatory handoff doc: read first, update after every session)
+   - PHASES.md            (roadmap M0-M8, definition-of-done per phase)
+   - docs/OWNERSHIP_MATRIX.md, docs/CONTENT_GAPS.md, docs/CONTENT_LEDGER.md,
+     docs/SOURCE_CONFLICTS.md
+   - The "FULL PLAN SOURCE" folder: find the Player UI, Map & Spatial
+     Presentation and UI/UX specs (an accessibility spec called "UI/UX 21"
+     is referenced in PROGRESS.md). These are the authoritative UI
+     requirements. This brief is a summary layer on top of them; if they
+     disagree with this brief, THEY WIN and you should log the conflict in
+     docs/SOURCE_CONFLICTS.md.
+2. Read package.json, vite/tsconfig/eslint configs, src/app/**, and every
+   *.tsx under the UI folder. Record real dependency versions (React,
+   Tailwind, shadcn/Radix vs Base UI, lucide, etc.).
+3. Run the verification gate (section 13) BEFORE changing anything so you
+   know the green baseline.
+4. Only then follow the phase plan in section 14.
+
+Working rules inherited from the project (see AGENTS.md for the full text):
+- Update PROGRESS.md at the end of every session (position vs PHASES.md,
+  what landed, what is provisional, defects found).
+- Any provisional decision or invented content goes in docs/CONTENT_GAPS.md.
+- Any contradiction in source material goes in docs/SOURCE_CONFLICTS.md and
+  is CARRIED, not silently resolved.
+- Do not invent canon to make a screen look full (see section 6).
+
+---------------------------------------------------------------------
+1. PROJECT SNAPSHOT
+---------------------------------------------------------------------
+
+REEL LIFE is a deterministic, seeded, multi-generational life-simulation game
+set in a fictional world called Aurelia (World Bible canon: 6 continents,
+5 oceans, 48 countries, 36 regions, 34 settlements, 4 mountain systems,
+5 rivers, 6 trade corridors, 8 history eras, 6 language families,
+7 religions, 17 active world developments).
+
+Stack (as observed): Vite + React + TypeScript + Vitest + ESLint; Tailwind;
+shadcn/ui-style components (adapted). Pure-TypeScript simulation engine.
+
+Milestone status (self-reported in PROGRESS.md at commit 694c7da):
+- M0 foundations, M1 kernel, M2 person systems/domain engines: DONE
+- M3 UI shell: DONE (screens exist and are wired; polish/coverage unknown)
+- M4 world content (geography, travel, population, countries, weather,
+  infrastructure, knowledge-limited map): DONE
+- M5 economy/organizations: landed (not reviewed by the author of this brief)
+- M6 society/law/information/global/security: DONE
+- M7 continuity (death, estates, succession, genealogy): DONE
+- M8 hardening (budgets, save migrations, accessibility policy, scenarios,
+  content ledger): DONE
+- Reported quality gate: 82 test files / 686 tests, typecheck 0, lint 0,
+  build OK, headless sim clean (0 invariant failures, 0 ownership violations),
+  SIMULATION_VERSION = 2.
+
+The engine is far ahead of the UI. 31 of 59 systems are "complete";
+28 are "partial" (engine built and tested, but the playable slice does not
+populate them). The UI job is: make the engine legible and playable WITHOUT
+lying about what the engine does or does not model.
+
+---------------------------------------------------------------------
+2. SOURCES AND DIRECT LINKS
+---------------------------------------------------------------------
+
+Project
+- Repo:                https://github.com/austinggs/REELLIFE
+- PHASES.md:           https://github.com/austinggs/REELLIFE/blob/main/PHASES.md
+- Commit c57f8d2 (M2 complete, fixed last scenario test, added PROGRESS.md,
+  OWNERSHIP_MATRIX.md, CONTENT_GAPS.md, SOURCE_CONFLICTS.md):
+  https://github.com/austinggs/REELLIFE/commit/c57f8d20793fb9527d5515758d983517f0a0276c
+- Commit 8a6ce5c (M3 UI shell + M4 in progress: travel, population):
+  https://github.com/austinggs/REELLIFE/commit/8a6ce5c7c71c3a4cbf957d8e9a9f6234faa1d37f
+- Commit 6be44ec (M4 complete: countries, weather, infrastructure, fog-of-war map):
+  https://github.com/austinggs/REELLIFE/commit/6be44ec71de1b5451560e21a1e584638a0f4967f
+- Commit 778169f (M6 complete: laws, institutions, government, culture,
+  information, messaging, reputation, security, technology, conflict,
+  parenting, international):
+  https://github.com/austinggs/REELLIFE/commit/778169f51651ab31913af14626cc08e99940381c
+- Commit f57632e (M7: continuity, estates, succession, genealogy):
+  https://github.com/austinggs/REELLIFE/commit/f57632e18f0cceebc5109cd8a0ce98c4866fa19c
+- Commit 694c7da (M8: budgets, migrations, accessibility policy, content ledger):
+  https://github.com/austinggs/REELLIFE/commit/694c7da60e8b1b110d791a355295d2374ef9c3e6
+
+Repo-relative docs (open on GitHub under the repo link above; paths as seen
+in commit diffs): PROGRESS.md, AGENTS.md, PHASES.md, docs/OWNERSHIP_MATRIX.md,
+docs/CONTENT_GAPS.md, docs/CONTENT_LEDGER.md, docs/SOURCE_CONFLICTS.md,
+src/app/ui/accessibility.ts, src/app/ui/prefs.ts, tests/fixtures/reel/v1Save.ts.
+
+UI libraries (researched 2026-09-28)
+- React Bits (repo):          https://github.com/DavidHDev/react-bits
+- React Bits (site/docs):     https://reactbits.dev/
+- React Bits install guide:   https://reactbits.dev/get-started/installation
+- React Bits tools:           https://reactbits.dev/tools
+- React Bits Pro install:     https://pro.reactbits.dev/docs/installation
+- shadcn/ui changelog:        https://ui.shadcn.com/docs/changelog
+- shadcn/ui Base UI default:  https://ui.shadcn.com/docs/changelog/2026-07-base-ui-default
+- React Flow / xyflow:        https://github.com/xyflow/xyflow  (docs: https://reactflow.dev)
+- Sigma.js (WebGL graphs):    https://github.com/jacomyal/sigma.js
+- TanStack Virtual:           https://tanstack.com/virtual
+- TanStack Table:             https://tanstack.com/table
+- Motion (ex Framer Motion):  https://motion.dev
+- Leaflet CRS.Simple (flat-coordinate maps):
+  https://leafletjs.com/examples/crs-simple/crs-simple.html
+- MapLibre GL JS:             https://maplibre.org
+- d3-zoom / d3-geo:           https://d3js.org
+
+Confidence note: library facts about React Bits and shadcn come from their own
+repo/changelog. Library COMPARISONS (star counts, bundle sizes, "which is
+best") came from blog/SEO-style guides that disagree with each other; treat
+them as directional and verify versions on npm before installing.
+
+---------------------------------------------------------------------
+3. NON-NEGOTIABLE ENGINE RULES THE UI MUST RESPECT
+---------------------------------------------------------------------
+
+These are enforced by tests in the repo. Breaking them will fail the gate.
+
+R1. ONE WRITER. Each system owns exactly one state slot (systems.<id>) and
+    every write asserts ownership through an OwnershipGuard. The UI must never
+    mutate world state. UI actions go through the command surface only.
+R2. SimulationSession IS THE ONLY DOOR. It is the only module allowed to touch
+    the live simulation; everything else receives read-only projections. An
+    architecture test enforces this boundary. Do NOT import engine classes
+    into components. If a screen needs new data, add a projection to the
+    session layer (and test it), not a direct import.
+R3. READS MUST NOT WRITE. Engines expose Engine.peek(scope, world) read-only
+    handles (Aging, Continuity, Travel, International so far). Use peek-style
+    handles for reads; a read that claims a state slot is a bug.
+R4. DETERMINISM. Seeded named RNG streams; no Math.random in anything that can
+    influence sim state; same seed -> identical stateHash(). UI-only randomness
+    (cosmetic particles) must be isolated and must never feed the sim.
+R5. SAVE/LOAD EQUIVALENCE. Saves are versioned (SIMULATION_VERSION = 2) with a
+    MigrationRegistry and checksums. If you change any save-visible shape you
+    MUST bump the version and add a migration + fixture. (M7 forgot once; M8's
+    fixture caught it.)
+R6. PERFORMANCE BUDGETS are measured in work units, not wall clock. Five
+    resolution levels: abstract -> regional -> settlement -> street ->
+    household. Provisional resolved-person caps per step: 0 / 64 / 512 / 2048
+    / 8192. The UI must render according to the current resolution level and
+    must not force the engine to resolve more than the budget allows.
+R7. DERIVED vs OWNED. Systems distinguish owned records from derived readings
+    (e.g. careReading, settlementReading, caseReading, availability,
+    diffusion, standingBetween). The UI should display derived readings as
+    readings (with their named binding constraint / basis where provided),
+    never cache them as if they were stored truth.
+
+---------------------------------------------------------------------
+4. WHAT THE UI IS BELIEVED TO CONTAIN TODAY (VERIFY BY AUDIT)
+---------------------------------------------------------------------
+
+From the M3 and M4 commit diffs:
+- Screens: Life, People, World, History, Search, Settings, Console, Debug.
+- SimulationSession module (sole simulation boundary) + architecture test.
+- Save/load to browser storage with versioned slots and corrupt-slot handling.
+- A keyboard-driven decision surface.
+- WorldScreen.tsx extended with the knowledge-limited (fog-of-war) map view.
+- Accessibility policy as testable code: src/app/ui/accessibility.ts
+  (textScale with four steps applied as a root class; tone labels so nothing
+  is colour-only; 44px minimum targets; explicit focus order;
+  decisionDeadline that ALWAYS returns no deadline; isLocalizationReady
+  check that flags bare numbers interpolated into prose; terminology table;
+  playerMessage requires errors to name a remedy) and src/app/ui/prefs.ts.
+- Adapted shadcn/ui components.
+- App.tsx was a 12-line placeholder at M2 and has since been replaced.
+
+UNKNOWN (audit and record in PROGRESS.md): which M5-M7 systems have any screen
+at all; visual quality; responsiveness; mobile behaviour; empty-state
+handling for the 28 "partial" systems.
+
+---------------------------------------------------------------------
+5. ENGINE SYSTEMS -> UI SURFACES
+---------------------------------------------------------------------
+
+Ledger status at 694c7da (docs/CONTENT_LEDGER.md; 59 systems: 31 complete,
+28 partial, 0 absent).
+
+5.1 COMPLETE, canon-seeded in the playable slice (build real screens for these)
+scale, needs, family, education, transport, insurance, organizations,
+businesses, supplyChains, markets, macro, geography, infrastructure,
+countries, laws, culture, travel, environment, information, technology.
+
+5.2 COMPLETE, infrastructure/code (no content to author; expose via
+Debug/Console/Settings only)
+core, time, rng, events, activities, persistence, identity, legalIdentity,
+console, config, observability.
+
+5.3 PARTIAL — engine built and tested, slice does NOT populate it. Design
+EMPTY STATES as first-class, honest UI ("nothing recorded yet"), not fake data:
+aging, health, mentation, traits, skills, cognition, goals, decisions,
+relationships, parenting, conflict, reputation, employment, finance,
+ownership, housing, inventory, food, institutions, government, population,
+security, messaging, international, continuity, history, presentation
+(Player UI), spatialPresentation (Map & Spatial Presentation).
+
+Note: "presentation" and "spatialPresentation" are the UI's own plan systems.
+Their specs live in the plan source folder.
+
+5.4 READ APIs seen in commit diffs (names may have drifted; VERIFY in source).
+Expose through SimulationSession projections, never by direct import.
+- Continuity: statusOf, deathOf, determinationOf, recordOf, testamentFor,
+  readingOf, currentControllerId, estatesOf, successionCandidates,
+  handOverControl (a write), gatherEstate/determineBeneficiaries/openEstate/
+  settleEstate (orchestrated).
+- Family/genealogy: descendantsOf, ancestorsOf, siblingsOf, recordParentChild,
+  household member stints (leftAt / leftReason).
+- History/causality: forChain(causalChainId); importance-5 timeline entries
+  are never dropped by retention.
+- Countries: borderAccess, resolveRule, jurisdictionsAt.
+- International: standingBetween (per domain per country pair),
+  tradeConditions, shockExposure.
+- Security/law: caseReading, adjudicationPreview, assessDetection.
+- Technology: availability, adoptionDrivers, diffusion, readiness.
+- Conflict: balance, settlementReading. Parenting: careReading,
+  independenceProfile, coverage.
+- Observability: MetricsCollector, budget ledger (judgeStep, BudgetLedger).
+
+---------------------------------------------------------------------
+6. SEMANTIC GUARDRAILS — WHAT THE UI MUST NEVER CLAIM
+---------------------------------------------------------------------
+
+The project's design culture is: do not overclaim what the model knows. The UI
+inherits that. Violations are product bugs, not style issues.
+
+Relationships / people
+- No single "reputation score". Reputation is per-observer, per-domain
+  perception with decay. Show who thinks what about whom, in which domain.
+- Marriage: `spouse` is a relationship CONTEXT. Status is not quality; a
+  strained couple can be married with the strain visible. No system holds an
+  isMarried flag. Do not add one to the UI state either.
+- Conflict "unresolved" is a valid terminal state, not a failure.
+
+Law / security
+- A sanction is a CONDITION, not a price. Never show it as a fee that mutates
+  a market price.
+- Charges reference a law rule id and copy its declared sanction; only a
+  CONVICTION applies one. Show charge vs conviction distinctly.
+- Government budgets are authorizations only (no magic balances). Policies
+  carry an implementation gap; do not present policy as reality.
+- Laws are defined per jurisdiction; enforcement/adjudication is elsewhere.
+
+Information / communication
+- Information tracks exposure and delivery, NOT belief or comprehension. Never
+  render "X believes Y" from a claim unless a system says so.
+- Claims have provenance, verification, corrections and disputes; keep them
+  visible.
+
+Technology
+- Three separate gates: exists -> available -> adopted. An unavailable
+  technology cannot be adopted. Show the gate a technology is stuck at.
+
+World / travel / international
+- Migration pressure MOVES NOBODY. It is a tendency with direction and causes.
+  Crossing belongs to travel; arrival is not citizenship.
+- A global shock declares its channel list and stops. Do not animate the
+  cascade beyond what other systems actually report.
+- Weather is DERIVED (climate zone + season + deterministic jitter), not
+  scripted. Disasters currently cause no automatic infrastructure damage
+  (logged content gap). Do not draw damage the engine did not record.
+- Infrastructure repair follows a strict ladder: workers -> equipment ->
+  materials -> access -> authority -> funding. Show the blocking rung.
+- Fog of war: the map shows only what the player character knows.
+
+Death / continuity
+- Determinations cite evidence (FactRefs). If nothing can be cited it is
+  `presumed`, never dressed up as witnessed. Show witnessed vs presumed.
+- Estates: will outranks intestacy; intestacy order is descendants ->
+  household -> parents -> siblings and stops at the first tier with a
+  survivor, and the basis names which relationship applies. Money splits by
+  share (integer minor units; remainder named); a single item goes WHOLE to
+  the first beneficiary. No living heir -> `unclaimed` (no state fallback).
+- Residences, leases, employment and insurance policies are NOT settled by an
+  estate (`settable: false`); display them as "stays with its owner", with
+  the reason the case gives.
+- There is NO `legacyBonus` scalar. Legacy shows up only as concrete fields in
+  the owning systems (SUCCESSION_TARGETS). Never invent a legacy score.
+- The player's own death is played by the harness; consequences are real
+  engine work. Control handoff appends one record and PersonId is not re-keyed;
+  the ancestor's causal chain still walks after handoff.
+- Provisional mortality numbers (no age-based determination below 65; 2%
+  annual hazard at 65, doubling every 8 years, cap 0.6) are NOT canon. If
+  surfaced, label them provisional.
+
+Content / canon
+- Counts the World Bible does not state are shown as "not stated": GDP,
+  named firms/banks/universities, exact city populations, religious shares,
+  named wars, technology eras, development stages.
+- Settlements: source says both 34 and 30. All 34 are encoded; the
+  contradiction is carried. Do not "fix" it in the UI.
+- Currency AUR is a shared PROVISIONAL currency. Label it as such in
+  settings/debug, and format money via a locale-aware formatter.
+- Do not invent named NPCs, feuds, wars or institutions to fill empty states.
+
+---------------------------------------------------------------------
+7. RECOMMENDED UI STACK
+---------------------------------------------------------------------
+
+Decision principle: keep the existing foundation; add specialised libraries
+only where the engine's data shapes demand them; treat animated-component
+libraries as a thin seasoning layer.
+
+7.1 Foundation (keep; verify actual versions in package.json)
+- Vite + React + TypeScript + Tailwind + shadcn/ui components.
+- shadcn/ui note: as of 2026-07-03 NEW shadcn projects default to Base UI
+  instead of Radix; Radix is still fully supported and every component ships
+  for both; the maintainers say working Radix apps need not migrate. If the
+  repo is on Radix, do NOT migrate for its own sake; when adding components
+  via `npx shadcn@latest add`, confirm which primitive base components.json
+  selects so you don't mix flavours unintentionally.
+  https://ui.shadcn.com/docs/changelog/2026-07-base-ui-default
+
+7.2 React Bits (expressive layer only)
+- What: 165+ free animated components (text animations, animations, UI
+  components, backgrounds); delivered as source via the shadcn CLI, e.g.
+  `npx shadcn@latest add @react-bits/BlurText-TS-TW`; four variants per
+  component (JS-CSS, JS-TW, TS-CSS, TS-TW) -> use the TS-TW variant.
+  License: MIT + Commons Clause (free for personal and commercial use;
+  cannot resell the library itself). There is also a paid Pro tier
+  (application UI, templates, agent kit) — not evaluated.
+- Some components pull in GSAP, Three.js or Matter.js; check each
+  component's dependencies before adding it and avoid heavy ones on gameplay
+  screens.
+- One comparison claims React Bits handles prefers-reduced-motion by default;
+  UNVERIFIED. Test each component yourself.
+- Use it ONLY in the "moment layer" (section 11). Do not use it on dense
+  data screens.
+
+7.3 Specialised libraries (add when the phase needs them)
+- Motion (`motion` package, formerly Framer Motion): interaction/transition
+  animation for app UI (panels opening, confirmations, list reorders).
+- Graphs (family tree, causal chains, claim/rumor provenance):
+  React Flow (`@xyflow/react`, MIT). Nodes are real React components, so a
+  person card can be a node. It does not auto-layout; pair with a layout
+  library (dagre or ELK). For 10k+ nodes consider Sigma.js (WebGL) instead;
+  Cytoscape.js if you need graph algorithms.
+- Map: Aurelia is fictional, so real-world tile stacks are a poor fit.
+  Use a flat coordinate system. Recommended first choice: SVG + d3-zoom,
+  because there are only 48 countries / 34 settlements, fog-of-war becomes
+  per-feature styling, and SVG is keyboard/screen-reader friendly.
+  Alternatives: Leaflet with CRS.Simple (image-style maps), or MapLibre GL
+  with custom GeoJSON if you outgrow SVG (label collision, vector tiles).
+  The engine already decides what the player knows; the map only draws it.
+- Long lists (History timeline, Search results, Console log, ledgers):
+  @tanstack/react-virtual (headless, ~5KB) or react-virtuoso (richer:
+  groups, sticky headers). Avoid react-window (reported as no longer
+  actively developed).
+- Tables (people directory, ledger, markets): @tanstack/react-table
+  (headless). AG Grid is unnecessary.
+- Charts (macro, markets, needs over time): Recharts for simple trends;
+  visx if custom visuals are needed.
+- Command palette / console affordance: shadcn Command (cmdk).
+- Icons: lucide-react (already common with shadcn).
+
+7.4 Skip (unless a later requirement forces it)
+- Aceternity UI / Magic UI as a core layer: landing-page oriented, Framer
+  Motion dependent, overlapping with the above.
+- Heavy 3D (Three.js) for core screens.
+- Replacing the design system with MUI/Mantine/etc.
+
+---------------------------------------------------------------------
+8. ARCHITECTURE
+---------------------------------------------------------------------
+
+8.1 Data flow
+  UI event -> command surface -> SimulationSession -> engine (owner scope)
+  engine state -> SimulationSession projection (read-only) -> hooks -> screens
+
+8.2 Binding
+- Subscribe to session projections with `useSyncExternalStore` (or an
+  equivalent selector hook). Do NOT mirror simulation state in a second
+  store (Zustand/Redux). UI-only state (open panels, filters, text scale,
+  selected tab) may live in a small local store.
+- Projections must be stable/memoised: return the same reference when
+  nothing relevant changed, to keep React renders cheap.
+- Every projection has: data, a "why" (basis/constraint when the engine
+  provides one), and a "coverage" flag (complete / partial / not-stated)
+  so screens can render honest empty states.
+
+8.3 Optional (later): run the engine in a Web Worker behind SimulationSession
+(the engine is deterministic pure TypeScript). This is a suggestion, not
+something seen in the repo. Do it only after profiling shows main-thread
+stalls; keep the same projection interface so screens don't change. Any
+worker boundary must preserve stateHash equality and save/load equivalence.
+
+8.4 Time and pacing
+- Decision surfaces NEVER expire (decisionDeadline returns none). Fast-forward
+  and pause are player-controlled. No real-time pressure anywhere.
+
+8.5 Persistence in UI
+- Save slots use versioned save format. UI must show slot version, seed,
+  in-world date, and surface corrupt-slot / needs-migration states with a
+  remedy (playerMessage rule). Never auto-overwrite a slot silently.
+
+---------------------------------------------------------------------
+9. SCREEN SPECIFICATIONS
+---------------------------------------------------------------------
+
+Existing screens (extend, don't rewrite blindly): Life, People, World,
+History, Search, Settings, Console, Debug. Proposed additions can be tabs
+inside existing screens to keep navigation small.
+
+LIFE (primary loop)
+- Current person header: name, age/life stage (aging is partial -> may be
+  empty), location, current activity/commitment.
+- Needs & daily living (complete): needs bars/readings with text labels.
+- Schedule/commitments (complete): today's timeline; conflicts surfaced.
+- Decision surface: keyboard-first list of available commands, each showing
+  cost/consequence hints only where the engine provides them; never expires.
+- Recent consequences feed (events/causal chain links).
+- Time controls: pause / step / speed; visible resolution level.
+
+PEOPLE
+- Directory (virtualised table): identity, household, relationship context,
+  last interaction.
+- Person detail: relationships as per-observer perceptions (no single score),
+  family (genealogy), health/mind/skills/traits panels rendered with honest
+  empty states when partial.
+- Genealogy tab: descendants/ancestors/siblings graph (React Flow + layout
+  lib). Household membership as stints (show leave/rejoin history).
+
+WORLD
+- Map: flat-coordinate SVG map with continents/countries/regions/settlements,
+  rivers, mountains, corridors; layers: political, travel routes, weather,
+  infrastructure. Fog-of-war driven by the player's knowledge; unknown areas
+  are visibly unknown, not blank-by-accident. LOD by zoom mapped to the
+  resolution levels.
+- Place detail: settlement / neighbourhood / infrastructure (utility
+  dependency chain; repair-ladder blocker), weather (derived), local culture
+  and norms, local laws and jurisdiction, markets.
+- Travel: route planner (rail/road/sea/air), border access results
+  (checked/allowed/denied with reason), journey lifecycle (start ->
+  complete).
+- International: bilateral standings per domain, treaties, sanctions as
+  conditions, declared shocks with declared channels, migration pressure
+  (labelled as tendency).
+
+HISTORY
+- Timeline (virtualised) with importance filter; importance-5 entries
+  pinned/visible. Causal-chain view via forChain(causalChainId) (graph +
+  list). Multi-generational view after succession (ancestor chains still
+  resolve).
+
+SEARCH
+- Cross-entity search (people, places, laws, organisations, claims). Results
+  grouped by entity type, keyboard navigable, virtualised.
+
+LAW & RECORDS (new tab; mostly M4-M6 data)
+- Legal identity & civil records. Applicable laws for the player's
+  jurisdiction (rule, exemptions, permits, credentials). Incidents ->
+  investigation -> charges -> hearings -> penalties -> appeals pipeline
+  (charge vs conviction distinct). Wills, estates and succession (see
+  guardrails).
+
+ECONOMY (new tab; complete systems: markets, macro, businesses, supply
+chains, insurance; partial: finance, employment, housing, ownership)
+- Personal ledger view (balanced entries), household budget, employment,
+  housing/lease, insurance policies; honest empty states where partial.
+- Markets/prices/macro charts (Recharts/visx). Supply-chain graph.
+
+INFORMATION (new tab)
+- Claims/rumor graph with provenance, verification, corrections, disputes.
+  Messages inbox (channels, per-recipient delivery). Exposure/delivery only.
+
+COMMUNITY (new tab)
+- Culture groups, traditions, norms and NORM CONFLICTS (e.g. dawn trading vs
+  a closed holy day; fair weights vs surplus sharing) — derived from data;
+  institutions/government when populated.
+
+CONTINUITY / LEGACY (new tab or modal flow)
+- Life status, death determination (witnessed/presumed + cited evidence),
+  estate settlement report, succession candidates and control handoff flow,
+  archived lives. This is the strongest "moment" for expressive motion,
+  but must remain honest (no legacy score).
+
+SETTINGS
+- Text scale (4 steps), reduced motion, contrast/tone labels, localisation
+  readiness, save slots, seed display, keyboard shortcuts.
+
+CONSOLE / DEBUG
+- Command console (cmdk-style). Debug: stateHash, budget ledger (worst step,
+  breaches per resolution level), invariant/ownership violation counts,
+  ledger of content completeness (docs/CONTENT_LEDGER.md rendered).
+
+---------------------------------------------------------------------
+10. DESIGN SYSTEM AND ACCESSIBILITY
+---------------------------------------------------------------------
+
+Visual direction: NOT DECIDED. Confirm with the owner before styling. Two
+candidate directions:
+  A. Dossier/ledger: calm, information-dense, editorial, minimal motion.
+  B. Atmospheric/game-like: more texture and motion, moments of theatre.
+Whichever is chosen, make deliberate, subject-specific choices (a fictional
+world, a life, records/law/family) rather than generic SaaS defaults:
+avoid the identical-rounded-cards look, decorative gradients, tracked-out
+all-caps eyebrow labels on every heading, and one-word headline accents.
+Start with a compact token plan: 4-6 named colours, one or two typefaces with
+roles, a layout concept per key screen, and a short list of principles.
+Critique your plan against the brief before building.
+
+Accessibility policy (already encoded in src/app/ui/accessibility.ts — extend,
+do not bypass; add tests when you add surfaces):
+- Visual: 4-step textScale applied as ONE root class so every rem-based token
+  moves; every meaningful tone carries a text label (never colour alone).
+- Motor: >= 44px targets; focus order matches reading order; no timeouts.
+- Localisation: formatting as data; no bare numbers interpolated into prose
+  (isLocalizationReady); one terminology table (one name per concept).
+- Errors: playerMessage must name a remedy. Errors don't apologise and are
+  never vague.
+- Keyboard: every action reachable without a pointer; visible focus.
+- Screen reader: map and graph views need a text/list alternative that
+  carries the same information.
+- Reduced motion: honour the OS setting AND the in-game preference.
+- Responsive: usable down to mobile widths.
+
+Copy rules: plain verbs, sentence case, active voice; name things how the
+player understands them, not how the system is built; one name per concept
+through the whole flow; empty states explain what is missing and how it
+might appear ("No perceptions recorded yet"), and never invent content.
+
+---------------------------------------------------------------------
+11. MOTION POLICY AND REACT BITS USAGE MAP
+---------------------------------------------------------------------
+
+Tier 1 — Response motion (Motion/CSS): opening panels, confirming a command,
+expanding rows. Short, purposeful, always reduced-motion aware. Allowed
+everywhere.
+
+Tier 2 — Orchestrated moments (React Bits / custom): allowed only in:
+- Title / new-life screen (one deliberate reveal).
+- Life-stage transitions and birthdays (subtle).
+- Death, determination and estate settlement; succession handoff; new
+  generation intro (the most "theatrical" allowed moment).
+- Loading/save/load feedback.
+Each moment: skippable, never blocks input, no time pressure, respects
+reduced motion, and shows the same information in plain text.
+
+Tier 3 — Ambient backgrounds/particles: optional, off by default on gameplay
+screens, cheap, and disabled under reduced motion or low-power settings.
+
+Never use decorative animation on: People directory, Ledger, History, Law &
+Records, Console, Debug.
+
+---------------------------------------------------------------------
+12. PERFORMANCE
+---------------------------------------------------------------------
+
+- Virtualise any list that can exceed ~100 rows (timeline, search, ledger,
+  message log, people directory).
+- Cap graph node counts per view; expand on demand. React Flow: render only
+  visible elements for large graphs; escalate to Sigma.js past ~10k nodes.
+- Map: SVG with feature culling by LOD; switch to canvas/MapLibre only if
+  profiling demands it.
+- Respect resolution-level budgets; the UI must never request more resolved
+  persons than the level allows.
+- Do not tighten the provisional budgets in engine code without real
+  profiling data (documented decision).
+- Measure with the project's work-unit metrics first; wall-clock only as a
+  secondary reading.
+
+---------------------------------------------------------------------
+13. TESTING AND VERIFICATION GATE
+---------------------------------------------------------------------
+
+Run before and after every session (confirm exact script names in
+package.json; these were referenced in PROGRESS.md):
+- typecheck (must be 0 errors)
+- lint (must be 0 errors)
+- test (Vitest; baseline reported 82 files / 686 tests, all green)
+- `npm run build`
+- `npm run sim -- --seed 0123456789 --days 30 --check-determinism`
+  (headless determinism check; 0 invariant failures, 0 ownership violations)
+
+UI-specific testing to add:
+- Projection tests: every new SimulationSession projection has a unit test
+  and respects the architecture boundary test.
+- Accessibility policy tests for every new surface (targets, labels,
+  focus order, localisation readiness, error remedies).
+- Component tests (Vitest + Testing Library) for empty states of every
+  "partial" system.
+- Optional: Storybook for isolated screens and Playwright + axe-core for
+  end-to-end and a11y smoke tests (recommended, not yet in the repo as far
+  as is known).
+- Visual regression for the moment layer only if motion is added.
+- Regression tests that assert the guardrails in section 6 (e.g. no
+  isMarried, no legacyBonus, no single reputation score in any UI model).
+
+Definition of "done" for any UI phase: gate green; PROGRESS.md updated;
+CONTENT_GAPS.md updated for any provisional decision; empty states verified;
+keyboard-only walkthrough passed; reduced-motion verified.
+
+---------------------------------------------------------------------
+14. SUGGESTED BUILD PHASES (UI)
+---------------------------------------------------------------------
+
+U0  Audit. Read docs and code, run the gate, list every screen and what it
+    actually renders, record dependency versions, and write the findings into
+    PROGRESS.md. Locate UI/UX and Player UI specs in the plan source folder.
+U1  Design system. Confirm visual direction with the owner; define tokens,
+    type scale, spacing, tone/status components (labelled), empty-state and
+    "why/basis" components, text-scale and reduced-motion wiring. No new
+    libraries yet except what tokens need.
+U2  Core loop. Life screen: needs, schedule, decision surface, consequence
+    feed, time controls, resolution level indicator. Honest empty states.
+U3  People + Genealogy. Virtualised directory, person detail, relationships
+    as perceptions, React Flow genealogy with a layout lib, household stints.
+U4  World. SVG flat map with LOD + fog of war, place detail, travel and
+    border access, weather, infrastructure blockers, international panel.
+U5  Society. Law & Records pipeline, Information (claims/messages), Community
+    (culture/norms), Economy tabs; charts and supply-chain graph.
+U6  Continuity / Legacy. Death determination view, estate report, succession
+    and control-handoff flow, archived lives; first use of the moment layer
+    (Tier 2) including React Bits components.
+U7  Polish and hardening. Accessibility audit, performance pass against
+    budgets, keyboard walkthrough, responsive pass, Playwright/axe smoke
+    tests, save-slot UX (migration/corruption states), documentation.
+
+Each phase: small commits, gate green, PROGRESS.md updated.
+
+---------------------------------------------------------------------
+15. KNOWN GAPS, OPEN QUESTIONS, CAVEATS
+---------------------------------------------------------------------
+
+Engine gaps that limit UI (from docs/CONTENT_GAPS.md, do not paper over):
+- No debt/lending system (estate debts must be supplied by caller).
+- No real mortality table (provisional constants).
+- System 26 (contracts / shared ownership) not built; estates use references.
+- No payroll or offer-state; infrastructure has no operators/funding tie;
+  disasters don't yet damage infrastructure; tectonic hazards have no trigger.
+- 28 partial systems have no seeded content.
+- Performance budgets are round placeholders, not measurements.
+- M5 (economy/organizations) was not reviewed by the author of this brief.
+
+Open questions for the owner (ask before building, one at a time):
+1. Visual direction: dossier/ledger vs atmospheric/game-like.
+2. Target platform: desktop web first, mobile-first, or both?
+3. Is a Web Worker for the engine desired now or deferred?
+4. Is the paid React Bits Pro tier acceptable, or free tier only?
+5. Should a minimal System 26 (contracts/shared ownership) be scheduled
+   before the Economy/Law screens?
+
+Provenance and confidence
+- HIGH: repo structure, milestone status, engine rules and guardrails
+  (quoted from PROGRESS.md / CONTENT_GAPS.md / OWNERSHIP_MATRIX.md diffs).
+- MEDIUM: screen list and UI boundary (from M3/M4 diffs; not run or viewed).
+- LOW: anything about visual quality, responsiveness, or current dependency
+  versions (not seen). Library comparisons are directional.
+- Self-reported test counts and "gate green" claims come from PROGRESS.md and
+  were not independently run.
